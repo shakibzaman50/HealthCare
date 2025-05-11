@@ -1,0 +1,18 @@
+[
+    {
+        "model-name": "Category",
+        "resource-file": "categories.json"
+    },
+    {
+        "model-name": "Expense",
+        "resource-file": "expenses.json"
+    },
+    {
+        "model-name": "AssetCategory",
+        "resource-file": "asset_categories.json"
+    },
+    {
+        "model-name": "Slider",
+        "resource-file": "sliders.json"
+    }
+]

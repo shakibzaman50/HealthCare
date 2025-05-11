@@ -1,0 +1,99 @@
+{
+  "menu": [
+    {
+      "name": "Site Settings",
+      "icon": "menu-icon fas fa-fw fa-cog",
+      "slug": "site_settings",
+      "can": "setting-module",
+      "submenu": [
+        {
+          "url": "global_settings",
+          "name": "Global Settings",
+          "slug": "global_settings",
+          "icon": "fas fa-spinner"
+        }
+      ]
+    },
+    {
+      "name": "User Behave",
+      "icon": "menu-icon fas fa-fw fa-user-secret",
+      "slug": "userBehave",
+      "can": "userBehave-module",
+      "submenu": [
+        {
+          "url": "/online-user",
+          "name": "Who's Online",
+          "slug": "userBehave-online-user",
+          "icon": "fas fa-sliders-h"
+        },
+        {
+          "url": "activity-log",
+          "name": "Account Activity",
+          "slug": "userBehave-activity-log",
+          "icon": "fas fa-spinner"
+        }
+      ]
+    },
+    {
+      "name": "Client",
+      "icon": "menu-icon fas fa-fw fa-user-secret",
+      "slug": "customer",
+      "can": "userBehave-module",
+      "submenu": [
+        {
+          "url": "/",
+          "name": "Customer",
+          "slug": "userBehave-online-user",
+          "icon": "fas fa-sliders-h"
+        }
+      ]
+    },
+    {
+      "name": "Loging Info",
+      "icon": "menu-icon fas fa-fw fa-mobile",
+      "slug": "logingInfo",
+      "can": "login-info",
+      "submenu": [
+        {
+          "url": "/admin-login-log",
+          "name": "Admin Loging Info",
+          "slug": "logingInfo-adminLoging-Log",
+          "icon": "fas fa-sliders-h"
+        },
+        {
+          "url": "/customer-login-log",
+          "name": "User Loging Info",
+          "slug": "logingInfo-customerLoging-Log",
+          "icon": "fas fa-spinner"
+        }
+      ]
+    },
+    {
+      "name": "User Role Permission",
+      "icon": "menu-icon fas fa-fw fa-user",
+      "slug": "layouts",
+      "can": "user-roll-permission",
+      "submenu": [
+        {
+          "url": "roles",
+          "name": "Roles",
+          "slug": "roles",
+          "can": "role-list"
+        },
+        {
+          "url": "permissions",
+          "name": "Permissions",
+          "slug": "permissions",
+          "can": "permission-list"
+        },
+        {
+          "url": "users",
+          "name": "User",
+          "slug": "users",
+          "icon": "fas fa-user",
+          "can": "user-list"
+        }
+      ]
+    }
+  ]
+}

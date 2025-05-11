@@ -1,0 +1,59 @@
+{
+  "menu": [
+    {
+      "name": "Academy",
+      "icon": "menu-icon tf-icons ti ti-book",
+      "slug": "app-academy",
+      "submenu": [
+        {
+          "url": "app/academy/dashboard",
+          "name": "Dashboard",
+          "slug": "app-academy-dashboard"
+        },
+        {
+          "url": "app/academy/course",
+          "name": "My Course",
+          "slug": "app-academy-course"
+        },
+        {
+          "url": "app/academy/course-details",
+          "name": "Course Details",
+          "slug": "app-academy-course-details"
+        }
+      ]
+    },
+    {
+      "url": "/",
+      "name": "Home",
+      "icon": "menu-icon tf-icons ti ti-smart-home",
+      "slug": "pages-home"
+    },
+    {
+      "url": "page-2",
+      "icon": "menu-icon tf-icons ti ti-file",
+      "name": "Page 2",
+      "slug": "pages-page-2"
+    },
+    {
+      "url": "pages/misc-error",
+      "name": "Error",
+      "icon": "menu-icon tf-icons ti ti-alert-triangle",
+      "slug": "pages-misc-error",
+      "target": "_blank"
+    },
+    {
+      "url": "auth/login-basic",
+      "name": "Login",
+      "icon": "menu-icon tf-icons ti ti-login",
+      "slug": "auth-login-basic",
+      "target": "_blank"
+    },
+    {
+      "url": "auth/register-basic",
+      "name": "Register",
+      "icon": "menu-icon tf-icons ti ti-user",
+      "slug": "auth-register-basic",
+      "target": "_blank"
+    }
+  ]
+}
