@@ -3,26 +3,29 @@
 namespace App\Http\Controllers\Backend;
 
 use App\Http\Controllers\Controller;
-use App\Models\FellingList;
+use App\Models\FeelingList;
 use App\Rules\UniqueFeelingList;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
-class FellingListController extends Controller
+class FeelingListController extends Controller
 {
-    protected function validated($request, $id=null){
+    protected function validated($request, $id=null)
+    {
         $request->validate([
             'name' => ['required', 'max:20', new UniqueFeelingList($id)],
         ]);
     }
 
-    protected function findSugarUnit($id){
-        return FellingList::findOrFail($id);
+    protected function findFeelingItem($id)
+    {
+        return FeelingList::findOrFail($id);
     }
 
-    protected function checkTrashed($name){
+    protected function checkTrashed($name)
+    {
         return
-            FellingList::withTrashed()
+            FeelingList::withTrashed()
                 ->where('name', Str::squish($name))
                 ->first() ?? null;
     }
@@ -31,7 +34,7 @@ class FellingListController extends Controller
      */
     public function index()
     {
-        $feelingList = FellingList::select('id','name','status','created_at')->paginate(100);
+        $feelingList = FeelingList::select('id','name','status','created_at')->paginate(100);
         return view('backend.module.feeling_list', compact('feelingList'));
     }
 
@@ -46,11 +49,11 @@ class FellingListController extends Controller
             $trashedFeeling->restore();
         }
         else{
-            FellingList::create([
+            FeelingList::create([
                 'name' => Str::squish($request->name)
             ]);
         }
-        return back()->with('success', 'Sugar Unit Created Successfully');
+        return back()->with('success', 'Feeling List Created Successfully');
     }
 
     /**
@@ -58,9 +61,9 @@ class FellingListController extends Controller
      */
     public function edit(string $id)
     {
-        $feelingList = $this->findSugarUnit(decrypt($id));
-        $feelingList->update(['status' => !$feelingList->status]);
-        return back()->with('success', 'Sugar Unit status changed successfully');
+        $feelingItem = $this->findSugarUnit(decrypt($id));
+        $feelingItem->update(['status' => !$feelingItem->status]);
+        return back()->with('success', 'Feeling Item status changed successfully');
     }
 
     /**
@@ -69,10 +72,10 @@ class FellingListController extends Controller
     public function update(Request $request, string $id)
     {
         $this->validated($request, $id);
-        FellingList::where('id', $id)->update([
+        FeelingList::where('id', $id)->update([
             'name' => Str::squish($request->name)
         ]);
-        return back()->with('success', 'Sugar Unit Updated Successfully');
+        return back()->with('success', 'Feeling Item Updated Successfully');
     }
 
     /**
@@ -80,15 +83,15 @@ class FellingListController extends Controller
      */
     public function destroy(string $id)
     {
-        $feelingList = $this->findSugarUnit($id);
+        $feelingItem = $this->findFeelingItem($id);
 
-        if (in_array($feelingList->name, config('basic.feelingLists'))
+        if (in_array($feelingItem->name, config('basic.feelingLists'))
 //         || BloodSugar::where('feeling_id', $id)->exists()
         ) {
-            return back()->with('error', 'This Feeling List cannot be deleted');
+            return back()->with('error', 'This Feeling Item cannot be deleted');
         }
 
-        $feelingList->delete();
-        return back()->with('success', 'Sugar Unit Deleted Successfully');
+        $feelingItem->delete();
+        return back()->with('success', 'This Feeling Item Deleted Successfully');
     }
 }

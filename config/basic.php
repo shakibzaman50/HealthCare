@@ -7,6 +7,26 @@ return [
     ],
 
 
+    'bloodPressureUnits' => [
+        'mg/dL',
+        'mmol/L',
+    ],
+
+    'heartRateUnits' => [
+        'mg/dL',
+        'mmol/L',
+    ],
+
+    'heightUnits' => [
+        'mg/dL',
+        'mmol/L',
+    ],
+
+    'medicineUnits' => [
+        'mg/dL',
+        'mmol/L',
+    ],
+
     'sugarUnits' => [
         'mg/dL',
         'mmol/L',

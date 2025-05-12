@@ -2,20 +2,20 @@
 
 namespace Database\Seeders;
 
-use App\Models\FeelingList;
+use App\Models\MedicineUnit;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class FeelingListSeeder extends Seeder
+class MedicineUnitSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        foreach (config('basic.feelingLists') as $name){
-            if(strlen($name) <= 20){
-                FeelingList::firstOrCreate(['name' => $name]);
+        foreach (config('basic.medicineUnits') as $name){
+            if(strlen($name) <= 10){
+                MedicineUnit::firstOrCreate(['name' => $name]);
             }
         }
     }

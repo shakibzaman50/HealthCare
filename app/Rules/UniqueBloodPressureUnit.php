@@ -2,12 +2,12 @@
 
 namespace App\Rules;
 
-use App\Models\FeelingList;
+use App\Models\BloodPressureUnit;
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Support\Str;
 
-class UniqueFeelingList implements ValidationRule
+class UniqueBloodPressureUnit implements ValidationRule
 {
     private $id;
 
@@ -21,7 +21,7 @@ class UniqueFeelingList implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        if (FeelingList::where('name', Str::squish($value))
+        if (BloodPressureUnit::where('name', Str::squish($value))
             ->when($this->id, fn($query) => $query->where('id', '!=', $this->id))
             ->exists()
         ) {

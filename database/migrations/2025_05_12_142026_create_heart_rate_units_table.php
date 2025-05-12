@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('felling_lists', function (Blueprint $table) {
+        Schema::create('heart_rate_units', function (Blueprint $table) {
             $table->id();
-            $table->string('name',20);
+            $table->string('name',10);
             $table->boolean('status')->default(1)->comment('1:Active, 0:Inactive');
             $table->timestamps();
             $table->softDeletes();
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('felling_lists');
+        Schema::dropIfExists('heart_rate_units');
     }
 };
