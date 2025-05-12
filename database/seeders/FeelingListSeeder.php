@@ -1,0 +1,22 @@
+<?php
+
+namespace Database\Seeders;
+
+use App\Models\FellingList;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Database\Seeder;
+
+class FeelingListSeeder extends Seeder
+{
+    /**
+     * Run the database seeds.
+     */
+    public function run(): void
+    {
+        foreach (config('basic.feelingLists') as $name){
+            if(strlen($name) <= 20){
+                FellingList::firstOrCreate(['name' => $name]);
+            }
+        }
+    }
+}
