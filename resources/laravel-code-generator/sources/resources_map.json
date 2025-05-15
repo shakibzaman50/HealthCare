@@ -1,18 +1,18 @@
 [
     {
-        "model-name": "Category",
-        "resource-file": "categories.json"
+        "model-name": "Assessment",
+        "resource-file": "assessments.json"
     },
     {
-        "model-name": "Expense",
-        "resource-file": "expenses.json"
+        "model-name": "PhysicalCondition",
+        "resource-file": "physical_conditions.json"
     },
     {
-        "model-name": "AssetCategory",
-        "resource-file": "asset_categories.json"
+        "model-name": "HeartRateUnit",
+        "resource-file": "heart_rate_units.json"
     },
     {
-        "model-name": "Slider",
-        "resource-file": "sliders.json"
+        "model-name": "BpUnit",
+        "resource-file": "bp_units.json"
     }
 ]

@@ -18,6 +18,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\pages\HomePage;
 use App\Http\Controllers\authentications\LoginBasic;
 use App\Http\Controllers\authentications\RegisterBasic;
+use App\Http\Controllers\Admin\Config\PhysicalConditionsController;
+use App\Http\Controllers\Admin\Config\HeartRateUnitsController;
+use App\Http\Controllers\Admin\Config\BpUnitsController;
 
 // Main Page Route
 Route::get('/', [HomePage::class, 'index'])->name('pages-home');
@@ -37,6 +40,78 @@ Route::middleware(['auth', 'verified', 'web'])->group(function () {
   Route::resource('roles', RoleController::class);
   Route::resource('users', UserController::class);
   Route::resource('permissions', PermissionController::class);
+  Route::group([
+    'prefix' => 'physical-conditions',
+  ], function () {
+    Route::get('/', [PhysicalConditionsController::class, 'index'])
+      ->name('physical-conditions.physical-condition.index');
+    Route::get('/create', [PhysicalConditionsController::class, 'create'])
+      ->name('physical-conditions.physical-condition.create');
+    Route::get('/show/{physicalCondition}', [PhysicalConditionsController::class, 'show'])
+      ->name('physical-conditions.physical-condition.show')->where('id', '[0-9]+');
+    Route::get('/{physicalCondition}/edit', [PhysicalConditionsController::class, 'edit'])
+      ->name('physical-conditions.physical-condition.edit')->where('id', '[0-9]+');
+    Route::post('/', [PhysicalConditionsController::class, 'store'])
+      ->name('physical-conditions.physical-condition.store');
+    Route::put('physical-condition/{physicalCondition}', [PhysicalConditionsController::class, 'update'])
+      ->name('physical-conditions.physical-condition.update')->where('id', '[0-9]+');
+    Route::delete('/physical-condition/{physicalCondition}', [PhysicalConditionsController::class, 'destroy'])
+      ->name('physical-conditions.physical-condition.destroy')->where('id', '[0-9]+');
+  });
+  Route::group([
+    'prefix' => 'heart-rate-units',
+  ], function () {
+    Route::get('/', [HeartRateUnitsController::class, 'index'])
+      ->name('heart-rate-units.heart-rate-unit.index');
+    Route::get('/create', [HeartRateUnitsController::class, 'create'])
+      ->name('heart-rate-units.heart-rate-unit.create');
+    Route::get('/show/{heartRateUnit}', [HeartRateUnitsController::class, 'show'])
+      ->name('heart-rate-units.heart-rate-unit.show')->where('id', '[0-9]+');
+    Route::get('/{heartRateUnit}/edit', [HeartRateUnitsController::class, 'edit'])
+      ->name('heart-rate-units.heart-rate-unit.edit')->where('id', '[0-9]+');
+    Route::post('/', [HeartRateUnitsController::class, 'store'])
+      ->name('heart-rate-units.heart-rate-unit.store');
+    Route::put('heart-rate-unit/{heartRateUnit}', [HeartRateUnitsController::class, 'update'])
+      ->name('heart-rate-units.heart-rate-unit.update')->where('id', '[0-9]+');
+    Route::delete('/heart-rate-unit/{heartRateUnit}', [HeartRateUnitsController::class, 'destroy'])
+      ->name('heart-rate-units.heart-rate-unit.destroy')->where('id', '[0-9]+');
+  });
+  Route::group([
+    'prefix' => 'bp-units',
+  ], function () {
+    Route::get('/', [BpUnitsController::class, 'index'])
+      ->name('bp-units.bp-unit.index');
+    Route::get('/create', [BpUnitsController::class, 'create'])
+      ->name('bp-units.bp-unit.create');
+    Route::get('/show/{bpUnit}', [BpUnitsController::class, 'show'])
+      ->name('bp-units.bp-unit.show')->where('id', '[0-9]+');
+    Route::get('/{bpUnit}/edit', [BpUnitsController::class, 'edit'])
+      ->name('bp-units.bp-unit.edit')->where('id', '[0-9]+');
+    Route::post('/', [BpUnitsController::class, 'store'])
+      ->name('bp-units.bp-unit.store');
+    Route::put('bp-unit/{bpUnit}', [BpUnitsController::class, 'update'])
+      ->name('bp-units.bp-unit.update')->where('id', '[0-9]+');
+    Route::delete('/bp-unit/{bpUnit}', [BpUnitsController::class, 'destroy'])
+      ->name('bp-units.bp-unit.destroy')->where('id', '[0-9]+');
+  });
+  Route::group([
+    'prefix' => 'global_settings',
+  ], function () {
+    Route::get('/', [GlobalSettingsController::class, 'index'])
+      ->name('global_settings.global_setting.index');
+    Route::get('/create', [GlobalSettingsController::class, 'create'])
+      ->name('global_settings.global_setting.create');
+    Route::get('/show/{globalSetting}', [GlobalSettingsController::class, 'show'])
+      ->name('global_settings.global_setting.show')->where('id', '[0-9]+');
+    Route::get('/{globalSetting}/edit', [GlobalSettingsController::class, 'edit'])
+      ->name('global_settings.global_setting.edit')->where('id', '[0-9]+');
+    Route::post('/', [GlobalSettingsController::class, 'store'])
+      ->name('global_settings.global_setting.store');
+    Route::put('global_setting/{globalSetting}', [GlobalSettingsController::class, 'update'])
+      ->name('global_settings.global_setting.update')->where('id', '[0-9]+');
+    Route::delete('/global_setting/{globalSetting}', [GlobalSettingsController::class, 'destroy'])
+      ->name('global_settings.global_setting.destroy')->where('id', '[0-9]+');
+  });
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -78,7 +153,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
 Route::prefix('user')->middleware(['auth:customer', '2fa'])->group(function () {
 
   Route::get('dashboard', [CustomerDashboardController::class, 'index'])->name('customer.dashboard');
-
   Route::get('profile', [\App\Http\Controllers\Customer\CustomerController::class, 'profile'])->name('customer.profile');
 });
 Route::get('/2fa', [\App\Http\Controllers\Email2faController::class, 'create'])->name('customer.2fa')->middleware('auth:customer');
@@ -88,22 +162,3 @@ Route::get('/set-locale/{locale}', [LocaleController::class, 'setLocale'])->name
 
 require __DIR__ . '/auth.php';
 require __DIR__ . '/customer-auth.php';
-
-Route::group([
-  'prefix' => 'global_settings',
-], function () {
-  Route::get('/', [GlobalSettingsController::class, 'index'])
-    ->name('global_settings.global_setting.index');
-  Route::get('/create', [GlobalSettingsController::class, 'create'])
-    ->name('global_settings.global_setting.create');
-  Route::get('/show/{globalSetting}', [GlobalSettingsController::class, 'show'])
-    ->name('global_settings.global_setting.show')->where('id', '[0-9]+');
-  Route::get('/{globalSetting}/edit', [GlobalSettingsController::class, 'edit'])
-    ->name('global_settings.global_setting.edit')->where('id', '[0-9]+');
-  Route::post('/', [GlobalSettingsController::class, 'store'])
-    ->name('global_settings.global_setting.store');
-  Route::put('global_setting/{globalSetting}', [GlobalSettingsController::class, 'update'])
-    ->name('global_settings.global_setting.update')->where('id', '[0-9]+');
-  Route::delete('/global_setting/{globalSetting}', [GlobalSettingsController::class, 'destroy'])
-    ->name('global_settings.global_setting.destroy')->where('id', '[0-9]+');
-});
