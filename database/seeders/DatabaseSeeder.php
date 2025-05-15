@@ -20,6 +20,10 @@ class DatabaseSeeder extends Seeder
             SugarUnitSeeder::class,
             WaterUnitSeeder::class,
             WeightUnitSeeder::class,
+            HeightUnitSeeder::class,
+            MedicineUnitSeeder::class,
+            MedicineTypeSeeder::class,
+            SugarUnitSeeder::class,
         ]);
     }
 }

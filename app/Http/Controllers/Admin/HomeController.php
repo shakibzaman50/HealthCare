@@ -15,9 +15,8 @@ class HomeController extends Controller
     public function index()
     {
         $user = Auth::user()->load('roles');
-//        return Auth::user();
-        return view('backend.pages.dashboard');
-//        return view('admin.dashboard', compact('user'));
+//        return view('backend.pages.dashboard');
+        return view('admin.dashboard', compact('user'));
     }
 
     public function refresh()
