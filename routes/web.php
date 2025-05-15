@@ -18,8 +18,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\pages\HomePage;
 use App\Http\Controllers\authentications\LoginBasic;
 use App\Http\Controllers\authentications\RegisterBasic;
-use App\Http\Controllers\AssessmentsController;
-use App\Http\Controllers\PhysicalConditionsController;
+use App\Http\Controllers\Admin\Config\PhysicalConditionsController;
+use App\Http\Controllers\Admin\Config\HeartRateUnitsController;
+use App\Http\Controllers\Admin\Config\BpUnitsController;
 
 // Main Page Route
 Route::get('/', [HomePage::class, 'index'])->name('pages-home');
@@ -29,10 +30,6 @@ Route::get('/cache/clear', [HomePage::class, 'allCacheClear'])->name('cache-clea
 Route::get('/auth/login-basic', [LoginBasic::class, 'index'])->name('auth-login-basic');
 Route::get('/auth/register-basic', [RegisterBasic::class, 'index'])->name('auth-register-basic');
 Route::get('/clear-cache', [CacheController::class, 'clearAllCache'])->name('clear.cache');
-
-use App\Http\Controllers\HeartRateUnitsController;
-use App\Http\Controllers\BpUnitsController;
-
 
 
 Route::middleware(['auth', 'verified', 'web'])->group(function () {

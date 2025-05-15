@@ -1,6 +1,6 @@
 @extends('layouts/contentNavbarLayout')
 
-@section('title', 'Global Setting')
+@section('title', 'List Physical Condition Unit')
 
 @section('vendor-script')
 @vite('resources/assets/vendor/libs/masonry/masonry.js')

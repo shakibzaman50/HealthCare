@@ -1,6 +1,4 @@
-# Mini Arab Project
-
-Welcome to the Mini Arab project developed by **Shakib Zaman**.
+# Health Tracker Project
 
 ## Project Languages & Tools
 
@@ -15,7 +13,7 @@ Welcome to the Mini Arab project developed by **Shakib Zaman**.
 1. **Clone the repository:**
 
    ```bash
-   git clone https://shakib@bitbucket.org/betatechco/gift-funnel.git
+   git clone
 
    ```
 
