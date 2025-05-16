@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('feeling_lists', function (Blueprint $table) {
             $table->id();
-            $table->string('name',20);
-            $table->boolean('status')->default(1)->comment('1:Active, 0:Inactive');
+            $table->string('name',30);
+            $table->boolean('is_active')->default(1);
             $table->timestamps();
             $table->softDeletes();
         });

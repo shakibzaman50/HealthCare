@@ -12,13 +12,13 @@ class MedicineUnit extends Model
 
     protected $fillable = [
         'name',
-        'status',
+        'is_active',
     ];
 
     public function getStatusBadgeAttribute(): string
     {
         $statusConfig = config('basic.status');
-        $isActive     = $this->status == $statusConfig['active'];
+        $isActive     = $this->is_active == $statusConfig['active'];
 
         $class = $isActive ? 'success' : 'danger';
         $text  = $isActive ? 'Active' : 'Inactive';
@@ -28,6 +28,6 @@ class MedicineUnit extends Model
 
     public function scopeActive($query)
     {
-        return $query->where('status', config('basic.status.active'));
+        return $query->where('is_active', config('basic.status.active'));
     }
 }
