@@ -3,16 +3,28 @@
 namespace App\Http\Controllers\Admin\Config;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Config\SugarScheduleRequest;
+use App\Models\SugarSchedule;
+use App\Services\Config\SugarScheduleService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class SugarScheduleController extends Controller
 {
+    protected $sugarScheduleService;
+
+    public function __construct(SugarScheduleService $sugarScheduleService)
+    {
+       $this->sugarScheduleService = $sugarScheduleService;
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+      $sugarSchedules = SugarSchedule::paginate(25);
+      return view('sugar_schedule.index', compact('sugarSchedules'));
     }
 
     /**
@@ -20,15 +32,22 @@ class SugarScheduleController extends Controller
      */
     public function create()
     {
-        //
+      return view('sugar_schedule.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(SugarScheduleRequest $request)
     {
-        //
+      try {
+        $this->sugarScheduleService->create($request->validated());
+        return redirect()->route('sugar-schedules.index')
+          ->with('success_message', 'Sugar Schedule was successfully added.');
+      } catch (\Exception $e) {
+        Log::error('Sugar Schedule Create failed: ' . $e->getMessage());
+        return back()->withInput()->withErrors(['error' => 'Something went wrong.']);
+      }
     }
 
     /**
@@ -36,7 +55,8 @@ class SugarScheduleController extends Controller
      */
     public function show(string $id)
     {
-        //
+      $sugarSchedule = SugarSchedule::findOrFail($id);
+      return view('sugar_schedules.show', compact('sugarSchedule'));
     }
 
     /**
@@ -44,15 +64,24 @@ class SugarScheduleController extends Controller
      */
     public function edit(string $id)
     {
-        //
+      $sugarSchedule = SugarSchedule::findOrFail($id);
+      return view('sugar_schedules.edit', compact('sugarSchedule'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(SugarScheduleRequest $request, string $id)
     {
-        //
+      try {
+        $sugarSchedule = SugarSchedule::findOrFail($id);
+        $this->sugarScheduleService->update($sugarSchedule, $request->validated());
+        return redirect()->route('sugar-schedules.index')
+          ->with('success_message', 'Sugar Schedule was successfully updated.');
+      } catch (\Exception $e) {
+        Log::error('Updated failed: ' . $e->getMessage());
+        return back()->withInput()->withErrors(['error' => 'Something went wrong.']);
+      }
     }
 
     /**
@@ -60,6 +89,15 @@ class SugarScheduleController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+      try {
+        $sugarSchedule = SugarSchedule::findOrFail($id);
+        $this->sugarScheduleService->delete($sugarSchedule);
+
+        return redirect()->route('sugar-schedules.index')
+          ->with('success_message', 'Sugar Schedule was successfully deleted.');
+      } catch (\Exception $e) {
+        return back()->withInput()
+          ->withErrors(['unexpected_error' => 'Unexpected error occurred while trying to process your request.']);
+      }
     }
 }

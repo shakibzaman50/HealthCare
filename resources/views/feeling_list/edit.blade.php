@@ -1,6 +1,6 @@
 @extends('layouts/contentNavbarLayout')
 
-@section('title', 'Edit Blood Presure Unit')
+@section('title', 'Edit Feeling List')
 
 @section('vendor-script')
 @vite('resources/assets/vendor/libs/masonry/masonry.js')
@@ -9,15 +9,15 @@
 @section('content')
 
     <div class="card text-bg-theme">
-  
+
          <div class="card-header d-flex justify-content-between align-items-center p-3">
-            <h4 class="m-0">{{ !empty($bpUnit->name) ? $bpUnit->name : 'Bp Unit' }}</h4>
+            <h4 class="m-0">{{ !empty($feelingList->name) ? $feelingList->name : 'Feeling List' }}</h4>
             <div>
-                <a href="{{ route('bp-units.bp-unit.index') }}" class="btn btn-primary" title="Show All Bp Unit">
+                <a href="{{ route('feeling-lists.index') }}" class="btn btn-primary" title="Show All Feeling List">
                     <span class="fa-solid fa-table-list" aria-hidden="true"></span>
                 </a>
 
-                <a href="{{ route('bp-units.bp-unit.create') }}" class="btn btn-secondary" title="Create New Bp Unit">
+                <a href="{{ route('feeling-lists.create') }}" class="btn btn-secondary" title="Create New Feeling List">
                     <span class="fa-solid fa-plus" aria-hidden="true"></span>
                 </a>
             </div>
@@ -35,11 +35,11 @@
                 </div>
             @endif
 
-            <form method="POST" class="needs-validation" novalidate action="{{ route('bp-units.bp-unit.update', $bpUnit->id) }}" id="edit_bp_unit_form" name="edit_bp_unit_form" accept-charset="UTF-8" >
+            <form method="POST" class="needs-validation" novalidate action="{{ route('feeling-lists.update', $feelingList->id) }}" id="edit_feeling_list_form" name="edit_feeling_list_form" accept-charset="UTF-8" >
             {{ csrf_field() }}
             <input name="_method" type="hidden" value="PUT">
-            @include ('bp_units.form', [
-                                        'bpUnit' => $bpUnit,
+            @include ('feeling_list.form', [
+                                        'feelingList' => $feelingList,
                                       ])
 
                 <div class="col-lg-10 col-xl-9 offset-lg-2 offset-xl-3">

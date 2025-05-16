@@ -7,11 +7,11 @@ use Illuminate\Support\Str;
 
 class SugarUnitService
 {
-    protected function checkTrashed($name){
-        return
-            SugarUnit::withTrashed()
-                ->where('name', Str::squish($name))
-                ->first() ?? null;
+    protected function checkTrashed($name)
+    {
+        return SugarUnit::withTrashed()
+            ->where('name', Str::squish($name))
+            ->first() ?? null;
     }
 
     public function create(array $data) : SugarUnit
@@ -34,8 +34,8 @@ class SugarUnitService
         return $sugarUnit;
     }
 
-    public function delete(SugarUnit $bpUnit): bool
+    public function delete(SugarUnit $sugarUnit): bool
     {
-        return $bpUnit->delete();
+        return $sugarUnit->delete();
     }
 }

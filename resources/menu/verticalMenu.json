@@ -129,9 +129,9 @@
           "icon": "fas fa-spinner"
         },
         {
-          "url": "/feeling-list",
+          "url": "/feeling-lists",
           "name": "Feeling List",
-          "slug": "feeling-list",
+          "slug": "feeling-lists",
           "icon": "fas fa-spinner"
         },
         {
