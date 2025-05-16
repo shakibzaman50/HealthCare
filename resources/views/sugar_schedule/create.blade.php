@@ -1,6 +1,6 @@
 @extends('layouts/contentNavbarLayout')
 
-@section('title', 'Create Blood Presure Unit')
+@section('title', 'Create Sugar Schedule')
 
 @section('vendor-script')
 @vite('resources/assets/vendor/libs/masonry/masonry.js')
@@ -11,9 +11,9 @@
 <div class="card text-bg-theme">
 
     <div class="card-header d-flex justify-content-between align-items-center p-3">
-        <h4 class="m-0">Create New Bp Unit</h4>
+        <h4 class="m-0">Create New Sugar Schedule</h4>
         <div>
-            <a href="{{ route('bp-units.bp-unit.index') }}" class="btn btn-primary" title="Show All Bp Unit">
+            <a href="{{ route('sugar-schedules.index') }}" class="btn btn-primary" title="Show All Sugar Schedule">
                 <span class="fa-solid fa-table-list" aria-hidden="true"></span>
             </a>
         </div>
@@ -32,11 +32,11 @@
         </div>
         @endif
 
-        <form method="POST" class="needs-validation" novalidate action="{{ route('bp-units.bp-unit.store') }}"
-            accept-charset="UTF-8" id="create_bp_unit_form" name="create_bp_unit_form">
+        <form method="POST" class="needs-validation" novalidate action="{{ route('sugar-schedules.store') }}"
+            accept-charset="UTF-8" id="create_sugar_schedule_form" name="create_sugar_schedule_form">
             {{ csrf_field() }}
-            @include ('bp_units.form', [
-            'bpUnit' => null,
+            @include ('sugar_schedule.form', [
+            'sugarSchedule' => null,
             ])
 
             <div class="col-lg-10 col-xl-9 offset-lg-2 offset-xl-3">

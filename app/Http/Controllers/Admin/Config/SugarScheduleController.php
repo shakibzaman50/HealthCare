@@ -56,7 +56,7 @@ class SugarScheduleController extends Controller
     public function show(string $id)
     {
       $sugarSchedule = SugarSchedule::findOrFail($id);
-      return view('sugar_schedules.show', compact('sugarSchedule'));
+      return view('sugar_schedule.show', compact('sugarSchedule'));
     }
 
     /**
@@ -65,7 +65,7 @@ class SugarScheduleController extends Controller
     public function edit(string $id)
     {
       $sugarSchedule = SugarSchedule::findOrFail($id);
-      return view('sugar_schedules.edit', compact('sugarSchedule'));
+      return view('sugar_schedule.edit', compact('sugarSchedule'));
     }
 
     /**
