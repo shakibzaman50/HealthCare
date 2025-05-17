@@ -18,12 +18,17 @@ class HeightUnitController extends Controller
         $this->heightUnitService = $heightUnitService;
     }
 
+    protected function findHeightUnit(int $id)
+    {
+        return HeightUnit::findOrFail($id);
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $heightUnits = HeightUnit::paginate(25);
+        $heightUnits = HeightUnit::latest()->paginate(25);
         return view('height_units.index', compact('heightUnits'));
     }
 
@@ -32,7 +37,7 @@ class HeightUnitController extends Controller
      */
     public function create()
     {
-      return view('height_units.create');
+        return view('height_units.create');
     }
 
     /**
@@ -43,7 +48,7 @@ class HeightUnitController extends Controller
         try {
             $this->heightUnitService->create($request->validated());
             return redirect()->route('height-units.index')
-              ->with('success_message', 'Height Unit was successfully added.');
+               ->with('success_message', 'Height Unit was successfully added.');
         } catch (\Exception $e) {
             Log::error('Height Unit Create failed: ' . $e->getMessage());
             return back()->withInput()->withErrors(['error' => 'Something went wrong.']);
@@ -55,7 +60,7 @@ class HeightUnitController extends Controller
      */
     public function show(string $id)
     {
-        $heightUnit = HeightUnit::findOrFail($id);
+        $heightUnit = $this->findHeightUnit($id);
         return view('height_units.show', compact('heightUnit'));
     }
 
@@ -64,7 +69,7 @@ class HeightUnitController extends Controller
      */
     public function edit(string $id)
     {
-        $heightUnit = HeightUnit::findOrFail($id);
+        $heightUnit = $this->findHeightUnit($id);
         return view('height_units.edit', compact('heightUnit'));
     }
 
@@ -74,10 +79,10 @@ class HeightUnitController extends Controller
     public function update(HeightUnitRequest $request, string $id)
     {
         try {
-            $heightUnit = HeightUnit::findOrFail($id);
+            $heightUnit = $this->findHeightUnit($id);
             $this->heightUnitService->update($heightUnit, $request->validated());
             return redirect()->route('height-units.index')
-              ->with('success_message', 'Height Unit was successfully updated.');
+                ->with('success_message', 'Height Unit was successfully updated.');
         } catch (\Exception $e) {
             Log::error('Updated failed: ' . $e->getMessage());
             return back()->withInput()->withErrors(['error' => 'Something went wrong.']);
@@ -90,14 +95,19 @@ class HeightUnitController extends Controller
     public function destroy(string $id)
     {
         try {
-            $heightUnit = HeightUnit::findOrFail($id);
+            $heightUnit = $this->findHeightUnit($id);
+            if (in_array($heightUnit->name, config('basic.heightUnits'))
+                // || BloodSugar::where('feeling_id', $id)->exists()
+            ) {
+                return back()->with('error_message', 'This Height Unit cannot be deleted');
+            }
             $this->heightUnitService->delete($heightUnit);
 
             return redirect()->route('height-units.index')
-              ->with('success_message', 'Height Unit was successfully deleted.');
+                ->with('success_message', 'Height Unit was successfully deleted.');
         } catch (\Exception $e) {
             return back()->withInput()
-              ->withErrors(['unexpected_error' => 'Unexpected error occurred while trying to process your request.']);
+                ->withErrors(['unexpected_error' => 'Unexpected error occurred while trying to process your request.']);
         }
     }
 }

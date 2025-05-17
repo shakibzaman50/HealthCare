@@ -18,13 +18,18 @@ class WaterUnitController extends Controller
         $this->waterUnitService = $waterUnitService;
     }
 
+    protected function findWaterUnit(int $id)
+    {
+        return WaterUnit::findOrFail($id);
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-      $waterUnits = WaterUnit::paginate(25);
-      return view('water_units.index', compact('waterUnits'));
+        $waterUnits = WaterUnit::latest()->paginate(25);
+        return view('water_units.index', compact('waterUnits'));
     }
 
     /**
@@ -32,7 +37,7 @@ class WaterUnitController extends Controller
      */
     public function create()
     {
-      return view('water_units.create');
+        return view('water_units.create');
     }
 
     /**
@@ -40,14 +45,14 @@ class WaterUnitController extends Controller
      */
     public function store(WaterUnitRequest $request)
     {
-      try {
-        $this->waterUnitService->create($request->validated());
-        return redirect()->route('water-units.index')
-          ->with('success_message', 'Water Unit was successfully added.');
-      } catch (\Exception $e) {
-        Log::error('Water Unit Create failed: ' . $e->getMessage());
-        return back()->withInput()->withErrors(['error' => 'Something went wrong.']);
-      }
+        try {
+            $this->waterUnitService->create($request->validated());
+            return redirect()->route('water-units.index')
+                ->with('success_message', 'Water Unit was successfully added.');
+        } catch (\Exception $e) {
+            Log::error('Water Unit Create failed: ' . $e->getMessage());
+            return back()->withInput()->withErrors(['error' => 'Something went wrong.']);
+        }
     }
 
     /**
@@ -55,8 +60,8 @@ class WaterUnitController extends Controller
      */
     public function show(string $id)
     {
-      $waterUnit = WaterUnit::findOrFail($id);
-      return view('water_units.show', compact('waterUnit'));
+        $waterUnit = $this->findWaterUnit($id);
+        return view('water_units.show', compact('waterUnit'));
     }
 
     /**
@@ -64,8 +69,8 @@ class WaterUnitController extends Controller
      */
     public function edit(string $id)
     {
-      $waterUnit = WaterUnit::findOrFail($id);
-      return view('water_units.edit', compact('waterUnit'));
+        $waterUnit = $this->findWaterUnit($id);
+        return view('water_units.edit', compact('waterUnit'));
     }
 
     /**
@@ -73,15 +78,15 @@ class WaterUnitController extends Controller
      */
     public function update(WaterUnitRequest $request, string $id)
     {
-      try {
-        $waterUnit = WaterUnit::findOrFail($id);
-        $this->waterUnitService->update($waterUnit, $request->validated());
-        return redirect()->route('water-units.index')
-          ->with('success_message', 'Water Unit was successfully updated.');
-      } catch (\Exception $e) {
-        Log::error('Updated failed: ' . $e->getMessage());
-        return back()->withInput()->withErrors(['error' => 'Something went wrong.']);
-      }
+        try {
+            $waterUnit = $this->findWaterUnit($id);
+            $this->waterUnitService->update($waterUnit, $request->validated());
+            return redirect()->route('water-units.index')
+                ->with('success_message', 'Water Unit was successfully updated.');
+        } catch (\Exception $e) {
+            Log::error('Updated failed: ' . $e->getMessage());
+            return back()->withInput()->withErrors(['error' => 'Something went wrong.']);
+        }
     }
 
     /**
@@ -89,15 +94,20 @@ class WaterUnitController extends Controller
      */
     public function destroy(string $id)
     {
-      try {
-        $waterUnit = WaterUnit::findOrFail($id);
-        $this->waterUnitService->delete($waterUnit);
+        try {
+            $waterUnit = $this->findWaterUnit($id);
+            if (in_array($waterUnit->name, config('basic.waterUnits'))
+                // || BloodSugar::where('feeling_id', $id)->exists()
+            ) {
+                return back()->with('error_message', 'This Water Unit cannot be deleted');
+            }
+            $this->waterUnitService->delete($waterUnit);
 
-        return redirect()->route('water-units.index')
-          ->with('success_message', 'Water Unit was successfully deleted.');
-      } catch (\Exception $e) {
-        return back()->withInput()
-          ->withErrors(['unexpected_error' => 'Unexpected error occurred while trying to process your request.']);
-      }
+            return redirect()->route('water-units.index')
+                ->with('success_message', 'Water Unit was successfully deleted.');
+        } catch (\Exception $e) {
+            return back()->withInput()
+                ->withErrors(['unexpected_error' => 'Unexpected error occurred while trying to process your request.']);
+        }
     }
 }

@@ -16,6 +16,14 @@
         </div>
     @endif
 
+    @if(Session::has('error_message'))
+        <div class="alert alert-danger alert-dismissible" role="alert">
+            {!! session('error_message') !!}
+
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
     <div class="card text-bg-theme">
 
         <div class="card-header d-flex justify-content-between align-items-center p-3">

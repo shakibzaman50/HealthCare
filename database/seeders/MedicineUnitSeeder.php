@@ -14,7 +14,7 @@ class MedicineUnitSeeder extends Seeder
     public function run(): void
     {
         foreach (config('basic.medicineUnits') as $name){
-            if(strlen($name) <= 10){
+            if(strlen($name) <= 20){
                 MedicineUnit::firstOrCreate(['name' => $name]);
             }
         }

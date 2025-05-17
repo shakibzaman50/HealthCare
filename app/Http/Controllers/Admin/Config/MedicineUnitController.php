@@ -18,6 +18,11 @@ class MedicineUnitController extends Controller
         $this->medicineUnitService = $medicineUnitService;
     }
 
+    protected function findMedicineUnit(int $id)
+    {
+        return MedicineUnit::findOrFail($id);
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -40,14 +45,14 @@ class MedicineUnitController extends Controller
      */
     public function store(MedicineUnitRequest $request)
     {
-      try {
-          $this->medicineUnitService->create($request->validated());
-          return redirect()->route('medicine-units.index')
-            ->with('success_message', 'Medicine Unit was successfully added.');
-      } catch (\Exception $e) {
-          Log::error('Medicine Unit Create failed: ' . $e->getMessage());
-          return back()->withInput()->withErrors(['error' => 'Something went wrong.']);
-      }
+        try {
+            $this->medicineUnitService->create($request->validated());
+            return redirect()->route('medicine-units.index')
+                ->with('success_message', 'Medicine Unit was successfully added.');
+        } catch (\Exception $e) {
+            Log::error('Medicine Unit Create failed: ' . $e->getMessage());
+            return back()->withInput()->withErrors(['error' => 'Something went wrong.']);
+        }
     }
 
     /**
@@ -55,7 +60,7 @@ class MedicineUnitController extends Controller
      */
     public function show(string $id)
     {
-        $medicineUnit = MedicineUnit::findOrFail($id);
+        $medicineUnit = $this->findMedicineUnit($id);
         return view('medicine_units.show', compact('medicineUnit'));
     }
 
@@ -64,7 +69,7 @@ class MedicineUnitController extends Controller
      */
     public function edit(string $id)
     {
-        $medicineUnit = MedicineUnit::findOrFail($id);
+        $medicineUnit = $this->findMedicineUnit($id);
         return view('medicine_units.edit', compact('medicineUnit'));
     }
 
@@ -74,7 +79,7 @@ class MedicineUnitController extends Controller
     public function update(MedicineUnitRequest $request, string $id)
     {
         try {
-            $medicineUnit = MedicineUnit::findOrFail($id);
+            $medicineUnit = $this->findMedicineUnit($id);
             $this->medicineUnitService->update($medicineUnit, $request->validated());
             return redirect()->route('medicine-units.index')
               ->with('success_message', 'Medicine Unit was successfully updated.');
@@ -90,11 +95,16 @@ class MedicineUnitController extends Controller
     public function destroy(string $id)
     {
         try {
-            $medicineUnit = MedicineUnit::findOrFail($id);
+            $medicineUnit = $this->findMedicineUnit($id);
+            if (in_array($medicineUnit->name, config('basic.medicineUnits'))
+              // || BloodSugar::where('feeling_id', $id)->exists()
+            ) {
+                return back()->with('error_message', 'This Medicine Unit cannot be deleted');
+            }
             $this->medicineUnitService->delete($medicineUnit);
 
             return redirect()->route('medicine-units.index')
-              ->with('success_message', 'Medicine Unit was successfully deleted.');
+                ->with('success_message', 'Medicine Unit was successfully deleted.');
         } catch (\Exception $e) {
             return back()->withInput()
                ->withErrors(['unexpected_error' => 'Unexpected error occurred while trying to process your request.']);

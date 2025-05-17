@@ -14,7 +14,7 @@ class SugarUnitSeeder extends Seeder
     public function run(): void
     {
         foreach (config('basic.sugarUnits') as $name){
-            if(strlen($name) <= 10){
+            if(strlen($name) <= 20){
                 SugarUnit::firstOrCreate(['name' => $name]);
             }
         }

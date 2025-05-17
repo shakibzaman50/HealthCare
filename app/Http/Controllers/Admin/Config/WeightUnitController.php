@@ -15,7 +15,11 @@ class WeightUnitController extends Controller
 
     public function __construct(WeightUnitService $weightUnitService)
     {
-      $this->weightUnitService = $weightUnitService;
+        $this->weightUnitService = $weightUnitService;
+    }
+
+    protected function findWeightUnit(int $id){
+        return WeightUnit::findOrFail($id);
     }
 
     /**
@@ -23,8 +27,8 @@ class WeightUnitController extends Controller
      */
     public function index()
     {
-      $weightUnits = WeightUnit::paginate(25);
-      return view('weight_units.index', compact('weightUnits'));
+        $weightUnits = WeightUnit::latest()->paginate(25);
+        return view('weight_units.index', compact('weightUnits'));
     }
 
     /**
@@ -32,7 +36,7 @@ class WeightUnitController extends Controller
      */
     public function create()
     {
-      return view('weight_units.create');
+        return view('weight_units.create');
     }
 
     /**
@@ -40,14 +44,14 @@ class WeightUnitController extends Controller
      */
     public function store(WeightUnitRequest $request)
     {
-      try {
-        $this->weightUnitService->create($request->validated());
-        return redirect()->route('weight-units.index')
-          ->with('success_message', 'Weight Unit was successfully added.');
-      } catch (\Exception $e) {
-        Log::error('Weight Unit Create failed: ' . $e->getMessage());
-        return back()->withInput()->withErrors(['error' => 'Something went wrong.']);
-      }
+        try {
+            $this->weightUnitService->create($request->validated());
+            return redirect()->route('weight-units.index')
+                ->with('success_message', 'Weight Unit was successfully added.');
+        } catch (\Exception $e) {
+            Log::error('Weight Unit Create failed: ' . $e->getMessage());
+            return back()->withInput()->withErrors(['error' => 'Something went wrong.']);
+        }
     }
 
     /**
@@ -55,8 +59,8 @@ class WeightUnitController extends Controller
      */
     public function show(string $id)
     {
-      $weightUnit = WeightUnit::findOrFail($id);
-      return view('weight_units.show', compact('weightUnit'));
+        $weightUnit = $this->findWeightUnit($id);
+        return view('weight_units.show', compact('weightUnit'));
     }
 
     /**
@@ -64,8 +68,8 @@ class WeightUnitController extends Controller
      */
     public function edit(string $id)
     {
-      $weightUnit = WeightUnit::findOrFail($id);
-      return view('weight_units.edit', compact('weightUnit'));
+        $weightUnit = $this->findWeightUnit($id);
+        return view('weight_units.edit', compact('weightUnit'));
     }
 
     /**
@@ -73,15 +77,15 @@ class WeightUnitController extends Controller
      */
     public function update(WeightUnitRequest $request, string $id)
     {
-      try {
-        $weightUnit = WeightUnit::findOrFail($id);
-        $this->weightUnitService->update($weightUnit, $request->validated());
-        return redirect()->route('weight-units.index')
-          ->with('success_message', 'Weight Unit was successfully updated.');
-      } catch (\Exception $e) {
-        Log::error('Updated failed: ' . $e->getMessage());
-        return back()->withInput()->withErrors(['error' => 'Something went wrong.']);
-      }
+        try {
+            $weightUnit = $this->findWeightUnit($id);
+            $this->weightUnitService->update($weightUnit, $request->validated());
+            return redirect()->route('weight-units.index')
+                ->with('success_message', 'Weight Unit was successfully updated.');
+        } catch (\Exception $e) {
+            Log::error('Updated failed: ' . $e->getMessage());
+            return back()->withInput()->withErrors(['error' => 'Something went wrong.']);
+        }
     }
 
     /**
@@ -89,15 +93,20 @@ class WeightUnitController extends Controller
      */
     public function destroy(string $id)
     {
-      try {
-        $weightUnit = WeightUnit::findOrFail($id);
-        $this->weightUnitService->delete($weightUnit);
+        try {
+            $weightUnit = $this->findWeightUnit($id);
+            if (in_array($weightUnit->name, config('basic.weightUnits'))
+                // || BloodSugar::where('feeling_id', $id)->exists()
+            ) {
+                return back()->with('error_message', 'This Weight Unit cannot be deleted');
+            }
+            $this->weightUnitService->delete($weightUnit);
 
-        return redirect()->route('weight-units.index')
-          ->with('success_message', 'Weight Unit was successfully deleted.');
-      } catch (\Exception $e) {
-        return back()->withInput()
-          ->withErrors(['unexpected_error' => 'Unexpected error occurred while trying to process your request.']);
-      }
+            return redirect()->route('weight-units.index')
+                ->with('success_message', 'Weight Unit was successfully deleted.');
+        } catch (\Exception $e) {
+            return back()->withInput()
+                ->withErrors(['unexpected_error' => 'Unexpected error occurred while trying to process your request.']);
+        }
     }
 }

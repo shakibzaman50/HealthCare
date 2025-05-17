@@ -18,13 +18,47 @@ return [
     ],
 
     'heightUnits' => [
-        'mg/dL',
-        'mmol/L',
+        'cm',
+        'ft',
     ],
 
     'medicineUnits' => [
-        'mg/dL',
-        'mmol/L',
+        'mg',
+        'mcg',
+        'g',
+        'ml',
+        '%',
+    ],
+
+    'medicineTypes' => [
+        'Capsule',
+        'Tablet',
+        'Liquid',
+        'Tropical',
+        'Cream',
+        'Device',
+        'Drops',
+        'Gel',
+        'Foam',
+    ],
+
+    'medicineSchedules' => [
+        'As needed',
+        'Everyday',
+        'On a Cycle',
+    ],
+
+    'activityLevels' => [
+        'Light Active',
+        'Moderately Active',
+        'Very Active',
+        'Sedentary',
+    ],
+
+    'sugarSchedules' => [
+        'Fating',
+        'After Eating',
+        '2-3hr',
     ],
 
     'sugarUnits' => [

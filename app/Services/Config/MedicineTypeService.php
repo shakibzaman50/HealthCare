@@ -7,7 +7,8 @@ use Illuminate\Support\Str;
 
 class MedicineTypeService
 {
-    protected function checkTrashed($name){
+    protected function checkTrashed($name)
+    {
         return MedicineType::withTrashed()
             ->where('name', Str::squish($name))
             ->first() ?? null;
@@ -17,12 +18,10 @@ class MedicineTypeService
     {
         $trashedType = $this->checkTrashed($data['name']);
 
-        if($trashedType)
-        {
+        if($trashedType) {
             $trashedType->restore();
             return $trashedType;
-        }
-        else{
+        } else{
             return MedicineType::create($data);
         }
     }

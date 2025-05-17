@@ -18,12 +18,17 @@ class FeelingListController extends Controller
         $this->feelingListService = $feelingListService;
     }
 
+    protected function findFeelingList(int $id)
+    {
+        return FeelingList::findOrFail($id);
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $feelingLists = FeelingList::paginate(25);
+        $feelingLists = FeelingList::latest()->paginate(25);
         return view('feeling_list.index', compact('feelingLists'));
     }
 
@@ -43,7 +48,7 @@ class FeelingListController extends Controller
         try {
             $this->feelingListService->create($request->validated());
             return redirect()->route('feeling-lists.index')
-              ->with('success_message', 'Feeling List was successfully added.');
+                ->with('success_message', 'Feeling List was successfully added.');
         } catch (\Exception $e) {
             Log::error('Feeling List Create failed: ' . $e->getMessage());
             return back()->withInput()->withErrors(['error' => 'Something went wrong.']);
@@ -55,7 +60,7 @@ class FeelingListController extends Controller
      */
     public function show(string $id)
     {
-        $feelingList = FeelingList::findOrFail($id);
+        $feelingList = $this->findFeelingList($id);
         return view('feeling_list.show', compact('feelingList'));
     }
 
@@ -64,7 +69,7 @@ class FeelingListController extends Controller
      */
     public function edit(string $id)
     {
-        $feelingList = FeelingList::findOrFail($id);
+        $feelingList = $this->findFeelingList($id);
         return view('feeling_list.edit', compact('feelingList'));
     }
 
@@ -74,10 +79,10 @@ class FeelingListController extends Controller
     public function update(FeelingListRequest $request, string $id)
     {
         try {
-            $feelingList = FeelingList::findOrFail($id);
+            $feelingList = $this->findFeelingList($id);
             $this->feelingListService->update($feelingList, $request->validated());
             return redirect()->route('feeling-lists.index')
-              ->with('success_message', 'Feeling List was successfully updated.');
+                ->with('success_message', 'Feeling List was successfully updated.');
         } catch (\Exception $e) {
             Log::error('Updated failed: ' . $e->getMessage());
             return back()->withInput()->withErrors(['error' => 'Something went wrong.']);
@@ -90,7 +95,12 @@ class FeelingListController extends Controller
     public function destroy(string $id)
     {
         try {
-            $feelingList = FeelingList::findOrFail($id);
+            $feelingList = $this->findFeelingList($id);
+            if (in_array($feelingList->name, config('basic.feelingLists'))
+  //            || BloodSugar::where('feeling_id', $id)->exists()
+            ) {
+                return back()->with('error_message', 'This Feeling Item cannot be deleted');
+            }
             $this->feelingListService->delete($feelingList);
 
             return redirect()->route('feeling-lists.index')

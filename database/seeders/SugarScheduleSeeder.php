@@ -14,7 +14,7 @@ class SugarScheduleSeeder extends Seeder
     public function run(): void
     {
         foreach (config('basic.sugarSchedules') as $name){
-            if(strlen($name) <= 20){
+            if(strlen($name) <= 30){
                 SugarSchedule::firstOrCreate(['name' => $name]);
             }
         }

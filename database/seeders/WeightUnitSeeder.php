@@ -15,7 +15,7 @@ class WeightUnitSeeder extends Seeder
     public function run(): void
     {
         foreach (config('basic.weightUnits') as $name){
-            if(strlen($name) <= 10){
+            if(strlen($name) <= 20){
                 WeightUnit::firstOrCreate(['name' => $name]);
             }
         }

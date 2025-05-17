@@ -15,17 +15,6 @@ class SugarUnit extends Model
         'is_active',
     ];
 
-    public function getStatusBadgeAttribute(): string
-    {
-        $statusConfig = config('basic.status');
-        $isActive     = $this->is_active == $statusConfig['active'];
-
-        $class = $isActive ? 'success' : 'danger';
-        $text  = $isActive ? 'Active' : 'Inactive';
-
-        return "<div class='badge badge-{$class}'>{$text}</div>";
-    }
-
     public function scopeActive($query)
     {
         return $query->where('is_active', config('basic.status.active'));

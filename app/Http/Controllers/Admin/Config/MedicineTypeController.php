@@ -18,13 +18,18 @@ class MedicineTypeController extends Controller
         $this->medicineTypeService = $medicineTypeService;
     }
 
+    protected function findMedicineType(int $id)
+    {
+        return MedicineType::findOrFail($id);
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-      $medicineTypes = MedicineType::paginate(25);
-      return view('medicine_types.index', compact('medicineTypes'));
+        $medicineTypes = MedicineType::latest()->paginate(25);
+        return view('medicine_types.index', compact('medicineTypes'));
     }
 
     /**
@@ -32,7 +37,7 @@ class MedicineTypeController extends Controller
      */
     public function create()
     {
-      return view('medicine_types.create');
+        return view('medicine_types.create');
     }
 
     /**
@@ -40,14 +45,14 @@ class MedicineTypeController extends Controller
      */
     public function store(MedicineTypeRequest $request)
     {
-      try {
-        $this->medicineTypeService->create($request->validated());
-        return redirect()->route('medicine-types.index')
-          ->with('success_message', 'Medicine Type was successfully added.');
-      } catch (\Exception $e) {
-        Log::error('Medicine Type Create failed: ' . $e->getMessage());
-        return back()->withInput()->withErrors(['error' => 'Something went wrong.']);
-      }
+        try {
+            $this->medicineTypeService->create($request->validated());
+            return redirect()->route('medicine-types.index')
+                ->with('success_message', 'Medicine Type was successfully added.');
+        } catch (\Exception $e) {
+            Log::error('Medicine Type Create failed: ' . $e->getMessage());
+            return back()->withInput()->withErrors(['error' => 'Something went wrong.']);
+        }
     }
 
     /**
@@ -55,8 +60,8 @@ class MedicineTypeController extends Controller
      */
     public function show(string $id)
     {
-      $medicineType = MedicineType::findOrFail($id);
-      return view('medicine_types.show', compact('medicineType'));
+        $medicineType = $this->findMedicineType($id);
+        return view('medicine_types.show', compact('medicineType'));
     }
 
     /**
@@ -64,8 +69,8 @@ class MedicineTypeController extends Controller
      */
     public function edit(string $id)
     {
-      $medicineType = MedicineType::findOrFail($id);
-      return view('medicine_types.edit', compact('medicineType'));
+        $medicineType = $this->findMedicineType($id);
+        return view('medicine_types.edit', compact('medicineType'));
     }
 
     /**
@@ -73,15 +78,15 @@ class MedicineTypeController extends Controller
      */
     public function update(MedicineTypeRequest $request, string $id)
     {
-      try {
-        $medicineType = MedicineType::findOrFail($id);
-        $this->medicineTypeService->update($medicineType, $request->validated());
-        return redirect()->route('medicine-types.index')
-          ->with('success_message', 'Medicine Type was successfully updated.');
-      } catch (\Exception $e) {
-        Log::error('Updated failed: ' . $e->getMessage());
-        return back()->withInput()->withErrors(['error' => 'Something went wrong.']);
-      }
+        try {
+            $medicineType = $this->findMedicineType($id);
+            $this->medicineTypeService->update($medicineType, $request->validated());
+            return redirect()->route('medicine-types.index')
+                ->with('success_message', 'Medicine Type was successfully updated.');
+        } catch (\Exception $e) {
+            Log::error('Updated failed: ' . $e->getMessage());
+            return back()->withInput()->withErrors(['error' => 'Something went wrong.']);
+        }
     }
 
     /**
@@ -89,15 +94,20 @@ class MedicineTypeController extends Controller
      */
     public function destroy(string $id)
     {
-      try {
-        $medicineType = MedicineType::findOrFail($id);
-        $this->medicineTypeService->delete($medicineType);
+        try {
+            $medicineType = $this->findMedicineType($id);
+            if (in_array($medicineType->name, config('basic.medicineTypes'))
+              // || BloodSugar::where('feeling_id', $id)->exists()
+            ) {
+                return back()->with('error_message', 'This Medicine Type cannot be deleted');
+            }
+            $this->medicineTypeService->delete($medicineType);
 
-        return redirect()->route('medicine-types.index')
-          ->with('success_message', 'Medicine Type was successfully deleted.');
-      } catch (\Exception $e) {
-        return back()->withInput()
-          ->withErrors(['unexpected_error' => 'Unexpected error occurred while trying to process your request.']);
-      }
+            return redirect()->route('medicine-types.index')
+                ->with('success_message', 'Medicine Type was successfully deleted.');
+        } catch (\Exception $e) {
+            return back()->withInput()
+                ->withErrors(['unexpected_error' => 'Unexpected error occurred while trying to process your request.']);
+        }
     }
 }

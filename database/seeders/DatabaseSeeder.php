@@ -23,7 +23,9 @@ class DatabaseSeeder extends Seeder
             HeightUnitSeeder::class,
             MedicineUnitSeeder::class,
             MedicineTypeSeeder::class,
-            SugarUnitSeeder::class,
+            SugarScheduleSeeder::class,
+            ActivityLevelSeeder::class,
+            MedicineScheduleSeeder::class,
         ]);
     }
 }

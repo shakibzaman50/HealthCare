@@ -18,13 +18,18 @@ class SugarScheduleController extends Controller
        $this->sugarScheduleService = $sugarScheduleService;
     }
 
+    protected function findSugarSchedule(int $id)
+    {
+        return SugarSchedule::findOrFail($id);
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-      $sugarSchedules = SugarSchedule::paginate(25);
-      return view('sugar_schedule.index', compact('sugarSchedules'));
+        $sugarSchedules = SugarSchedule::latest()->paginate(25);
+        return view('sugar_schedule.index', compact('sugarSchedules'));
     }
 
     /**
@@ -32,7 +37,7 @@ class SugarScheduleController extends Controller
      */
     public function create()
     {
-      return view('sugar_schedule.create');
+        return view('sugar_schedule.create');
     }
 
     /**
@@ -40,14 +45,14 @@ class SugarScheduleController extends Controller
      */
     public function store(SugarScheduleRequest $request)
     {
-      try {
-        $this->sugarScheduleService->create($request->validated());
-        return redirect()->route('sugar-schedules.index')
-          ->with('success_message', 'Sugar Schedule was successfully added.');
-      } catch (\Exception $e) {
-        Log::error('Sugar Schedule Create failed: ' . $e->getMessage());
-        return back()->withInput()->withErrors(['error' => 'Something went wrong.']);
-      }
+        try {
+            $this->sugarScheduleService->create($request->validated());
+            return redirect()->route('sugar-schedules.index')
+                ->with('success_message', 'Sugar Schedule was successfully added.');
+        } catch (\Exception $e) {
+            Log::error('Sugar Schedule Create failed: ' . $e->getMessage());
+            return back()->withInput()->withErrors(['error' => 'Something went wrong.']);
+        }
     }
 
     /**
@@ -55,8 +60,8 @@ class SugarScheduleController extends Controller
      */
     public function show(string $id)
     {
-      $sugarSchedule = SugarSchedule::findOrFail($id);
-      return view('sugar_schedule.show', compact('sugarSchedule'));
+        $sugarSchedule = $this->findSugarSchedule($id);
+        return view('sugar_schedule.show', compact('sugarSchedule'));
     }
 
     /**
@@ -64,8 +69,8 @@ class SugarScheduleController extends Controller
      */
     public function edit(string $id)
     {
-      $sugarSchedule = SugarSchedule::findOrFail($id);
-      return view('sugar_schedule.edit', compact('sugarSchedule'));
+        $sugarSchedule = $this->findSugarSchedule($id);
+        return view('sugar_schedule.edit', compact('sugarSchedule'));
     }
 
     /**
@@ -73,15 +78,15 @@ class SugarScheduleController extends Controller
      */
     public function update(SugarScheduleRequest $request, string $id)
     {
-      try {
-        $sugarSchedule = SugarSchedule::findOrFail($id);
-        $this->sugarScheduleService->update($sugarSchedule, $request->validated());
-        return redirect()->route('sugar-schedules.index')
-          ->with('success_message', 'Sugar Schedule was successfully updated.');
-      } catch (\Exception $e) {
-        Log::error('Updated failed: ' . $e->getMessage());
-        return back()->withInput()->withErrors(['error' => 'Something went wrong.']);
-      }
+        try {
+            $sugarSchedule = $this->findSugarSchedule($id);
+            $this->sugarScheduleService->update($sugarSchedule, $request->validated());
+            return redirect()->route('sugar-schedules.index')
+                ->with('success_message', 'Sugar Schedule was successfully updated.');
+        } catch (\Exception $e) {
+            Log::error('Updated failed: ' . $e->getMessage());
+            return back()->withInput()->withErrors(['error' => 'Something went wrong.']);
+        }
     }
 
     /**
@@ -89,15 +94,20 @@ class SugarScheduleController extends Controller
      */
     public function destroy(string $id)
     {
-      try {
-        $sugarSchedule = SugarSchedule::findOrFail($id);
-        $this->sugarScheduleService->delete($sugarSchedule);
+        try {
+            $sugarSchedule = $this->findSugarSchedule($id);
+            if (in_array($sugarSchedule->name, config('basic.sugarSchedules'))
+              // || BloodSugar::where('feeling_id', $id)->exists()
+            ) {
+                return back()->with('error_message', 'This Sugar Schedule cannot be deleted');
+            }
+            $this->sugarScheduleService->delete($sugarSchedule);
 
-        return redirect()->route('sugar-schedules.index')
-          ->with('success_message', 'Sugar Schedule was successfully deleted.');
-      } catch (\Exception $e) {
-        return back()->withInput()
-          ->withErrors(['unexpected_error' => 'Unexpected error occurred while trying to process your request.']);
-      }
+            return redirect()->route('sugar-schedules.index')
+                ->with('success_message', 'Sugar Schedule was successfully deleted.');
+        } catch (\Exception $e) {
+            return back()->withInput()
+              ->withErrors(['unexpected_error' => 'Unexpected error occurred while trying to process your request.']);
+        }
     }
 }

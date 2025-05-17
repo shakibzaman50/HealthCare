@@ -17,12 +17,18 @@ class SugarUnitController extends Controller
     {
         $this->sugarUnitService = $sugarUnitService;
     }
+
+    protected function findSugarUnit(int $id)
+    {
+        return SugarUnit::findOrFail($id);
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $sugarUnits = SugarUnit::paginate(25);
+        $sugarUnits = SugarUnit::latest()->paginate(25);
         return view('sugar_units.index', compact('sugarUnits'));
     }
 
@@ -54,7 +60,7 @@ class SugarUnitController extends Controller
      */
     public function show($id)
     {
-        $sugarUnit = SugarUnit::findOrFail($id);
+        $sugarUnit = $this->findSugarUnit($id);
         return view('sugar_units.show', compact('sugarUnit'));
     }
 
@@ -65,7 +71,7 @@ class SugarUnitController extends Controller
      */
     public function edit($id)
     {
-        $sugarUnit = SugarUnit::findOrFail($id);
+        $sugarUnit = $this->findSugarUnit($id);
         return view('sugar_units.edit', compact('sugarUnit'));
     }
 
@@ -75,10 +81,10 @@ class SugarUnitController extends Controller
     public function update(SugarUnitRequest $request, string $id)
     {
         try {
-            $sugarUnit = SugarUnit::findOrFail($id);
+            $sugarUnit = $this->findSugarUnit($id);
             $this->sugarUnitService->update($sugarUnit, $request->validated());
             return redirect()->route('sugar-units.index')
-              ->with('success_message', 'Sugar Unit was successfully updated.');
+                ->with('success_message', 'Sugar Unit was successfully updated.');
         } catch (\Exception $e) {
             Log::error('Updated failed: ' . $e->getMessage());
             return back()->withInput()->withErrors(['error' => 'Something went wrong.']);
@@ -91,14 +97,19 @@ class SugarUnitController extends Controller
     public function destroy(string $id)
     {
         try {
-            $sugarUnit = SugarUnit::findOrFail($id);
+            $sugarUnit = $this->findSugarUnit($id);
+            if (in_array($sugarUnit->name, config('basic.sugarUnits'))
+              // || BloodSugar::where('feeling_id', $id)->exists()
+            ) {
+                return back()->with('error_message', 'This Sugar Unit cannot be deleted');
+            }
             $this->sugarUnitService->delete($sugarUnit);
 
             return redirect()->route('sugar-units.index')
                 ->with('success_message', 'Sugar Unit was successfully deleted.');
         } catch (\Exception $e) {
             return back()->withInput()
-              ->withErrors(['unexpected_error' => 'Unexpected error occurred while trying to process your request.']);
+                ->withErrors(['unexpected_error' => 'Unexpected error occurred while trying to process your request.']);
         }
     }
 }

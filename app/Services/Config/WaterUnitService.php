@@ -18,8 +18,7 @@ class WaterUnitService
     {
         $trashedUnit = $this->checkTrashed($data['name']);
 
-        if($trashedUnit)
-        {
+        if($trashedUnit) {
             $trashedUnit->restore();
             return $trashedUnit;
         }

@@ -14,7 +14,7 @@ class HeightUnitSeeder extends Seeder
     public function run(): void
     {
         foreach (config('basic.heightUnits') as $name){
-            if(strlen($name) <= 10){
+            if(strlen($name) <= 20){
                 HeightUnit::firstOrCreate(['name' => $name]);
             }
         }

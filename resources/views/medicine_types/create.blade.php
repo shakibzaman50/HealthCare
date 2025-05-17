@@ -1,6 +1,6 @@
 @extends('layouts/contentNavbarLayout')
 
-@section('title', 'Create Medicine Type Unit')
+@section('title', 'Create Medicine Type')
 
 @section('vendor-script')
 @vite('resources/assets/vendor/libs/masonry/masonry.js')

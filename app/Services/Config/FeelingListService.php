@@ -18,12 +18,10 @@ class FeelingListService
     {
         $trashedList = $this->checkTrashed($data['name']);
 
-        if($trashedList)
-        {
+        if($trashedList) {
             $trashedList->restore();
             return $trashedList;
-        }
-        else{
+        } else{
             return FeelingList::create($data);
         }
     }

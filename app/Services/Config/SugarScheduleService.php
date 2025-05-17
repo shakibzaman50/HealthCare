@@ -18,12 +18,10 @@ class SugarScheduleService
     {
         $trashedSchedule = $this->checkTrashed($data['name']);
 
-        if($trashedSchedule)
-        {
+        if($trashedSchedule) {
             $trashedSchedule->restore();
             return $trashedSchedule;
-        }
-        else{
+        } else{
             return SugarSchedule::create($data);
         }
     }

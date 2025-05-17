@@ -24,7 +24,7 @@ class MedicineTypeRequest extends FormRequest
     {
         $medicineTypeId = $this->route('medicine_type');
         return [
-            'name'      => ['required', 'max:20', new UniqueMedicineType($medicineTypeId)],
+            'name'      => ['required', 'max:30', new UniqueMedicineType($medicineTypeId)],
             'is_active' => ['nullable', 'boolean']
         ];
     }

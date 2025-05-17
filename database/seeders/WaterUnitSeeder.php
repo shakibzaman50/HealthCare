@@ -14,7 +14,7 @@ class WaterUnitSeeder extends Seeder
     public function run(): void
     {
         foreach (config('basic.waterUnits') as $name){
-            if(strlen($name) <= 10){
+            if(strlen($name) <= 20){
                 WaterUnit::firstOrCreate(['name' => $name]);
             }
         }

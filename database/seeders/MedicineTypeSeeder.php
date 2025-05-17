@@ -14,7 +14,7 @@ class MedicineTypeSeeder extends Seeder
     public function run(): void
     {
         foreach (config('basic.medicineTypes') as $name){
-            if(strlen($name) <= 20){
+            if(strlen($name) <= 30){
                 MedicineType::firstOrCreate(['name' => $name]);
             }
         }

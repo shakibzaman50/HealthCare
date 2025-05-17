@@ -18,12 +18,10 @@ class HeightUnitService
     {
         $trashedUnit = $this->checkTrashed($data['name']);
 
-        if($trashedUnit)
-        {
+        if($trashedUnit) {
             $trashedUnit->restore();
             return $trashedUnit;
-        }
-        else{
+        } else{
             return HeightUnit::create($data);
         }
     }

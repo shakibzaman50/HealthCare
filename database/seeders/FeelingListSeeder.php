@@ -14,7 +14,7 @@ class FeelingListSeeder extends Seeder
     public function run(): void
     {
         foreach (config('basic.feelingLists') as $name){
-            if(strlen($name) <= 20){
+            if(strlen($name) <= 30){
                 FeelingList::firstOrCreate(['name' => $name]);
             }
         }
