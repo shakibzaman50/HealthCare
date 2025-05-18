@@ -15,7 +15,12 @@ class HomeController extends Controller
     public function index()
     {
         $user = Auth::user()->load('roles');
-
         return view('admin.dashboard', compact('user'));
+    }
+
+    public function refresh()
+    {
+        Artisan::call('optimize:clear');
+        return back()->with('success', 'Cache Clear');
     }
 }

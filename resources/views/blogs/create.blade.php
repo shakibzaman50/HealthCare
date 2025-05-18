@@ -9,7 +9,7 @@
          <div class="card-header d-flex justify-content-between align-items-center p-3">
             <h4 class="m-0">Create New Blog</h4>
             <div>
-                <a href="{{ route('blogs.blog.index') }}" class="btn btn-primary" title="Show All Blog">
+                <a href="{{ route('blogs.index') }}" class="btn btn-primary" title="Show All Blog">
                     <span class="fa-solid fa-table-list" aria-hidden="true"></span>
                 </a>
             </div>
@@ -28,7 +28,7 @@
                 </div>
             @endif
 
-            <form method="POST" class="needs-validation" novalidate action="{{ route('blogs.blog.store') }}" accept-charset="UTF-8" id="create_blog_form" name="create_blog_form"  enctype="multipart/form-data">
+            <form method="POST" class="needs-validation" novalidate action="{{ route('blogs.store') }}" accept-charset="UTF-8" id="create_blog_form" name="create_blog_form"  enctype="multipart/form-data">
             {{ csrf_field() }}
             @include ('blogs.form', [
                                         'blog' => null,

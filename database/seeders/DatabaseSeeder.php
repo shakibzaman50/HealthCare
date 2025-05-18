@@ -15,7 +15,17 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             PermissionTableSeeder::class,
-            CreateAdminUserSeeder::class
+            CreateAdminUserSeeder::class,
+            FeelingListSeeder::class,
+            SugarUnitSeeder::class,
+            WaterUnitSeeder::class,
+            WeightUnitSeeder::class,
+            HeightUnitSeeder::class,
+            MedicineUnitSeeder::class,
+            MedicineTypeSeeder::class,
+            SugarScheduleSeeder::class,
+            ActivityLevelSeeder::class,
+            MedicineScheduleSeeder::class,
         ]);
     }
 }
