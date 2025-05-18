@@ -1,13 +1,18 @@
 @extends('layouts/layoutMaster')
 
-@section('title', 'Edit blog')
+@section('title', 'Blogs')
 
 @section('content')
 
     @if(Session::has('success_message'))
         <div class="alert alert-success alert-dismissible" role="alert">
             {!! session('success_message') !!}
-
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+    @if(Session::has('error_message'))
+        <div class="alert alert-danger alert-dismissible" role="alert">
+            {!! session('error_message') !!}
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     @endif
@@ -17,7 +22,7 @@
         <div class="card-header d-flex justify-content-between align-items-center p-3">
             <h4 class="m-0">Blogs</h4>
             <div>
-                <a href="{{ route('blogs.blog.create') }}" class="btn btn-secondary" title="Create New Blog">
+                <a href="{{ route('blogs.create') }}" class="btn btn-secondary" title="Create New Blog">
                     <span class="fa fa-plus" aria-hidden="true"></span>
                 </a>
             </div>
@@ -35,7 +40,8 @@
                     <thead>
                         <tr>
                             <th>Title</th>
-                            <th>Category</th>
+                            <th>Tags</th>
+                            <th>Is_Active</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -43,19 +49,19 @@
                     @foreach($blogs as $blog)
                         <tr>
                             <td class="align-middle">{{ $blog->title }}</td>
-                            <td class="align-middle">{{ optional($blog->blogCategory)->name }}</td>
-
+                            <td class="align-middle">{{ $blog->tags }}</td>
+                            <td class="align-middle">{{ ($blog->is_active) ? 'Yes' : 'No' }}</td>
                             <td class="text-end">
 
-                                <form method="POST" action="{!! route('blogs.blog.destroy', $blog->id) !!}" accept-charset="UTF-8">
+                                <form method="POST" action="{!! route('blogs.destroy', $blog->id) !!}" accept-charset="UTF-8">
                                 <input name="_method" value="DELETE" type="hidden">
                                 {{ csrf_field() }}
 
                                     <div class="btn-group btn-group-sm" role="group">
-                                        <a href="{{ route('blogs.blog.show', $blog->id ) }}" class="btn btn-info" title="Show Blog">
+                                        <a href="{{ route('blogs.show', $blog->id ) }}" class="btn btn-info" title="Show Blog">
                                             Show
                                         </a>
-                                        <a href="{{ route('blogs.blog.edit', $blog->id ) }}" class="btn btn-primary" title="Edit Blog">
+                                        <a href="{{ route('blogs.edit', $blog->id ) }}" class="btn btn-primary" title="Edit Blog">
                                             Edit
                                         </a>
 

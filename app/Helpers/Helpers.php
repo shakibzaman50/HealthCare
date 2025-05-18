@@ -7,6 +7,18 @@ use Illuminate\Support\Str;
 
 class Helpers
 {
+    public static function getFileUrl($file, $fileDirectory, $existFileUrl = null)
+    {
+        if ($file) {
+            if (file_exists($existFileUrl)) unlink($existFileUrl);
+            $fileName = time() . rand(10, 10000) . '.' . $file->getClientOriginalExtension();
+            $file->move($fileDirectory, $fileName);
+            $fileUrl = $fileDirectory . $fileName;
+        } else {
+            $fileUrl = $existFileUrl ?? null;
+        }
+        return $fileUrl;
+    }
   public static function appClasses()
   {
 

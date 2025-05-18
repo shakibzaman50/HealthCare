@@ -91,6 +91,72 @@
           "name": "BP units",
           "slug": "logingInfo-customerLoging-Log",
           "icon": "fas fa-spinner"
+        },
+        {
+          "url": "/sugar-units",
+          "name": "Sugar Units",
+          "slug": "sugar-units",
+          "icon": "fas fa-spinner"
+        },
+        {
+          "url": "/weight-units",
+          "name": "Weight Units",
+          "slug": "weight-unit",
+          "icon": "fas fa-spinner"
+        },
+        {
+          "url": "/water-units",
+          "name": "Water Units",
+          "slug": "water-unit",
+          "icon": "fas fa-spinner"
+        },
+        {
+          "url": "/height-units",
+          "name": "Height Units",
+          "slug": "height-unit",
+          "icon": "fas fa-spinner"
+        },
+        {
+          "url": "/medicine-units",
+          "name": "Medicine Units",
+          "slug": "medicine-unit",
+          "icon": "fas fa-spinner"
+        },
+        {
+          "url": "/medicine-types",
+          "name": "Medicine Type",
+          "slug": "medicine-type",
+          "icon": "fas fa-spinner"
+        },
+        {
+          "url": "/medicine-schedules",
+          "name": "Medicine Schedule",
+          "slug": "medicine-schedule",
+          "icon": "fas fa-spinner"
+        },
+        {
+          "url": "/feeling-lists",
+          "name": "Feeling List",
+          "slug": "feeling-lists",
+          "icon": "fas fa-spinner"
+        },
+        {
+          "url": "/sugar-schedules",
+          "name": "Sugar Schedules",
+          "slug": "sugar-schedule",
+          "icon": "fas fa-spinner"
+        },
+        {
+          "url": "/activity-levels",
+          "name": "Activity Level",
+          "slug": "activity-level",
+          "icon": "fas fa-spinner"
+        },
+        {
+          "url": "/blogs",
+          "name": "Blog",
+          "slug": "blog",
+          "icon": "fas fa-spinner"
         }
       ]
     },

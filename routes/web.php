@@ -117,6 +117,7 @@ Route::middleware(['auth', 'verified', 'web'])->group(function () {
 Route::middleware(['auth', 'verified'])->group(function () {
 
   Route::get('dashboard', [HomeController::class, 'index'])->name('dashboard');
+  Route::get('refresh', [HomeController::class, 'refresh'])->name('refresh');
   Route::get('/export-database', [MigrationController::class, 'export'])->name('database.export');
   Route::get('/database-migration', [MigrationController::class, 'showImportForm'])->name('import.database.form');
   Route::post('/import-database', [MigrationController::class, 'importDatabase'])->name('import.database');
