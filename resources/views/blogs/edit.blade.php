@@ -9,11 +9,11 @@
          <div class="card-header d-flex justify-content-between align-items-center p-3">
             <h4 class="m-0">{{ !empty($blog->title) ? $blog->title : 'Blog' }}</h4>
             <div>
-                <a href="{{ route('blogs.blog.index') }}" class="btn btn-primary" title="Show All Blog">
+                <a href="{{ route('blogs.index') }}" class="btn btn-primary" title="Show All Blog">
                     <span class="fa-solid fa-table-list" aria-hidden="true"></span>
                 </a>
 
-                <a href="{{ route('blogs.blog.create') }}" class="btn btn-secondary" title="Create New Blog">
+                <a href="{{ route('blogs.create') }}" class="btn btn-secondary" title="Create New Blog">
                     <span class="fa-solid fa-plus" aria-hidden="true"></span>
                 </a>
             </div>
@@ -31,7 +31,7 @@
                 </div>
             @endif
 
-            <form method="POST" class="needs-validation" novalidate action="{{ route('blogs.blog.update', $blog->id) }}" id="edit_blog_form" name="edit_blog_form" accept-charset="UTF-8"  enctype="multipart/form-data">
+            <form method="POST" class="needs-validation" novalidate action="{{ route('blogs.update', $blog->id) }}" id="edit_blog_form" name="edit_blog_form" accept-charset="UTF-8"  enctype="multipart/form-data">
             {{ csrf_field() }}
             <input name="_method" type="hidden" value="PUT">
             @include ('blogs.form', [

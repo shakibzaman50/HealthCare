@@ -1,6 +1,6 @@
 @extends('layouts/layoutMaster')
 
-@section('title', 'Edit blog')
+@section('title', 'Blog')
 
 @section('content')
 
@@ -12,22 +12,16 @@
 
     <div class="card-body">
         <dl class="row">
-            <dt class="text-lg-end col-lg-2 col-xl-3">Title</dt>
+            <dt class="text-lg-end col-lg-2 col-xl-3">Title:</dt>
             <dd class="col-lg-10 col-xl-9">{{ $blog->title }}</dd>
-            <dt class="text-lg-end col-lg-2 col-xl-3">Category</dt>
-            <dd class="col-lg-10 col-xl-9">{{ optional($blog->blogCategory)->name }}</dd>
-            <dt class="text-lg-end col-lg-2 col-xl-3">Description</dt>
-            <dd class="col-lg-10 col-xl-9">{{ $blog->description }}</dd>
-            <dt class="text-lg-end col-lg-2 col-xl-3">Source</dt>
-            <dd class="col-lg-10 col-xl-9">{{ $blog->source }}</dd>
-            <dt class="text-lg-end col-lg-2 col-xl-3">Blog Seo</dt>
-            <dd class="col-lg-10 col-xl-9">{{ ($blog->blog_seo) ? 'Yes' : 'No' }}</dd>
-            <dt class="text-lg-end col-lg-2 col-xl-3">Meta Tag</dt>
-            <dd class="col-lg-10 col-xl-9">{{ $blog->meta_tag }}</dd>
-            <dt class="text-lg-end col-lg-2 col-xl-3">Meta Description</dt>
-            <dd class="col-lg-10 col-xl-9">{{ $blog->meta_description }}</dd>
-            <dt class="text-lg-end col-lg-2 col-xl-3">Image</dt>
-            <dd class="col-lg-10 col-xl-9"><img src="{{ asset('storage/' . $blog->image) }}" /></dd>
+            <dt class="text-lg-end col-lg-2 col-xl-3">Tags:</dt>
+            <dd class="col-lg-10 col-xl-9">{{ $blog->tags }}</dd>
+            <dt class="text-lg-end col-lg-2 col-xl-3">Thumbnail:</dt>
+            <dd class="col-lg-10 col-xl-9">
+                <img src="{{ asset($blog->thumbnail) }}" alt="thumbnail"/>
+            </dd>
+            <dt class="text-lg-end col-lg-2 col-xl-3">Content:</dt>
+            <dd class="col-lg-10 col-xl-9">{!! $blog->content !!}</dd>
         </dl>
 
     </div>

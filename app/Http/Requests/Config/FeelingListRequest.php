@@ -20,19 +20,15 @@ class FeelingListRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-    public function rules(): array
-    {
-        $feelingListId = $this->route('feeling_list');
-        return [
-            'name'      => ['required', 'max:30', new UniqueFeelingList($feelingListId)],
-            'is_active' => ['nullable', 'boolean']
-        ];
-    }
+      public function rules(): array
+      {
+          $feelingListId = $this->route('feeling_list');
+          return [
+              'name'      => ['required', 'max:30', new UniqueFeelingList($feelingListId)],
+              'emoji'     => [$feelingListId ? 'nullable' : 'required', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
+              'is_active' => ['nullable', 'boolean']
+          ];
+      }
 
-    protected function prepareForValidation()
-    {
-        $this->merge([
-           'is_active' => $this->has('is_active'),
-        ]);
-    }
+
 }

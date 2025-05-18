@@ -151,6 +151,12 @@
           "name": "Activity Level",
           "slug": "activity-level",
           "icon": "fas fa-spinner"
+        },
+        {
+          "url": "/blogs",
+          "name": "Blog",
+          "slug": "blog",
+          "icon": "fas fa-spinner"
         }
       ]
     },

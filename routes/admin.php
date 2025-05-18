@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\Config\ActivityLevelController;
+use App\Http\Controllers\Admin\Config\BlogController;
 use App\Http\Controllers\Admin\Config\FeelingListController;
 use App\Http\Controllers\Admin\Config\HeightUnitController;
 use App\Http\Controllers\Admin\Config\MedicineScheduleController;
@@ -14,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 // All Admin Config Routes
 
+Route::resource('blogs', BlogController::class);
 Route::resource('sugar-units', SugarUnitController::class);
 Route::resource('water-units', WaterUnitController::class);
 Route::resource('weight-units', WeightUnitController::class);

@@ -32,7 +32,7 @@
         </div>
         @endif
 
-        <form method="POST" class="needs-validation" novalidate action="{{ route('feeling-lists.store') }}"
+        <form method="POST" class="needs-validation" novalidate action="{{ route('feeling-lists.store') }}" enctype="multipart/form-data"
             accept-charset="UTF-8" id="create_feeling_list_form" name="create_feeling_list_form">
             {{ csrf_field() }}
             @include ('feeling_list.form', [

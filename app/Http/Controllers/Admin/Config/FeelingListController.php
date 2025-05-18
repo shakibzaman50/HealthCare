@@ -46,7 +46,7 @@ class FeelingListController extends Controller
     public function store(FeelingListRequest $request)
     {
         try {
-            $this->feelingListService->create($request->validated());
+            $this->feelingListService->create($request);
             return redirect()->route('feeling-lists.index')
                 ->with('success_message', 'Feeling List was successfully added.');
         } catch (\Exception $e) {
@@ -80,7 +80,7 @@ class FeelingListController extends Controller
     {
         try {
             $feelingList = $this->findFeelingList($id);
-            $this->feelingListService->update($feelingList, $request->validated());
+            $this->feelingListService->update($feelingList, $request);
             return redirect()->route('feeling-lists.index')
                 ->with('success_message', 'Feeling List was successfully updated.');
         } catch (\Exception $e) {

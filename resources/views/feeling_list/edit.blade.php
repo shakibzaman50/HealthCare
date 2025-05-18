@@ -35,7 +35,7 @@
                 </div>
             @endif
 
-            <form method="POST" class="needs-validation" novalidate action="{{ route('feeling-lists.update', $feelingList->id) }}" id="edit_feeling_list_form" name="edit_feeling_list_form" accept-charset="UTF-8" >
+            <form method="POST" class="needs-validation" novalidate action="{{ route('feeling-lists.update', $feelingList->id) }}" enctype="multipart/form-data" id="edit_feeling_list_form" name="edit_feeling_list_form" accept-charset="UTF-8" >
             {{ csrf_field() }}
             <input name="_method" type="hidden" value="PUT">
             @include ('feeling_list.form', [

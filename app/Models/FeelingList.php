@@ -13,6 +13,7 @@ class FeelingList extends Model
     protected $fillable = [
         'name',
         'is_active',
+        'emoji'
     ];
 
     public function scopeActive($query)

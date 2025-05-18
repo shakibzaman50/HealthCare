@@ -2,66 +2,24 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Blog extends Model
 {
-    
+    use HasFactory;
 
-    /**
-     * The database table used by the model.
-     *
-     * @var string
-     */
-    protected $table = 'blogs';
-
-    /**
-    * The database primary key value.
-    *
-    * @var string
-    */
-    protected $primaryKey = 'id';
-
-    /**
-     * Attributes that should be mass-assignable.
-     *
-     * @var array
-     */
     protected $fillable = [
-                  'title',
-                  'blog_category_id',
-                  'image',
-                  'description',
-                  'source',
-                  'blog_seo',
-                  'meta_tag',
-                  'meta_description'
-              ];
+        'title',
+        'slug',
+        'tags',
+        'is_active',
+        'thumbnail',
+        'content'
+    ];
 
-    /**
-     * The attributes that should be mutated to dates.
-     *
-     * @var array
-     */
-    protected $dates = [];
-    
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [];
-    
-    /**
-     * Get the blogCategory for this model.
-     *
-     * @return App\Models\BlogCategory
-     */
-    public function blogCategory()
+    public function scopeActive($query)
     {
-        return $this->belongsTo('App\Models\BlogCategory','blog_category_id');
+        return $query->where('is_active', config('basic.status.active'));
     }
-
-
-
 }

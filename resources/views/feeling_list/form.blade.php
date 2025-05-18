@@ -22,3 +22,11 @@
     </div>
 </div>
 
+<div class="mb-3 row">
+    <label for="emoji" class="col-form-label text-lg-end col-lg-2 col-xl-3">Emoji</label>
+    <div class="col-lg-10 col-xl-9">
+        <input class="form-control{{ $errors->has('emoji') ? ' is-invalid' : '' }}" name="emoji" type="file" id="emoji" size="2024">
+        {!! $errors->first('emoji', '<div class="invalid-feedback">:message</div>') !!}
+    </div>
+</div>
+

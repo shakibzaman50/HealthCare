@@ -2,6 +2,7 @@
 
 namespace App\Services\Config;
 
+use App\Helpers\Helpers;
 use App\Models\FeelingList;
 use Illuminate\Support\Str;
 
@@ -14,21 +15,31 @@ class FeelingListService
             ->first() ?? null;
     }
 
-    public function create(array $data) : FeelingList
+    public function create($request) : FeelingList
     {
-        $trashedList = $this->checkTrashed($data['name']);
+        $trashedList = $this->checkTrashed($request->name);
 
         if($trashedList) {
             $trashedList->restore();
             return $trashedList;
         } else{
-            return FeelingList::create($data);
+            $emoji = Helpers::getFileUrl($request->emoji, 'emojis/');
+            return FeelingList::create([
+                'name'      => $request->name,
+                'is_active' => $request->has('is_active'),
+                'emoji'     => $emoji
+            ]);
         }
     }
 
-    public function update(FeelingList $feelingList, array $data): FeelingList
+    public function update(FeelingList $feelingList, $request): FeelingList
     {
-        $feelingList->update($data);
+        $emoji = Helpers::getFileUrl($request->emoji, 'emojis/', $feelingList->emoji);
+        $feelingList->update([
+            'name'      => $request->name,
+            'is_active' => $request->has('is_active'),
+            'emoji'     => $emoji
+        ]);
         return $feelingList;
     }
 

@@ -15,7 +15,10 @@ class FeelingListSeeder extends Seeder
     {
         foreach (config('basic.feelingLists') as $name){
             if(strlen($name) <= 30){
-                FeelingList::firstOrCreate(['name' => $name]);
+                FeelingList::firstOrCreate(['name' => $name],[
+                    'name'  => $name,
+                    'emoji' => 'emojis/'.strtolower($name).'_emoji.png',
+                ]);
             }
         }
     }

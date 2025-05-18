@@ -47,7 +47,7 @@
                         <tr>
                             <th>Name</th>
                             <th>Is Active</th>
-
+                            <th>Emoji</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -56,7 +56,9 @@
                         <tr>
                             <td class="align-middle">{{ $feelingList->name }}</td>
                             <td class="align-middle">{{ ($feelingList->is_active) ? 'Yes' : 'No' }}</td>
-
+                            <td>
+                                <img src="{{ asset($feelingList->emoji) }}" alt="emoji" class="img-fluid" style="width: 40px; height: 40px;">
+                            </td>
                             <td class="text-end">
 
                                 <form method="POST" action="{!! route('feeling-lists.destroy', $feelingList->id) !!}" accept-charset="UTF-8">
