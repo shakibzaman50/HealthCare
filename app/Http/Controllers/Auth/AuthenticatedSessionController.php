@@ -29,20 +29,8 @@ class AuthenticatedSessionController extends Controller
     public function store(LoginRequest $request): RedirectResponse
     {
         $request->authenticate();
-        logger('Here ``1');
         Auth::login(Auth::user(), true);
-        logger('Here ``2');
-
-        $user = User::where('id', Auth::user()->id)->first();
-        logger('Here ``3');
-
         $request->session()->regenerate();
-        logger('Here ``4');
-
-        Session::put('locale', $user->locale);
-        App::setLocale($user->locale);
-        logger('Here ``5');
-
         return redirect()->intended(route('dashboard', absolute: false));
     }
 
