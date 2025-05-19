@@ -73,6 +73,11 @@ class HeartRateUnitsController extends Controller
     {
         try {
             $heartRateUnit = HeartRateUnit::findOrFail($id);
+            if (in_array($heartRateUnit->name, config('basic.heartRateUnits'))
+              // || BloodSugar::where('feeling_id', $id)->exists()
+            ) {
+              return back()->with('error_message', 'This Heart Rate Unit cannot be deleted');
+            }
             $this->heartRateUnitService->delete($heartRateUnit);
 
             return redirect()->route('heart-rate-units.index')

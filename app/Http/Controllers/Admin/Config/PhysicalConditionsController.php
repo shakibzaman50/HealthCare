@@ -73,6 +73,11 @@ class PhysicalConditionsController extends Controller
     {
         try {
             $physicalCondition = PhysicalCondition::findOrFail($id);
+            if (in_array($physicalCondition->name, config('basic.physicalConditions'))
+                // || BloodSugar::where('feeling_id', $id)->exists()
+            ) {
+                return back()->with('error_message', 'This Physical Condition cannot be deleted');
+            }
             $this->physicalConditionService->delete($physicalCondition);
 
             return redirect()->route('physical-conditions.index')
