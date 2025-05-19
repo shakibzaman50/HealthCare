@@ -47,9 +47,8 @@ $customizerHidden = 'customizer-hide';
           <div class="app-brand justify-content-center mb-6">
             <a href="{{url('/')}}" class="app-brand-link">
               @isset($globalSetting)
-              <img class="app-brand-logo" src="{{ asset('storage/' . $globalSetting->site_logo) }}" style="width: 70%">
-              <span class="app-brand-text demo text-heading fw-bold">{{ $globalSetting->site_title ?? 'Site Title'
-                }}</span>
+              <img class="app-brand-logo" src="{{ asset('storage/' . $globalSetting->logo) }}"
+                style="width: 50%;margin:0px auto">
               @endisset
             </a>
           </div>
