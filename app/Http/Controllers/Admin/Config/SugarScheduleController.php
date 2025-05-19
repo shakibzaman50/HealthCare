@@ -29,7 +29,7 @@ class SugarScheduleController extends Controller
     public function index()
     {
         $sugarSchedules = SugarSchedule::latest()->paginate(25);
-        return view('sugar_schedule.index', compact('sugarSchedules'));
+        return view('admin.config.sugar_schedule.index', compact('sugarSchedules'));
     }
 
     /**
@@ -37,7 +37,7 @@ class SugarScheduleController extends Controller
      */
     public function create()
     {
-        return view('sugar_schedule.create');
+        return view('admin.config.sugar_schedule.create');
     }
 
     /**
@@ -61,7 +61,7 @@ class SugarScheduleController extends Controller
     public function show(string $id)
     {
         $sugarSchedule = $this->findSugarSchedule($id);
-        return view('sugar_schedule.show', compact('sugarSchedule'));
+        return view('admin.config.sugar_schedule.show', compact('sugarSchedule'));
     }
 
     /**
@@ -70,7 +70,7 @@ class SugarScheduleController extends Controller
     public function edit(string $id)
     {
         $sugarSchedule = $this->findSugarSchedule($id);
-        return view('sugar_schedule.edit', compact('sugarSchedule'));
+        return view('admin.config.sugar_schedule.edit', compact('sugarSchedule'));
     }
 
     /**

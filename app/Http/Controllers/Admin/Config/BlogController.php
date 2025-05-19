@@ -38,7 +38,7 @@ class BlogController extends Controller
     public function index()
     {
         $blogs = Blog::latest()->paginate(25);
-        return view('blogs.index', compact('blogs'));
+        return view('admin.config.blogs.index', compact('blogs'));
     }
 
     /**
@@ -47,7 +47,7 @@ class BlogController extends Controller
     public function create()
     {
         $allTags = $this->getTags();
-        return view('blogs.create', compact('allTags'));
+        return view('admin.config.blogs.create', compact('allTags'));
     }
 
     /**
@@ -71,7 +71,7 @@ class BlogController extends Controller
     public function show(string $id)
     {
         $blog = $this->findBlog($id);
-        return view('blogs.show', compact('blog'));
+        return view('admin.config.blogs.show', compact('blog'));
     }
 
     /**
@@ -81,7 +81,7 @@ class BlogController extends Controller
     {
         $blog = $this->findBlog($id);
         $allTags = $this->getTags();
-        return view('blogs.edit', compact('blog', 'allTags'));
+        return view('admin.config.blogs.edit', compact('blog', 'allTags'));
     }
 
     /**

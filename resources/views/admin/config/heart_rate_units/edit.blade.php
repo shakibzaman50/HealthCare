@@ -46,7 +46,7 @@
             ])
 
             <div class="col-lg-10 col-xl-9 offset-lg-2 offset-xl-3">
-                <input class="btn btn-primary" type="submit" value="Update">
+                <input class="btn btn-primary text-black" type="submit" value="Update">
             </div>
         </form>
 

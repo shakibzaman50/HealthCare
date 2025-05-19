@@ -29,7 +29,7 @@ class HeightUnitController extends Controller
     public function index()
     {
         $heightUnits = HeightUnit::latest()->paginate(25);
-        return view('height_units.index', compact('heightUnits'));
+        return view('admin.config.height_units.index', compact('heightUnits'));
     }
 
     /**
@@ -37,7 +37,7 @@ class HeightUnitController extends Controller
      */
     public function create()
     {
-        return view('height_units.create');
+        return view('admin.config.height_units.create');
     }
 
     /**
@@ -61,7 +61,7 @@ class HeightUnitController extends Controller
     public function show(string $id)
     {
         $heightUnit = $this->findHeightUnit($id);
-        return view('height_units.show', compact('heightUnit'));
+        return view('admin.config.height_units.show', compact('heightUnit'));
     }
 
     /**
@@ -70,7 +70,7 @@ class HeightUnitController extends Controller
     public function edit(string $id)
     {
         $heightUnit = $this->findHeightUnit($id);
-        return view('height_units.edit', compact('heightUnit'));
+        return view('admin.config.height_units.edit', compact('heightUnit'));
     }
 
     /**

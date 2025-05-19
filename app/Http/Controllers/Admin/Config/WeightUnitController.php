@@ -28,7 +28,7 @@ class WeightUnitController extends Controller
     public function index()
     {
         $weightUnits = WeightUnit::latest()->paginate(25);
-        return view('weight_units.index', compact('weightUnits'));
+        return view('admin.config.weight_units.index', compact('weightUnits'));
     }
 
     /**
@@ -36,7 +36,7 @@ class WeightUnitController extends Controller
      */
     public function create()
     {
-        return view('weight_units.create');
+        return view('admin.config.weight_units.create');
     }
 
     /**
@@ -60,7 +60,7 @@ class WeightUnitController extends Controller
     public function show(string $id)
     {
         $weightUnit = $this->findWeightUnit($id);
-        return view('weight_units.show', compact('weightUnit'));
+        return view('admin.config.weight_units.show', compact('weightUnit'));
     }
 
     /**
@@ -69,7 +69,7 @@ class WeightUnitController extends Controller
     public function edit(string $id)
     {
         $weightUnit = $this->findWeightUnit($id);
-        return view('weight_units.edit', compact('weightUnit'));
+        return view('admin.config.weight_units.edit', compact('weightUnit'));
     }
 
     /**

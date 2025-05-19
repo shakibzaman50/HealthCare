@@ -9,7 +9,7 @@
 @section('content')
 
     <div class="card text-bg-theme">
-  
+
          <div class="card-header d-flex justify-content-between align-items-center p-3">
             <h4 class="m-0">{{ !empty($bpUnit->name) ? $bpUnit->name : 'Bp Unit' }}</h4>
             <div>
@@ -43,7 +43,7 @@
                                       ])
 
                 <div class="col-lg-10 col-xl-9 offset-lg-2 offset-xl-3">
-                    <input class="btn btn-primary" type="submit" value="Update">
+                    <input class="btn btn-primary text-black" type="submit" value="Update">
                 </div>
             </form>
 

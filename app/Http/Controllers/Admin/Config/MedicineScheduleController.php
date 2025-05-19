@@ -29,7 +29,7 @@ class MedicineScheduleController extends Controller
     public function index()
     {
         $medicineSchedules = MedicineSchedule::latest()->paginate(25);
-        return view('medicine_schedules.index', compact('medicineSchedules'));
+        return view('admin.config.medicine_schedules.index', compact('medicineSchedules'));
     }
 
     /**
@@ -37,7 +37,7 @@ class MedicineScheduleController extends Controller
      */
     public function create()
     {
-        return view('medicine_schedules.create');
+        return view('admin.config.medicine_schedules.create');
     }
 
     /**
@@ -61,7 +61,7 @@ class MedicineScheduleController extends Controller
     public function show(string $id)
     {
         $medicineSchedule = $this->findMedicineSchedule($id);
-        return view('medicine_schedules.show', compact('medicineSchedule'));
+        return view('admin.config.medicine_schedules.show', compact('medicineSchedule'));
     }
 
     /**
@@ -70,7 +70,7 @@ class MedicineScheduleController extends Controller
     public function edit(string $id)
     {
         $medicineSchedule = $this->findMedicineSchedule($id);
-        return view('medicine_schedules.edit', compact('medicineSchedule'));
+        return view('admin.config.medicine_schedules.edit', compact('medicineSchedule'));
     }
 
     /**

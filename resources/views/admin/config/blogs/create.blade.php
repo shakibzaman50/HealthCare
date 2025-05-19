@@ -1,19 +1,15 @@
-@extends('layouts/contentNavbarLayout')
+@extends('layouts/layoutMaster')
 
-@section('title', 'Heart Rate Unit')
-
-@section('vendor-script')
-@vite('resources/assets/vendor/libs/masonry/masonry.js')
-@endsection
+@section('title', 'Edit blog')
 
 @section('content')
 
     <div class="card text-bg-theme">
 
          <div class="card-header d-flex justify-content-between align-items-center p-3">
-            <h4 class="m-0">Create New Heart Rate Unit</h4>
+            <h4 class="m-0">Create New Blog</h4>
             <div>
-                <a href="{{ route('heart-rate-units.index') }}" class="btn btn-primary" title="Show All Heart Rate Unit">
+                <a href="{{ route('blogs.index') }}" class="btn btn-primary" title="Show All Blog">
                     <span class="fa-solid fa-table-list" aria-hidden="true"></span>
                 </a>
             </div>
@@ -32,10 +28,10 @@
                 </div>
             @endif
 
-            <form method="POST" class="needs-validation" novalidate action="{{ route('heart-rate-units.store') }}" accept-charset="UTF-8" id="create_heart_rate_unit_form" name="create_heart_rate_unit_form" >
+            <form method="POST" class="needs-validation" novalidate action="{{ route('blogs.store') }}" accept-charset="UTF-8" id="create_blog_form" name="create_blog_form"  enctype="multipart/form-data">
             {{ csrf_field() }}
-            @include ('admin.config.heart_rate_units.form', [
-                                        'heartRateUnit' => null,
+            @include ('admin.config.blogs.form', [
+                                        'blog' => null,
                                       ])
 
                 <div class="col-lg-10 col-xl-9 offset-lg-2 offset-xl-3">

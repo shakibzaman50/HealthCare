@@ -29,7 +29,7 @@ class SugarUnitController extends Controller
     public function index()
     {
         $sugarUnits = SugarUnit::latest()->paginate(25);
-        return view('sugar_units.index', compact('sugarUnits'));
+        return view('admin.config.sugar_units.index', compact('sugarUnits'));
     }
 
     /**
@@ -37,7 +37,7 @@ class SugarUnitController extends Controller
      */
     public function create()
     {
-      return view('sugar_units.create');
+      return view('admin.config.sugar_units.create');
     }
 
     /**
@@ -61,7 +61,7 @@ class SugarUnitController extends Controller
     public function show($id)
     {
         $sugarUnit = $this->findSugarUnit($id);
-        return view('sugar_units.show', compact('sugarUnit'));
+        return view('admin.config.sugar_units.show', compact('sugarUnit'));
     }
 
 
@@ -72,7 +72,7 @@ class SugarUnitController extends Controller
     public function edit($id)
     {
         $sugarUnit = $this->findSugarUnit($id);
-        return view('sugar_units.edit', compact('sugarUnit'));
+        return view('admin.config.sugar_units.edit', compact('sugarUnit'));
     }
 
     /**

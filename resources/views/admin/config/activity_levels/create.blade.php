@@ -1,6 +1,6 @@
 @extends('layouts/contentNavbarLayout')
 
-@section('title', 'Global Setting')
+@section('title', 'Create Activity Level')
 
 @section('vendor-script')
 @vite('resources/assets/vendor/libs/masonry/masonry.js')
@@ -11,9 +11,9 @@
 <div class="card text-bg-theme">
 
     <div class="card-header d-flex justify-content-between align-items-center p-3">
-        <h4 class="m-0">Create New Global Setting</h4>
+        <h4 class="m-0">Create New Activity Level</h4>
         <div>
-            <a href="{{ route('global_settings.index') }}" class="btn btn-primary" title="Show All Global Setting">
+            <a href="{{ route('activity-levels.index') }}" class="btn btn-primary" title="Show All Activity Levels">
                 <span class="fa-solid fa-table-list" aria-hidden="true"></span>
             </a>
         </div>
@@ -32,12 +32,11 @@
         </div>
         @endif
 
-        <form method="POST" class="needs-validation" novalidate action="{{ route('global_settings.store') }}"
-            accept-charset="UTF-8" id="create_global_setting_form" name="create_global_setting_form"
-            enctype="multipart/form-data">
+        <form method="POST" class="needs-validation" novalidate action="{{ route('activity-levels.store') }}"
+            accept-charset="UTF-8" id="create_activity_level_form" name="create_activity_level_form">
             {{ csrf_field() }}
-            @include ('admin.config.global_settings.form', [
-            'globalSetting' => null,
+            @include ('admin.config.activity_levels.form', [
+            'activityLevel' => null,
             ])
 
             <div class="col-lg-10 col-xl-9 offset-lg-2 offset-xl-3">

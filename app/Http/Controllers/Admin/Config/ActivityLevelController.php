@@ -29,7 +29,7 @@ class ActivityLevelController extends Controller
     public function index()
     {
         $activityLevels = ActivityLevel::latest()->paginate(25);
-        return view('activity_levels.index', compact('activityLevels'));
+        return view('admin.config.activity_levels.index', compact('activityLevels'));
     }
 
     /**
@@ -37,7 +37,7 @@ class ActivityLevelController extends Controller
      */
     public function create()
     {
-        return view('activity_levels.create');
+        return view('admin.config.activity_levels.create');
     }
 
     /**
@@ -61,7 +61,7 @@ class ActivityLevelController extends Controller
     public function show(string $id)
     {
         $activityLevel = $this->findActivityLevel($id);
-        return view('activity_levels.show', compact('activityLevel'));
+        return view('admin.config.activity_levels.show', compact('activityLevel'));
     }
 
     /**
@@ -70,7 +70,7 @@ class ActivityLevelController extends Controller
     public function edit(string $id)
     {
         $activityLevel = $this->findActivityLevel($id);
-        return view('activity_levels.edit', compact('activityLevel'));
+        return view('admin.config.activity_levels.edit', compact('activityLevel'));
     }
 
     /**

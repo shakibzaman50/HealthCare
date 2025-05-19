@@ -10,7 +10,7 @@
 <div class="mb-3 row">
     <label for="is_active" class="col-form-label text-lg-end col-lg-2 col-xl-3">Is Active</label>
     <div class="col-lg-10 col-xl-9">
-        <div class="form-check checkbox">
+        <div class="form-check checkbox mt-3">
             <input id="is_active_1" class="form-check-input" name="is_active" type="checkbox" value="1" {{ old('is_active', optional($physicalCondition)->is_active) == '1' ? 'checked' : '' }}>
             <label class="form-check-label" for="is_active_1">
                 Yes

@@ -29,7 +29,7 @@ class MedicineTypeController extends Controller
     public function index()
     {
         $medicineTypes = MedicineType::latest()->paginate(25);
-        return view('medicine_types.index', compact('medicineTypes'));
+        return view('admin.config.medicine_types.index', compact('medicineTypes'));
     }
 
     /**
@@ -37,7 +37,7 @@ class MedicineTypeController extends Controller
      */
     public function create()
     {
-        return view('medicine_types.create');
+        return view('admin.config.medicine_types.create');
     }
 
     /**
@@ -61,7 +61,7 @@ class MedicineTypeController extends Controller
     public function show(string $id)
     {
         $medicineType = $this->findMedicineType($id);
-        return view('medicine_types.show', compact('medicineType'));
+        return view('admin.config.medicine_types.show', compact('medicineType'));
     }
 
     /**
@@ -70,7 +70,7 @@ class MedicineTypeController extends Controller
     public function edit(string $id)
     {
         $medicineType = $this->findMedicineType($id);
-        return view('medicine_types.edit', compact('medicineType'));
+        return view('admin.config.medicine_types.edit', compact('medicineType'));
     }
 
     /**

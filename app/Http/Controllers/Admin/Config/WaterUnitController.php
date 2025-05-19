@@ -29,7 +29,7 @@ class WaterUnitController extends Controller
     public function index()
     {
         $waterUnits = WaterUnit::latest()->paginate(25);
-        return view('water_units.index', compact('waterUnits'));
+        return view('admin.config.water_units.index', compact('waterUnits'));
     }
 
     /**
@@ -37,7 +37,7 @@ class WaterUnitController extends Controller
      */
     public function create()
     {
-        return view('water_units.create');
+        return view('admin.config.water_units.create');
     }
 
     /**
@@ -61,7 +61,7 @@ class WaterUnitController extends Controller
     public function show(string $id)
     {
         $waterUnit = $this->findWaterUnit($id);
-        return view('water_units.show', compact('waterUnit'));
+        return view('admin.config.water_units.show', compact('waterUnit'));
     }
 
     /**
@@ -70,7 +70,7 @@ class WaterUnitController extends Controller
     public function edit(string $id)
     {
         $waterUnit = $this->findWaterUnit($id);
-        return view('water_units.edit', compact('waterUnit'));
+        return view('admin.config.water_units.edit', compact('waterUnit'));
     }
 
     /**

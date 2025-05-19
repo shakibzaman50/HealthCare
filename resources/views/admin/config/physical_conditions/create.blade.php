@@ -40,7 +40,7 @@
             ])
 
             <div class="col-lg-10 col-xl-9 offset-lg-2 offset-xl-3">
-                <input class="btn btn-primary" type="submit" value="Add">
+                <input class="btn btn-primary text-black" type="submit" value="Add">
             </div>
 
         </form>

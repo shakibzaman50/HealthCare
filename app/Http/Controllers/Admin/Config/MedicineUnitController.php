@@ -28,8 +28,8 @@ class MedicineUnitController extends Controller
      */
     public function index()
     {
-        $medicineUnits = MedicineUnit::paginate(25);
-        return view('medicine_units.index', compact('medicineUnits'));
+        $medicineUnits = MedicineUnit::latest()->paginate(25);
+        return view('admin.config.medicine_units.index', compact('medicineUnits'));
     }
 
     /**
@@ -37,7 +37,7 @@ class MedicineUnitController extends Controller
      */
     public function create()
     {
-        return view('medicine_units.create');
+        return view('admin.config.medicine_units.create');
     }
 
     /**
@@ -61,7 +61,7 @@ class MedicineUnitController extends Controller
     public function show(string $id)
     {
         $medicineUnit = $this->findMedicineUnit($id);
-        return view('medicine_units.show', compact('medicineUnit'));
+        return view('admin.config.medicine_units.show', compact('medicineUnit'));
     }
 
     /**
@@ -70,7 +70,7 @@ class MedicineUnitController extends Controller
     public function edit(string $id)
     {
         $medicineUnit = $this->findMedicineUnit($id);
-        return view('medicine_units.edit', compact('medicineUnit'));
+        return view('admin.config.medicine_units.edit', compact('medicineUnit'));
     }
 
     /**

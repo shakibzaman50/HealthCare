@@ -29,7 +29,7 @@ class FeelingListController extends Controller
     public function index()
     {
         $feelingLists = FeelingList::latest()->paginate(25);
-        return view('feeling_list.index', compact('feelingLists'));
+        return view('admin.config.feeling_list.index', compact('feelingLists'));
     }
 
     /**
@@ -37,7 +37,7 @@ class FeelingListController extends Controller
      */
     public function create()
     {
-        return view('feeling_list.create');
+        return view('admin.config.feeling_list.create');
     }
 
     /**
@@ -61,7 +61,7 @@ class FeelingListController extends Controller
     public function show(string $id)
     {
         $feelingList = $this->findFeelingList($id);
-        return view('feeling_list.show', compact('feelingList'));
+        return view('admin.config.feeling_list.show', compact('feelingList'));
     }
 
     /**
@@ -70,7 +70,7 @@ class FeelingListController extends Controller
     public function edit(string $id)
     {
         $feelingList = $this->findFeelingList($id);
-        return view('feeling_list.edit', compact('feelingList'));
+        return view('admin.config.feeling_list.edit', compact('feelingList'));
     }
 
     /**
