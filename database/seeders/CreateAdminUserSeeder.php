@@ -19,7 +19,6 @@ class CreateAdminUserSeeder extends Seeder
             'name'     => 'admin',
             'email'    => 'admin@gmail.com',
             'phone'    => '01777777777',
-            'avatar'   => 'https://i.pravatar.cc/150?u=a042581f4e29026704d',
             'type'     => '1',
             'password' => bcrypt('12345678')
         ]);
