@@ -63,7 +63,8 @@ return [
     ],
     'user_type'                => [
         'super_admin' => 1,
-        'admin'       => 2
+        'admin'       => 2,
+        'user'        => 3
     ],
 
     /*

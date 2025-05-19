@@ -12,10 +12,11 @@ use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Types\Relations\Role;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Permission\Models\Role as ModelsRole;
+use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable, HasRoles;
+    use HasFactory, Notifiable, HasRoles, HasApiTokens;
 
     /**
      * The attributes that are mass assignable.
@@ -28,8 +29,7 @@ class User extends Authenticatable
         'phone',
         'password',
         'status',
-        'type',
-        'locale'
+        'type'
     ];
 
     /**
@@ -58,18 +58,5 @@ class User extends Authenticatable
     public function role()
     {
         return $this->belongsTo(RoleController::class, 'type', 'id');
-    }
-    public function account()
-    {
-        return $this->hasOne(UserAccount::class);
-    }
-
-    public function transactions()
-    {
-        return $this->hasMany(Transaction::class, 'payable_id', 'id')->orderBy('id', 'desc');
-    }
-    public function supplier_invoices()
-    {
-        return $this->hasMany(Invoice::class, 'user_id', 'id')->orderBy('id', 'desc');
     }
 }
