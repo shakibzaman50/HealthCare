@@ -17,11 +17,7 @@ return Application::configure(basePath: dirname(__DIR__))
     $middleware->alias([
       'role' => \Spatie\Permission\Middleware\RoleMiddleware::class,
       'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,
-      'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
-      '2fa' => \App\Http\Middleware\Email2faMiddleware::class,
-    ]);
-    $middleware->validateCsrfTokens(except: [
-      'order/webhook' // <-- exclude this route
+      'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class
     ]);
   })
   ->withExceptions(function (Exceptions $exceptions) {

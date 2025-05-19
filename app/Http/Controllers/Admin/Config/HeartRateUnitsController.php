@@ -22,12 +22,12 @@ class HeartRateUnitsController extends Controller
     public function index(): View
     {
         $heartRateUnits = HeartRateUnit::paginate(25);
-        return view('heart_rate_units.index', compact('heartRateUnits'));
+        return view('admin.config.heart_rate_units.index', compact('heartRateUnits'));
     }
 
     public function create(): View
     {
-        return view('heart_rate_units.create');
+        return view('admin.config.heart_rate_units.create');
     }
 
     public function store(HeartRateUnitRequest $request): RedirectResponse
@@ -35,7 +35,7 @@ class HeartRateUnitsController extends Controller
         try {
             $this->heartRateUnitService->create($request->validated());
 
-            return redirect()->route('heart-rate-units.heart-rate-unit.index')
+            return redirect()->route('heart-rate-units.index')
                 ->with('success_message', 'Heart Rate Unit was successfully added.');
         } catch (\Exception $e) {
             \Log::error('Create failed: ' . $e->getMessage());
@@ -46,13 +46,13 @@ class HeartRateUnitsController extends Controller
     public function show(int $id): View
     {
         $heartRateUnit = HeartRateUnit::findOrFail($id);
-        return view('heart_rate_units.show', compact('heartRateUnit'));
+        return view('admin.config.heart_rate_units.show', compact('heartRateUnit'));
     }
 
     public function edit(int $id): View
     {
         $heartRateUnit = HeartRateUnit::findOrFail($id);
-        return view('heart_rate_units.edit', compact('heartRateUnit'));
+        return view('admin.config.heart_rate_units.edit', compact('heartRateUnit'));
     }
 
     public function update(int $id, HeartRateUnitRequest $request): RedirectResponse
@@ -61,10 +61,10 @@ class HeartRateUnitsController extends Controller
             $heartRateUnit = HeartRateUnit::findOrFail($id);
             $this->heartRateUnitService->update($heartRateUnit, $request->validated());
 
-            return redirect()->route('heart-rate-units.heart-rate-unit.index')
+            return redirect()->route('heart-rate-units.index')
                 ->with('success_message', 'Heart Rate Unit was successfully updated.');
         } catch (\Exception $e) {
-            \Log::error('Create failed: ' . $e->getMessage());
+            \Log::error('Create Update: ' . $e->getMessage());
             return back()->withInput()->withErrors(['error' => 'Something went wrong.']);
         }
     }
@@ -75,7 +75,7 @@ class HeartRateUnitsController extends Controller
             $heartRateUnit = HeartRateUnit::findOrFail($id);
             $this->heartRateUnitService->delete($heartRateUnit);
 
-            return redirect()->route('heart-rate-units.heart-rate-unit.index')
+            return redirect()->route('heart-rate-units.index')
                 ->with('success_message', 'Heart Rate Unit was successfully deleted.');
         } catch (Exception $e) {
             return back()->withInput()

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3f9d5935ed0dfcc71ae551e9e41e6c73",
+    "content-hash": "68673d73e1ac4b1348d3c1a2979056f7",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -1295,71 +1295,6 @@
                 }
             ],
             "time": "2023-12-03T19:50:20+00:00"
-        },
-        {
-            "name": "kssadi/log-tracker",
-            "version": "1.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/KsSadi/Laravel-Log-Tracker.git",
-                "reference": "8860bb717c5c575645c890c9072a6343ecc2da43"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/KsSadi/Laravel-Log-Tracker/zipball/8860bb717c5c575645c890c9072a6343ecc2da43",
-                "reference": "8860bb717c5c575645c890c9072a6343ecc2da43",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/support": ">=5.1",
-                "php": ">=5.6"
-            },
-            "require-dev": {
-                "orchestra/testbench": ">=3.6 <=9.0"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "aliases": {
-                        "LogTracker": "Kssadi\\LogTracker\\Facades\\LogTracker"
-                    },
-                    "providers": [
-                        "Kssadi\\LogTracker\\LogTrackerServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Kssadi\\LogTracker\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "KsSadi",
-                    "email": "mdsadi4@gmail.com",
-                    "homepage": "https://github.com/kssadi",
-                    "role": "Programmer"
-                }
-            ],
-            "description": "A powerful, intuitive, and efficient log viewer for Laravel applications.",
-            "homepage": "https://github.com/kssadi/log-tracker",
-            "keywords": [
-                "debugging",
-                "laravel",
-                "log tracker",
-                "log viewer",
-                "logs",
-                "monitoring"
-            ],
-            "support": {
-                "issues": "https://github.com/kssadi/log-tracker/issues",
-                "source": "https://github.com/kssadi/log-tracker"
-            },
-            "time": "2025-03-12T16:50:01+00:00"
         },
         {
             "name": "laravel/fortify",
@@ -4106,74 +4041,6 @@
                 }
             ],
             "time": "2024-04-27T21:32:50+00:00"
-        },
-        {
-            "name": "simplesoftwareio/simple-qrcode",
-            "version": "4.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/SimpleSoftwareIO/simple-qrcode.git",
-                "reference": "916db7948ca6772d54bb617259c768c9cdc8d537"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/SimpleSoftwareIO/simple-qrcode/zipball/916db7948ca6772d54bb617259c768c9cdc8d537",
-                "reference": "916db7948ca6772d54bb617259c768c9cdc8d537",
-                "shasum": ""
-            },
-            "require": {
-                "bacon/bacon-qr-code": "^2.0",
-                "ext-gd": "*",
-                "php": ">=7.2|^8.0"
-            },
-            "require-dev": {
-                "mockery/mockery": "~1",
-                "phpunit/phpunit": "~9"
-            },
-            "suggest": {
-                "ext-imagick": "Allows the generation of PNG QrCodes.",
-                "illuminate/support": "Allows for use within Laravel."
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "SimpleSoftwareIO\\QrCode\\QrCodeServiceProvider"
-                    ],
-                    "aliases": {
-                        "QrCode": "SimpleSoftwareIO\\QrCode\\Facades\\QrCode"
-                    }
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "SimpleSoftwareIO\\QrCode\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Simple Software LLC",
-                    "email": "support@simplesoftware.io"
-                }
-            ],
-            "description": "Simple QrCode is a QR code generator made for Laravel.",
-            "homepage": "https://www.simplesoftware.io/#/docs/simple-qrcode",
-            "keywords": [
-                "Simple",
-                "generator",
-                "laravel",
-                "qrcode",
-                "wrapper"
-            ],
-            "support": {
-                "issues": "https://github.com/SimpleSoftwareIO/simple-qrcode/issues",
-                "source": "https://github.com/SimpleSoftwareIO/simple-qrcode/tree/4.2.0"
-            },
-            "time": "2021-02-08T20:43:55+00:00"
         },
         {
             "name": "spatie/laravel-activitylog",
@@ -7161,87 +7028,6 @@
                 }
             ],
             "time": "2025-04-16T06:32:06+00:00"
-        },
-        {
-            "name": "crestapps/laravel-code-generator",
-            "version": "v3.0.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/CrestApps/laravel-code-generator.git",
-                "reference": "71dc2acc9336c78a5c332682e40ef32d6214a413"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/CrestApps/laravel-code-generator/zipball/71dc2acc9336c78a5c332682e40ef32d6214a413",
-                "reference": "71dc2acc9336c78a5c332682e40ef32d6214a413",
-                "shasum": ""
-            },
-            "require": {
-                "laravel/framework": ">=5.1"
-            },
-            "require-dev": {
-                "mockery/mockery": "~0.9||~1.0",
-                "orchestra/testbench": "~3.0",
-                "phpunit/phpunit": "^5.0||^6.0||^7.0"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "CrestApps\\CodeGenerator\\CodeGeneratorServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "CrestApps\\CodeGenerator\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Majd Alhayek (Mike)",
-                    "email": "mike@crestapps.com",
-                    "homepage": "https://www.crestapps.com"
-                }
-            ],
-            "description": "An intelligent code generator for Laravel framework that will save you time! This awesome tool will help you generate resources like views, controllers, routes, migrations, languages and/or form-requests! It is extremely flexible and customizable to cover many on the use cases. It is shipped with cross-browsers compatible template, along with a client-side validation to modernize your application.",
-            "keywords": [
-                "Alhayek",
-                "CrestApps",
-                "Majd Alhayek",
-                "Mike Alhayek",
-                "code generator",
-                "code-generator",
-                "controller creator",
-                "crud",
-                "crud builder",
-                "crud generator",
-                "generator",
-                "generators",
-                "laravel",
-                "laravel code generator",
-                "laravel crud",
-                "laravel crud builder",
-                "laravel crud generator",
-                "laravel-code-generator",
-                "routes creator",
-                "views creator"
-            ],
-            "support": {
-                "issues": "https://github.com/CrestApps/laravel-code-generator/issues",
-                "source": "https://github.com/CrestApps/laravel-code-generator/tree/v3.0.2"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/malhayek",
-                    "type": "github"
-                }
-            ],
-            "time": "2024-03-28T23:01:34+00:00"
         },
         {
             "name": "fakerphp/faker",

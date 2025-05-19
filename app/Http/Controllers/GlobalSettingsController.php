@@ -19,9 +19,9 @@ class GlobalSettingsController extends Controller
     {
         $globalSetting = GlobalSetting::where('id', 1)->first();
         if ($globalSetting) {
-            return view('global_settings.show', compact('globalSetting'));
+            return view('admin.config.global_settings.show', compact('globalSetting'));
         } else {
-            return view('global_settings.create');
+            return view('admin.config.global_settings.create');
         }
     }
 
@@ -34,7 +34,7 @@ class GlobalSettingsController extends Controller
     {
 
 
-        return view('global_settings.create');
+        return view('admin.config.global_settings.create');
     }
 
     /**
@@ -51,7 +51,7 @@ class GlobalSettingsController extends Controller
 
         GlobalSetting::create($data);
 
-        return redirect()->route('global_settings.global_setting.index')
+        return redirect()->route('global_settings.index')
             ->with('success_message', 'Global Setting was successfully added.');
     }
 
@@ -66,7 +66,7 @@ class GlobalSettingsController extends Controller
     {
         $globalSetting = GlobalSetting::findOrFail($id);
 
-        return view('global_settings.show', compact('globalSetting'));
+        return view('admin.config.global_settings.show', compact('globalSetting'));
     }
 
     /**
@@ -81,7 +81,7 @@ class GlobalSettingsController extends Controller
         $globalSetting = GlobalSetting::findOrFail($id);
 
 
-        return view('global_settings.edit', compact('globalSetting'));
+        return view('admin.config.global_settings.edit', compact('globalSetting'));
     }
 
     /**
@@ -100,7 +100,7 @@ class GlobalSettingsController extends Controller
         $globalSetting = GlobalSetting::findOrFail($id);
         $globalSetting->update($data);
 
-        return redirect()->route('global_settings.global_setting.index')
+        return redirect()->route('global_settings.index')
             ->with('success_message', 'Global Setting was successfully updated.');
     }
 
@@ -117,7 +117,7 @@ class GlobalSettingsController extends Controller
             $globalSetting = GlobalSetting::findOrFail($id);
             $globalSetting->delete();
 
-            return redirect()->route('global_settings.global_setting.index')
+            return redirect()->route('global_settings.index')
                 ->with('success_message', 'Global Setting was successfully deleted.');
         } catch (Exception $exception) {
 

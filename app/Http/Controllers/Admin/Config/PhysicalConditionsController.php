@@ -22,12 +22,12 @@ class PhysicalConditionsController extends Controller
     public function index(): View
     {
         $physicalConditions = PhysicalCondition::paginate(25);
-        return view('physical_conditions.index', compact('physicalConditions'));
+        return view('admin.config.physical_conditions.index', compact('physicalConditions'));
     }
 
     public function create(): View
     {
-        return view('physical_conditions.create');
+        return view('admin.config.physical_conditions.create');
     }
 
     public function store(PhysicalConditionRequest $request): RedirectResponse
@@ -35,7 +35,7 @@ class PhysicalConditionsController extends Controller
         try {
             $this->physicalConditionService->create($request->validated());
 
-            return redirect()->route('physical-conditions.physical-condition.index')
+            return redirect()->route('physical-conditions.index')
                 ->with('success_message', 'Physical Condition was successfully added.');
         } catch (\Exception $e) {
             \Log::error('Create failed: ' . $e->getMessage());
@@ -46,13 +46,13 @@ class PhysicalConditionsController extends Controller
     public function show(int $id): View
     {
         $physicalCondition = PhysicalCondition::findOrFail($id);
-        return view('physical_conditions.show', compact('physicalCondition'));
+        return view('admin.config.physical_conditions.show', compact('physicalCondition'));
     }
 
     public function edit(int $id): View
     {
         $physicalCondition = PhysicalCondition::findOrFail($id);
-        return view('physical_conditions.edit', compact('physicalCondition'));
+        return view('admin.config.physical_conditions.edit', compact('physicalCondition'));
     }
 
     public function update(int $id, PhysicalConditionRequest $request): RedirectResponse
@@ -61,7 +61,7 @@ class PhysicalConditionsController extends Controller
             $physicalCondition = PhysicalCondition::findOrFail($id);
             $this->physicalConditionService->update($physicalCondition, $request->validated());
 
-            return redirect()->route('physical-conditions.physical-condition.index')
+            return redirect()->route('physical-conditions.index')
                 ->with('success_message', 'Physical Condition was successfully updated.');
         } catch (\Exception $e) {
             \Log::error('Update failed: ' . $e->getMessage());
@@ -75,7 +75,7 @@ class PhysicalConditionsController extends Controller
             $physicalCondition = PhysicalCondition::findOrFail($id);
             $this->physicalConditionService->delete($physicalCondition);
 
-            return redirect()->route('physical-conditions.physical-condition.index')
+            return redirect()->route('physical-conditions.index')
                 ->with('success_message', 'Physical Condition was successfully deleted.');
         } catch (Exception $exception) {
             return back()->withInput()

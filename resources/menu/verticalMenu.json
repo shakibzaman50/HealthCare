@@ -15,40 +15,6 @@
       ]
     },
     {
-      "name": "User Behave",
-      "icon": "menu-icon fas fa-fw fa-user-secret",
-      "slug": "userBehave",
-      "can": "userBehave-module",
-      "submenu": [
-        {
-          "url": "/online-user",
-          "name": "Who's Online",
-          "slug": "userBehave-online-user",
-          "icon": "fas fa-sliders-h"
-        },
-        {
-          "url": "activity-log",
-          "name": "Account Activity",
-          "slug": "userBehave-activity-log",
-          "icon": "fas fa-spinner"
-        }
-      ]
-    },
-    {
-      "name": "Client",
-      "icon": "menu-icon fas fa-fw fa-user-secret",
-      "slug": "customer",
-      "can": "userBehave-module",
-      "submenu": [
-        {
-          "url": "/",
-          "name": "Customer",
-          "slug": "userBehave-online-user",
-          "icon": "fas fa-sliders-h"
-        }
-      ]
-    },
-    {
       "name": "Loging Info",
       "icon": "menu-icon fas fa-fw fa-mobile",
       "slug": "logingInfo",
@@ -71,7 +37,7 @@
     {
       "name": "Config",
       "icon": "menu-icon fas fa-fw fa-mobile",
-      "slug": "logingInfo",
+      "slug": "config",
       "can": "login-info",
       "submenu": [
         {

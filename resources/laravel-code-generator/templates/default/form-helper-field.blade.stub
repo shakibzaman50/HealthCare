@@ -1,1 +1,0 @@
-        {!! $errors->first('[% field_name %]', '<div class="invalid-feedback">:message</div>') !!}

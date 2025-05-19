@@ -22,9 +22,6 @@ class EventServiceProvider extends ServiceProvider
         ],
         Logout::class => [
             LogSuccessfulLogout::class,
-        ],
-        OrderProcessed::class => [
-            NotifyOrderProcessed::class,
         ]
         // Add more events and listeners here
     ];
