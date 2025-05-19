@@ -13,6 +13,7 @@ use Illuminate\Types\Relations\Role;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Permission\Models\Role as ModelsRole;
 use Laravel\Passport\HasApiTokens;
+use App\Models\UserProfile;
 
 class User extends Authenticatable
 {
@@ -58,5 +59,10 @@ class User extends Authenticatable
     public function role()
     {
         return $this->belongsTo(RoleController::class, 'type', 'id');
+    }
+
+    public function profile()
+    {
+        return $this->hasOne(Profile::class);
     }
 }
