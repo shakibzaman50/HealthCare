@@ -10,24 +10,6 @@
       0 => 'Barryvdh\\Debugbar\\ServiceProvider',
     ),
   ),
-  'crestapps/laravel-code-generator' => 
-  array (
-    'providers' => 
-    array (
-      0 => 'CrestApps\\CodeGenerator\\CodeGeneratorServiceProvider',
-    ),
-  ),
-  'kssadi/log-tracker' => 
-  array (
-    'aliases' => 
-    array (
-      'LogTracker' => 'Kssadi\\LogTracker\\Facades\\LogTracker',
-    ),
-    'providers' => 
-    array (
-      0 => 'Kssadi\\LogTracker\\LogTrackerServiceProvider',
-    ),
-  ),
   'laravel/fortify' => 
   array (
     'providers' => 
@@ -86,17 +68,6 @@
     'providers' => 
     array (
       0 => 'Termwind\\Laravel\\TermwindServiceProvider',
-    ),
-  ),
-  'simplesoftwareio/simple-qrcode' => 
-  array (
-    'providers' => 
-    array (
-      0 => 'SimpleSoftwareIO\\QrCode\\QrCodeServiceProvider',
-    ),
-    'aliases' => 
-    array (
-      'QrCode' => 'SimpleSoftwareIO\\QrCode\\Facades\\QrCode',
     ),
   ),
   'spatie/laravel-activitylog' => 

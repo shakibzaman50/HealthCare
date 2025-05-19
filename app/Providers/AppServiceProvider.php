@@ -30,12 +30,11 @@ class AppServiceProvider extends ServiceProvider
       view()->composer('*', function ($view) {
         try {
           $globalSetting = \App\Models\GlobalSetting::find(1);
-          $cart = session()->get('cart', []);
-          $view->with(compact('globalSetting', 'cart'));
+          $view->with(compact('globalSetting'));
         } catch (\Exception $e) {
           // Log or silently fail
           logger()->warning('GlobalSetting fetch failed: ' . $e->getMessage());
-          $view->with('globalSetting', null)->with('cart', []);
+          $view->with('globalSetting', null);
         }
       });
     }
@@ -44,10 +43,6 @@ class AppServiceProvider extends ServiceProvider
     Gate::define('admin-menu', function () {
       $user = auth()->guard('web')->user();
       return $user && $user->type == 1;
-    });
-
-    Gate::define('customer-menu', function () {
-      return auth()->guard('customer')->user();
     });
 
     // Vite CSS attribute handling

@@ -20,19 +20,19 @@ class BpUnitsController extends Controller
     public function index()
     {
         $bpUnits = BpUnit::paginate(25);
-        return view('bp_units.index', compact('bpUnits'));
+        return view('admin.config.bp_units.index', compact('bpUnits'));
     }
 
     public function create()
     {
-        return view('bp_units.create');
+        return view('admin.config.bp_units.create');
     }
 
     public function store(BpUnitRequest $request)
     {
         try {
             $this->bpUnitService->create($request->validated());
-            return redirect()->route('bp-units.bp-unit.index')
+            return redirect()->route('bp-units.index')
                 ->with('success_message', 'Bp Unit was successfully added.');
         } catch (\Exception $e) {
             \Log::error('Create failed: ' . $e->getMessage());
@@ -44,13 +44,13 @@ class BpUnitsController extends Controller
     public function show($id)
     {
         $bpUnit = BpUnit::findOrFail($id);
-        return view('bp_units.show', compact('bpUnit'));
+        return view('admin.config.bp_units.show', compact('bpUnit'));
     }
 
     public function edit($id)
     {
         $bpUnit = BpUnit::findOrFail($id);
-        return view('bp_units.edit', compact('bpUnit'));
+        return view('admin.config.bp_units.edit', compact('bpUnit'));
     }
 
 
@@ -60,7 +60,7 @@ class BpUnitsController extends Controller
             $bpUnit = BpUnit::findOrFail($id);
             $this->bpUnitService->update($bpUnit, $request->validated());
 
-            return redirect()->route('bp-units.bp-unit.index')
+            return redirect()->route('bp-units.index')
                 ->with('success_message', 'Bp Unit was successfully updated.');
         } catch (\Exception $e) {
             \Log::error('Updated failed: ' . $e->getMessage());
@@ -74,7 +74,7 @@ class BpUnitsController extends Controller
             $bpUnit = BpUnit::findOrFail($id);
             $this->bpUnitService->delete($bpUnit);
 
-            return redirect()->route('bp-units.bp-unit.index')
+            return redirect()->route('bp-units.index')
                 ->with('success_message', 'Bp Unit was successfully deleted.');
         } catch (Exception $exception) {
             return back()->withInput()

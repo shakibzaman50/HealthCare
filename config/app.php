@@ -61,35 +61,9 @@ return [
     'user_role'                => [
         'super_admin' => 1
     ],
-    'document_types'           => [
-        'passport'         => 1,
-        'driveing_license' => 2,
-        'national_id'      => 3,
-    ],
-    'document_statuses'        => [
-        'pending'  => 1,
-        'approved' => 2,
-        'rejected' => 3,
-    ],
     'user_type'                => [
         'super_admin' => 1,
-        'admin'       => 2,
-        'supplier'    => 3,
-        'wholesaler'  => 4,
-        'customer'    => 5
-    ],
-    'transaction_payable_type' => [
-        'wholesaler' => 4,
-        'supplier'   => 3,
-        'customer'   => 5,
-    ],
-    'store_type'               => [
-        'cold_storage' => 'cold_storage_quantity',
-        'office'       => 'office_quantity'
-    ],
-    'transaction_type'         => [
-        'sell'     => 'sell',
-        'purchase' => 'purchase'
+        'admin'       => 2
     ],
 
     /*
