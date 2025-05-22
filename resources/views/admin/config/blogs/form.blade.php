@@ -72,7 +72,15 @@
         $('.js-example-basic-multiple').select2();
     });
     // ClassicEditor
-    ClassicEditor.create(document.querySelector('#editor'))
+    ClassicEditor
+        .create(document.querySelector('#editor'), {
+            simpleUpload: {
+                uploadUrl: '/upload-editor-image',
+                headers: {
+                  'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                }
+            }
+        })
         .then(editor => {
           const editableElement = editor.ui.view.editable.element;
           editableElement.style.minHeight = '300px';
