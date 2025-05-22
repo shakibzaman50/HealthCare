@@ -26,12 +26,16 @@ class StoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'profile_id'   => ['required', 'integer', Rule::exists('profiles', 'id')
-              ->where('user_id', Auth::id())
-            ],
             'oxygen_level' => ['required', 'integer', 'between:1,100'],
             'measured_at'  => ['required', 'date_format:Y-m-d H:i'],
         ];
+    }
+
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'profile_id' => $this->route('profile_id'),
+        ]);
     }
 
     protected function failedValidation(Validator $validator){

@@ -1,14 +1,12 @@
 <?php
 
-namespace App\Http\Requests\Api\HeartRate;
+namespace App\Http\Requests\Api\BloodPressure;
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\Rule;
 
-class StoreRequest extends FormRequest
+class ChartRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,22 +21,10 @@ class StoreRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-    public function rules(): array
-    {
+    public function rules(): array {
         return [
-            'heart_rate'  => ['required', 'integer', 'between:1,400'],
-            'measured_at' => ['required', 'date_format:Y-m-d H:i'],
-            'unit_id'     => ['required', 'integer', Rule::exists('heart_rate_units', 'id')
-                ->where('is_active', config('basic.status.active'))
-            ],
+            'date' => ['required', 'date_format:Y-m-d'],
         ];
-    }
-
-    protected function prepareForValidation()
-    {
-        $this->merge([
-            'profile_id' => $this->route('profile_id'),
-        ]);
     }
 
     protected function failedValidation(Validator $validator){

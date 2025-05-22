@@ -18,6 +18,11 @@ class HydrationReminderController extends Controller
         $this->hydrationReminderService = $hydrationReminderService;
     }
 
+    public function index()
+    {
+        return ApiResponse::response(true, 'Hydration Reminder history successfully fetched.');
+    }
+
     /**
      * Store a newly created resource in storage.
      */
@@ -39,11 +44,6 @@ class HydrationReminderController extends Controller
     public function destroy(string $id)
     {
         return ApiResponse::response(true, 'Hydration Reminder was successfully deleted.');
-    }
-
-    public function history(Request $request)
-    {
-        return ApiResponse::response(true, 'Hydration Reminder history successfully fetched.');
     }
 
     public function chartData(Request $request)

@@ -18,6 +18,11 @@ class BloodOxygenController extends Controller
         $this->bloodOxygenService = $bloodOxygenService;
     }
 
+    public function index()
+    {
+        return ApiResponse::response(true, 'Blood Oxygen history successfully fetched.');
+    }
+
     /**
      * Store a newly created resource in storage.
      */
@@ -39,11 +44,6 @@ class BloodOxygenController extends Controller
     public function destroy(string $id)
     {
         return ApiResponse::response(true, 'Blood Oxygen was successfully deleted.');
-    }
-
-    public function history(Request $request)
-    {
-        return ApiResponse::response(true, 'Blood Oxygen history successfully fetched.');
     }
 
     public function chartData(Request $request)

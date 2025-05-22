@@ -18,6 +18,11 @@ class BloodPressureController extends Controller
         $this->bloodPressureService = $bloodPressureService;
     }
 
+    public function index()
+    {
+        return ApiResponse::response(true, 'Blood Pressure history successfully fetched.');
+    }
+
     /**
      * Store a newly created resource in storage.
      */
@@ -39,11 +44,6 @@ class BloodPressureController extends Controller
     public function destroy(string $id)
     {
         return ApiResponse::response(true, 'Blood Pressure was successfully deleted.');
-    }
-
-    public function history(Request $request)
-    {
-        return ApiResponse::response(true, 'Blood Pressure history successfully fetched.');
     }
 
     public function chartData(Request $request)

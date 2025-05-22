@@ -18,6 +18,11 @@ class HeartRateController extends Controller
         $this->heartRateService = $heartRateService;
     }
 
+    public function index(Request $request)
+    {
+        return ApiResponse::response(true, 'Heart Rate history successfully fetched.');
+    }
+
     /**
      * Store a newly created resource in storage.
      */
@@ -41,10 +46,7 @@ class HeartRateController extends Controller
         return ApiResponse::response(true, 'Heart Rate was successfully deleted.');
     }
 
-    public function history(Request $request)
-    {
-        return ApiResponse::response(true, 'Heart Rate history successfully fetched.');
-    }
+
 
     public function chartData(Request $request)
     {

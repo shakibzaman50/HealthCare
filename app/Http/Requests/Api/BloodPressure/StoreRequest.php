@@ -26,9 +26,6 @@ class StoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'profile_id'  => ['required', 'integer', Rule::exists('profiles', 'id')
-                ->where('user_id', Auth::id())
-            ],
             'unit_id'     => ['required', 'integer', Rule::exists('bp_units', 'id')
                 ->where('is_active', config('basic.status.active'))
             ],
@@ -36,6 +33,13 @@ class StoreRequest extends FormRequest
             'diastolic'   => ['required', 'integer', 'between:10,200', 'lt:systolic'],
             'measured_at' => ['required', 'date_format:Y-m-d H:i'],
         ];
+    }
+
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'profile_id' => $this->route('profile_id'),
+        ]);
     }
 
     protected function failedValidation(Validator $validator){
