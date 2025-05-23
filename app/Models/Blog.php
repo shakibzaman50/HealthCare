@@ -15,11 +15,25 @@ class Blog extends Model
         'tags',
         'is_active',
         'thumbnail',
-        'content'
+        'content',
+        'status',
+        'visibility',
+        'meta_title',
+        'meta_description'
+    ];
+
+    protected $casts = [
+        'is_active' => 'boolean',
     ];
 
     public function scopeActive($query)
     {
         return $query->where('is_active', config('basic.status.active'));
+    }
+
+    // Accessor for thumbnail URL
+    public function getThumbnailUrlAttribute()
+    {
+        return $this->thumbnail ? asset('storage/' . $this->thumbnail) : null;
     }
 }

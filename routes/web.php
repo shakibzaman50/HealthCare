@@ -69,28 +69,30 @@ Route::middleware(['auth', 'verified'])->group(function () {
   Route::get('admin-login-log', [ActivityLogController::class, 'adminLogingLog'])->name('logingInfo-adminLoging-Log');
   Route::get('customer-login-log', [ActivityLogController::class, 'customerLogingLog'])->name('logingInfo-customerLoging-Log');
 
-    // Resource Routes
-    Route::resources([
-        'roles' => RoleController::class,
-        'users' => UserController::class,
-        'permissions' => PermissionController::class,
+  // Resource Routes
+  Route::resources([
+    'roles' => RoleController::class,
+    'users' => UserController::class,
+    'permissions' => PermissionController::class,
 
-        'physical-conditions' => PhysicalConditionsController::class,
-        'heart-rate-units' => HeartRateUnitsController::class,
-        'bp-units' => BpUnitsController::class,
-        'global_settings'  => GlobalSettingsController::class,
+    'physical-conditions' => PhysicalConditionsController::class,
+    'heart-rate-units' => HeartRateUnitsController::class,
+    'bp-units' => BpUnitsController::class,
+    'global_settings'  => GlobalSettingsController::class,
 
-        'blogs'              => BlogController::class,
-        'sugar-units'        => SugarUnitController::class,
-        'water-units'        => WaterUnitController::class,
-        'weight-units'       => WeightUnitController::class,
-        'height-units'       => HeightUnitController::class,
-        'feeling-lists'      => FeelingListController::class,
-        'medicine-units'     => MedicineUnitController::class,
-        'medicine-types'     => MedicineTypeController::class,
-        'sugar-schedules'    => SugarScheduleController::class,
-        'activity-levels'    => ActivityLevelController::class,
-        'medicine-schedules' => MedicineScheduleController::class,
-    ]);
+    'blogs'              => BlogController::class,
+    'sugar-units'        => SugarUnitController::class,
+    'water-units'        => WaterUnitController::class,
+    'weight-units'       => WeightUnitController::class,
+    'height-units'       => HeightUnitController::class,
+    'feeling-lists'      => FeelingListController::class,
+    'medicine-units'     => MedicineUnitController::class,
+    'medicine-types'     => MedicineTypeController::class,
+    'sugar-schedules'    => SugarScheduleController::class,
+    'activity-levels'    => ActivityLevelController::class,
+    'medicine-schedules' => MedicineScheduleController::class,
+  ]);
+
+  Route::post('/admin/upload-image', [App\Http\Controllers\Admin\ImageUploadController::class, 'upload'])->name('admin.upload.image');
 });
 require __DIR__ . '/auth.php';
