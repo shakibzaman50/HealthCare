@@ -14,4 +14,8 @@ class BloodOxygen extends Model
         'oxygen_level',
         'measured_at'
     ];
+
+    public function profile(){
+        return $this->belongsTo(Profile::class, 'profile_id')->select('id','user_id', 'name');
+    }
 }

@@ -1,6 +1,6 @@
 @extends('layouts/layoutMaster')
 
-@section('title', 'Heart Rate Records')
+@section('title', 'Blood Pressure Records')
 
 @section('vendor-style')
 @vite('resources/assets/vendor/libs/select2/select2.scss')
@@ -84,7 +84,7 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         $.ajax({
-                            url: '{{ route("admin.heart-rates.bulk-delete") }}',
+                            url: '{{ route("admin.blood-pressures.bulk-delete") }}',
                             method: 'POST',
                             data: {
                                 ids: selectedIds
@@ -128,7 +128,7 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                        url: `/admin/heart-rates/${id}`,
+                        url: `/admin/blood-pressures/${id}`,
                         method: 'DELETE',
                         success: function(response) {
                             Swal.fire(
@@ -159,11 +159,11 @@
 <div class="container-fluid">
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Heart Rate Records</h3>
+            <h3 class="card-title">Blood Pressures Records</h3>
         </div>
         <div class="card-body">
             <!-- Filters -->
-            <form id="filterForm" method="GET" action="{{ route('admin.heart-rates.index') }}" class="mb-4">
+            <form id="filterForm" method="GET" action="{{ route('admin.blood-pressures.index') }}" class="mb-4">
                 @csrf
                 <div class="row">
                     <div class="col-md-3">
@@ -199,7 +199,7 @@
                             <label>&nbsp;</label>
                             <div>
                                 <button type="submit" class="btn btn-primary me-1">Filter</button>
-                                <a class="btn btn-danger" href="{{ route('admin.heart-rates.index') }}">Clear</a>
+                                <a class="btn btn-danger" href="{{ route('admin.blood-pressures.index') }}">Clear</a>
                                 <button type="button" class="btn btn-success mt-2" id="exportSelectedBtn" disabled>Export
                                     Selected</button>
                             </div>
@@ -210,31 +210,33 @@
 
             <!-- Data Table -->
             <div class="table-responsive">
-                <table class="table table-bordered table-striped" id="heartRateTable">
+                <table class="table table-bordered table-striped" id="bloodPressureTable">
                     <thead>
                         <tr>
                             <th>
                                 <input type="checkbox" id="selectAll">
                             </th>
                             <th>Profile</th>
-                            <th>Heart Rate</th>
+                            <th>Systolic</th>
+                            <th>Diastolic</th>
                             <th>Unit</th>
                             <th>Measured At</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach($heartRates as $heartRate)
+                        @foreach($bloodPressures as $bloodPressure)
                         <tr>
                             <td>
-                                <input type="checkbox" class="record-checkbox" value="{{ $heartRate->id }}">
+                                <input type="checkbox" class="record-checkbox" value="{{ $bloodPressure->id }}">
                             </td>
-                            <td>{{ $heartRate->profile->name ?? 'N/A' }}</td>
-                            <td>{{ $heartRate->heart_rate }}</td>
-                            <td>{{ $heartRate->unit->name ?? 'N/A' }}</td>
-                            <td>{{ Helper::formattedDateTime($heartRate->measured_at) }}</td>
+                            <td>{{ $bloodPressure->profile->name ?? 'N/A' }}</td>
+                            <td>{{ $bloodPressure->systolic }}</td>
+                            <td>{{ $bloodPressure->diastolic }}</td>
+                            <td>{{ $bloodPressure->unit->name ?? 'N/A' }}</td>
+                            <td>{{ Helper::formattedDateTime($bloodPressure->measured_at) }}</td>
                             <td>
-                                <button class="btn btn-danger btn-sm delete-btn" data-id="{{ $heartRate->id }}">
+                                <button class="btn btn-danger btn-sm delete-btn" data-id="{{ $bloodPressure->id }}">
                                     Delete
                                 </button>
                             </td>

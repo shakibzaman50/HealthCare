@@ -132,9 +132,48 @@
       "slug": "layouts",
       "submenu": [
         {
-          "url": "/heart-rate",
+          "url": "/admin/heart-rates",
           "name": "Hear Rate",
           "slug": "heart-rate",
+          "can": "role-list"
+        }
+      ]
+    },
+    {
+      "name": "Blood Pressure",
+      "icon": "menu-icon fas fa-fw fa-user",
+      "slug": "layouts",
+      "submenu": [
+        {
+          "url": "/admin/blood-pressures",
+          "name": "Blood Pressure",
+          "slug": "blood-pressure",
+          "can": "role-list"
+        }
+      ]
+    },
+    {
+      "name": "Blood Oxygen",
+      "icon": "menu-icon fas fa-fw fa-user",
+      "slug": "layouts",
+      "submenu": [
+        {
+          "url": "/admin/blood-oxygens",
+          "name": "Blood Oxygen",
+          "slug": "blood-oxygen",
+          "can": "role-list"
+        }
+      ]
+    },
+    {
+      "name": "Hydration Reminder",
+      "icon": "menu-icon fas fa-fw fa-user",
+      "slug": "layouts",
+      "submenu": [
+        {
+          "url": "/admin/hydration-reminders",
+          "name": "Hydration Reminder",
+          "slug": "hydration-reminder",
           "can": "role-list"
         }
       ]

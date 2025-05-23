@@ -7,6 +7,9 @@ use Illuminate\Support\Str;
 
 class Helpers
 {
+   public static function formattedDateTime($date){
+      return date('d-M Y h:i A', strtotime($date));
+   }
     public static function getFileUrl($file, $fileDirectory, $existFileUrl = null)
     {
         if ($file) {

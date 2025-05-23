@@ -17,6 +17,11 @@ class BloodPressure extends Model
         'measured_at'
     ];
 
+    public function profile()
+    {
+        return $this->belongsTo(Profile::class, 'profile_id')->select('id', 'user_id', 'name');
+    }
+
     public function unit(){
         return $this->belongsTo(BpUnit::class,'unit_id')->select('id','name');
     }
