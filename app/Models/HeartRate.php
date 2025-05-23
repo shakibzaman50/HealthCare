@@ -16,7 +16,12 @@ class HeartRate extends Model
         'measured_at'
     ];
 
-    public function unit(){
-        return $this->belongsTo(HeartRateUnit::class,'unit_id')->select('id','name');
+    public function unit()
+    {
+        return $this->belongsTo(HeartRateUnit::class, 'unit_id')->select('id', 'name');
+    }
+    public function profile()
+    {
+        return $this->belongsTo(Profile::class);
     }
 }
