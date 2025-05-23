@@ -2,20 +2,20 @@
 
 namespace Database\Seeders;
 
-use App\Models\HeartRateUnit;
+use App\Models\BpUnit;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class HeartRateUnitSeeder extends Seeder
+class BPUnitSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        foreach (config('basic.heartRateUnits') as $name){
+        foreach (config('basic.bpUnits') as $name){
             if(strlen($name) <= 20){
-                HeartRateUnit::firstOrCreate(['name' => $name],[
+                BpUnit::firstOrCreate(['name' => $name],[
                     'name'      => $name,
                     'is_active' => true,
                 ]);

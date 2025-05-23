@@ -12,8 +12,19 @@ return [
     ],
 
     'heartRateUnits' => [
-        'mg/dL',
-        'mmol/L',
+        'bpm',
+    ],
+
+    'physicalConditions' => [
+        'High Blood Pressure',
+        'Indigestion',
+        'PCOS',
+        'Chronic Kidney Disease',
+        'Diabetes',
+        'Thyroid',
+        'Hypertension',
+        'IBS',
+        'Indigestion'
     ],
 
     'heightUnits' => [

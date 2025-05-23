@@ -133,6 +133,19 @@
       ]
     },
     {
+      "name": "Heart Rate",
+      "icon": "menu-icon fas fa-fw fa-user",
+      "slug": "layouts",
+      "submenu": [
+        {
+          "url": "/heart-rate",
+          "name": "Hear Rate",
+          "slug": "heart-rate",
+          "can": "role-list"
+        }
+      ]
+    },
+    {
       "name": "User Role Permission",
       "icon": "menu-icon fas fa-fw fa-user",
       "slug": "layouts",

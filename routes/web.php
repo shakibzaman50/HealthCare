@@ -32,6 +32,7 @@ use App\Http\Controllers\authentications\RegisterBasic;
 use App\Http\Controllers\Admin\Config\PhysicalConditionsController;
 use App\Http\Controllers\Admin\Config\HeartRateUnitsController;
 use App\Http\Controllers\Admin\Config\BpUnitsController;
+use App\Http\Controllers\Admin\HeartRateController;
 use App\Http\Controllers\Admin\LoginInfoController;
 
 // Public Routes
@@ -70,7 +71,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
   // Activity Logs
   Route::get('activity-log', [ActivityLogController::class, 'activityLog'])->name('userBehave-activity-log');
   Route::get('admin-login-log', [ActivityLogController::class, 'adminLogingLog'])->name('logingInfo-adminLoging-Log');
-  Route::get('customer-login-log', [ActivityLogController::class, 'customerLogingLog'])->name('logingInfo-customerLoging-Log');
 
   // Resource Routes
   Route::resources([
@@ -96,5 +96,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     'medicine-schedules' => MedicineScheduleController::class,
     'bs-records' => BsRecordController::class,
   ]);
+
+  // Heart Rate Routes
+  Route::prefix('admin')->name('admin.')->group(function () {
+    Route::get('heart-rates', [HeartRateController::class, 'index'])->name('heart-rates.index');
+    Route::delete('heart-rates/{id}', [HeartRateController::class, 'destroy'])->name('heart-rates.destroy');
+    Route::post('heart-rates/bulk-delete', [HeartRateController::class, 'bulkDelete'])->name('heart-rates.bulk-delete');
+  });
 });
 require __DIR__ . '/auth.php';

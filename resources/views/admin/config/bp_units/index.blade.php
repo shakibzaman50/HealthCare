@@ -16,6 +16,13 @@
         </div>
     @endif
 
+    @if(Session::has('error_message'))
+        <div class="alert alert-danger alert-dismissible" role="alert">
+            {!! session('error_message') !!}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
     <div class="card text-bg-theme">
 
         <div class="card-header d-flex justify-content-between align-items-center p-3">
@@ -26,7 +33,7 @@
                 </a>
             </div>
         </div>
-        
+
         @if(count($bpUnits) == 0)
             <div class="card-body text-center">
                 <h4>No Bp Units Available.</h4>
@@ -70,7 +77,7 @@
                                     </div>
 
                                 </form>
-                                
+
                             </td>
                         </tr>
                     @endforeach
@@ -81,8 +88,8 @@
 
             {!! $bpUnits->links('pagination') !!}
         </div>
-        
+
         @endif
-    
+
     </div>
 @endsection
