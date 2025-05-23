@@ -11,14 +11,6 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <h3 class="card-title">Blood Sugar Records</h3>
-                            <a href="{{ route('bs-records.create') }}" class="btn btn-primary btn-sm">
-                                <i class="fas fa-plus"></i> Add New
-                            </a>
-                        </div>
-                    </div>
                     <div class="card-body">
                         @if(Session::has('success_message'))
                             <div class="alert alert-success">
@@ -35,9 +27,10 @@
                                     <tr>
                                         <th>ID</th>
                                         <th>User</th>
-                                        <th>Measurement Type</th>
+                                        <th>Schedule</th>
                                         <th>Value</th>
-                                        <th>Recorded At</th>
+                                        <th>Unit</th>
+                                        <th>Measurement At</th>
                                         <th>Status</th>
                                         <th>Actions</th>
                                     </tr>
@@ -46,14 +39,15 @@
                                     @foreach($bsRecords as $bsRecord)
                                         <tr>
                                             <td>{{ $bsRecord->id }}</td>
-                                            <td>{{ $bsRecord->user->name ?? 'N/A' }}</td>
-                                            <td>{{ $bsRecord->measurementType->name ?? 'N/A' }}
-                                                ({{ $bsRecord->measurementType->unit ?? '' }})</td>
+                                            <td>{{ $bsRecord->profile->name ?? 'N/A' }}</td>
+                                            <td>{{ $bsRecord->sugarSchedule->name ?? 'N/A' }}</td>
                                             <td>{{ $bsRecord->value }}</td>
-                                            <td>{{ $bsRecord->recorded_at->format('Y-m-d H:i') }}</td>
+                                            <td>{{ $bsRecord->sugarUnit->name ?? 'N/A' }}</td>
+                                            <td>{{ $bsRecord->measurement_at->format('Y-m-d H:i') }}</td>
                                             <td>
-                                                <span class="badge badge-{{ $bsRecord->status ? 'success' : 'danger' }}">
-                                                    {{ $bsRecord->status ? 'Active' : 'Inactive' }}
+                                                <span
+                                                    class="badge text-capitalize {{ $bsRecord->status == 'Normal' ? 'bg-success text-white' : 'bg-danger text-white' }}">
+                                                    {{ $bsRecord->status }}
                                                 </span>
                                             </td>
                                             <td>
@@ -62,14 +56,7 @@
                                                     @csrf
                                                     @method('DELETE')
                                                     <div class="btn-group btn-group-sm">
-                                                        <a href="{{ route('bs-records.show', $bsRecord->id) }}"
-                                                            class="btn btn-info" title="View">
-                                                            <i class="fas fa-eye"></i>
-                                                        </a>
-                                                        <a href="{{ route('bs-records.edit', $bsRecord->id) }}"
-                                                            class="btn btn-primary" title="Edit">
-                                                            <i class="fas fa-edit"></i>
-                                                        </a>
+
                                                         <button type="submit" class="btn btn-danger" title="Delete"
                                                             onclick="return confirm('Are you sure you want to delete this item?')">
                                                             <i class="fas fa-trash"></i>

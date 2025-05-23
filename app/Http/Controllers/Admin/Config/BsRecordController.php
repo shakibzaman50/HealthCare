@@ -6,11 +6,19 @@ use App\Http\Controllers\Controller;
 use App\Models\BsMeasurementType;
 use App\Models\BsRecord;
 use App\Models\User;
+use App\Services\Config\BsRecordService;
 use Illuminate\Http\Request;
 use Exception;
 
 class BsRecordController extends Controller
 {
+
+    public function __construct(
+        public BsRecordService $bsRecordService
+    ) {
+        //
+    }
+
     /**
      * Display a listing of the blood sugar records.
      *
@@ -18,8 +26,7 @@ class BsRecordController extends Controller
      */
     public function index()
     {
-        $bsRecords = BsRecord::with(['measurementType', 'user'])->paginate(25);
-
+        $bsRecords = $this->bsRecordService->list();
         return view('admin.config.bs_record.index', compact('bsRecords'));
     }
 
@@ -30,9 +37,8 @@ class BsRecordController extends Controller
      */
     public function create()
     {
-        $users = User::select('id', 'name')->get();
-        $measurementTypes = BsMeasurementType::select('id', 'name')->get();
-        return view('admin.config.bs_record.create', compact('users', 'measurementTypes'));
+        // $users = User::select('id', 'name')->get();
+        return view('admin.config.bs_record.create', compact('users'));
     }
 
     /**

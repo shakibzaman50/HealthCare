@@ -2,11 +2,14 @@
 
 namespace Database\Factories;
 
-use App\Models\BsMeasurementType;
+use App\Enums\StatusEnums;
+use App\Helpers\BSStatusCheck;
 use App\Models\BsRecord;
 use App\Models\Profile;
+use App\Models\SugarSchedule;
 use App\Models\SugarUnit;
 use App\Models\UserProfile;
+use Arr;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -23,11 +26,11 @@ class BsRecordFactory extends Factory
     {
         return [
             'profile_id' => Profile::factory(),
-            'measurement_type_id' => BsMeasurementType::factory(),
-            'unit_id' => SugarUnit::factory(),
+            'sugar_schedule_id' => 1,
+            'sugar_unit_id' => 1,
             'value' => $this->faker->randomFloat(2, 60, 200),
-            'insert_date' => $this->faker->dateTimeThisYear(),
-            'insert_time' => $this->faker->numberBetween(0, 86400), // Seconds in a day
+            'status' => BsStatusCheck::getBsStatus($this->faker->randomFloat(2, 60, 200), $this->faker->randomElement(['Fasting', 'After Eating', '2Hr After Eating']), $this->faker->randomElement(['mg/dL', 'mmol/L'])),
+            'measurement_at' => $this->faker->dateTimeThisYear(),
         ];
     }
 }

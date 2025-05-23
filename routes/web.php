@@ -94,8 +94,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     'sugar-schedules' => SugarScheduleController::class,
     'activity-levels' => ActivityLevelController::class,
     'medicine-schedules' => MedicineScheduleController::class,
-    'bs-measurement-types' => BsMeasurementTypeController::class,
-    'bs-ranges' => BsRangeController::class,
     'bs-records' => BsRecordController::class,
   ]);
 });

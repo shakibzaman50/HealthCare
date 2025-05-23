@@ -16,6 +16,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             PermissionTableSeeder::class,
             CreateAdminUserSeeder::class,
+            UserWithProfileSeeder::class,
             FeelingListSeeder::class,
             SugarUnitSeeder::class,
             WaterUnitSeeder::class,
@@ -26,8 +27,6 @@ class DatabaseSeeder extends Seeder
             SugarScheduleSeeder::class,
             ActivityLevelSeeder::class,
             MedicineScheduleSeeder::class,
-            BsMeasurementTypeSeeder::class,
-            BsRangeSeeder::class,
             BsRecordSeeder::class,
         ]);
     }

@@ -59,6 +59,12 @@
           "icon": "fas fa-spinner"
         },
         {
+          "url": "/bs-records",
+          "name": "Blood Sugar Records",
+          "slug": "bs-records",
+          "icon": "fas fa-spinner"
+        },
+        {
           "url": "/sugar-units",
           "name": "Sugar Units",
           "slug": "sugar-units",

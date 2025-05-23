@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class BsRecord extends Model
 {
@@ -13,9 +14,10 @@ class BsRecord extends Model
 
     protected $fillable = [
         'profile_id',
-        'measurement_type_id',
-        'unit_id',
+        'sugar_schedule_id',
+        'sugar_unit_id',
         'value',
+        'status',
         'measurement_at',
     ];
 
@@ -24,18 +26,18 @@ class BsRecord extends Model
         'measurement_at' => 'datetime',
     ];
 
-    public function profile()
+    public function profile(): BelongsTo
     {
-        return $this->belongsTo(Profile::class, 'profile_id');
+        return $this->belongsTo(Profile::class);
     }
 
-    public function measurementType()
+    public function sugarSchedule(): BelongsTo
     {
-        return $this->belongsTo(BsMeasurementType::class, 'measurement_type_id');
+        return $this->belongsTo(SugarSchedule::class);
     }
 
-    public function unit()
+    public function sugarUnit(): BelongsTo
     {
-        return $this->belongsTo(SugarUnit::class, 'unit_id');
+        return $this->belongsTo(SugarUnit::class);
     }
 }
