@@ -34,7 +34,7 @@ class AuthController extends Controller
                     true,
                     $response['message'],
                     [
-                        'user'  => new UserResource($response['user']),
+                        'user' => new UserResource($response['user']),
                         'token' => $response['token'],
                     ]
                 )
@@ -53,7 +53,7 @@ class AuthController extends Controller
                 $response['code'] === 200,
                 $response['message'],
                 [
-                    'user'  => $response['user'] ? new UserResource($response['user']) : null,
+                    'user' => $response['user'] ? new UserResource($response['user']) : null,
                     'token' => $response['token'],
                 ],
                 $response['error'] ?? null,

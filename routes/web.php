@@ -94,7 +94,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     'sugar-schedules' => SugarScheduleController::class,
     'activity-levels' => ActivityLevelController::class,
     'medicine-schedules' => MedicineScheduleController::class,
-    'bs-records' => BsRecordController::class,
   ]);
 
   // Heart Rate Routes
@@ -102,6 +101,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('heart-rates', [HeartRateController::class, 'index'])->name('heart-rates.index');
     Route::delete('heart-rates/{id}', [HeartRateController::class, 'destroy'])->name('heart-rates.destroy');
     Route::post('heart-rates/bulk-delete', [HeartRateController::class, 'bulkDelete'])->name('heart-rates.bulk-delete');
+  });
+
+
+  // Blood Sugar Routes
+  Route::prefix('admin')->name('admin.')->group(function () {
+    Route::get('bs-records', [BsRecordController::class, 'index'])->name('bs-records.index');
+    Route::post('bs-records/store', [BsRecordController::class, 'store'])->name('bs-records.store');
+    Route::delete('bs-records/{id}', [BsRecordController::class, 'destroy'])->name('bs-records.destroy');
+    Route::post('bs-records/bulk-delete', [BsRecordController::class, 'bulkDelete'])->name('bs-records.bulk-delete');
+    Route::get('bs-records/bulk-export', [BsRecordController::class, 'exportToCsv'])->name('bs-records.bulk-export');
   });
 });
 require __DIR__ . '/auth.php';

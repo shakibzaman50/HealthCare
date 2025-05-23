@@ -30,7 +30,7 @@ class BsRecordFactory extends Factory
             'sugar_unit_id' => 1,
             'value' => $this->faker->randomFloat(2, 60, 200),
             'status' => BsStatusCheck::getBsStatus($this->faker->randomFloat(2, 60, 200), $this->faker->randomElement(['Fasting', 'After Eating', '2Hr After Eating']), $this->faker->randomElement(['mg/dL', 'mmol/L'])),
-            'measurement_at' => $this->faker->dateTimeThisYear(),
+            'measured_at' => $this->faker->dateTimeThisYear(),
         ];
     }
 }

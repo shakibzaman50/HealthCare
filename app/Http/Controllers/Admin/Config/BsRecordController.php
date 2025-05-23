@@ -3,151 +3,59 @@
 namespace App\Http\Controllers\Admin\Config;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreBloodSugerRequest;
 use App\Models\BsMeasurementType;
 use App\Models\BsRecord;
+use App\Models\Profile;
 use App\Models\User;
 use App\Services\Config\BsRecordService;
 use Illuminate\Http\Request;
 use Exception;
+use App\Helpers\ApiResponse;
 
 class BsRecordController extends Controller
 {
-
     public function __construct(
         public BsRecordService $bsRecordService
     ) {
-        //
     }
 
     /**
-     * Display a listing of the blood sugar records.
-     *
-     * @return \Illuminate\View\View
+     * Get paginated list of blood sugar records
      */
     public function index()
     {
         $bsRecords = $this->bsRecordService->list();
-        return view('admin.config.bs_record.index', compact('bsRecords'));
+        $profiles = Profile::query()->get();
+        return view('admin.config.bs_record.index', compact('bsRecords', 'profiles'));
     }
 
     /**
-     * Show the form for creating a new blood sugar record.
-     *
-     * @return \Illuminate\View\View
+     * Create new blood sugar record
      */
-    public function create()
+    public function store(StoreBloodSugerRequest $request)
     {
-        // $users = User::select('id', 'name')->get();
-        return view('admin.config.bs_record.create', compact('users'));
+        $this->bsRecordService->create($request->validated());
+
+        return redirect()->back();
     }
 
     /**
-     * Store a new blood sugar record in the storage.
-     *
-     * @param Illuminate\Http\Request $request
-     *
-     * @return \Illuminate\Http\RedirectResponse | \Illuminate\Routing\Redirector
-     */
-    public function store(Request $request)
-    {
-        $data = $this->getData($request);
-
-        BsRecord::create($data);
-
-        return redirect()->route('admin.config.bs_record.index')
-            ->with('success_message', 'Blood Sugar Record was successfully added.');
-    }
-
-    /**
-     * Display the specified blood sugar record.
-     *
-     * @param int $id
-     *
-     * @return \Illuminate\View\View
-     */
-    public function show($id)
-    {
-        $bsRecord = BsRecord::with(['measurementType', 'user'])->findOrFail($id);
-
-        return view('admin.config.bs_record.show', compact('bsRecord'));
-    }
-
-    /**
-     * Show the form for editing the specified blood sugar record.
-     *
-     * @param int $id
-     *
-     * @return \Illuminate\View\View
-     */
-    public function edit($id)
-    {
-        $bsRecord = BsRecord::findOrFail($id);
-
-        return view('admin.config.bs_record.edit', compact('bsRecord'));
-    }
-
-    /**
-     * Update the specified blood sugar record in the storage.
-     *
-     * @param int $id
-     * @param Illuminate\Http\Request $request
-     *
-     * @return \Illuminate\Http\RedirectResponse | \Illuminate\Routing\Redirector
-     */
-    public function update($id, Request $request)
-    {
-        try {
-            $data = $this->getData($request);
-
-            $bsRecord = BsRecord::findOrFail($id);
-            $bsRecord->update($data);
-
-            return redirect()->route('admin.config.bs_record.index')
-                ->with('success_message', 'Blood Sugar Record was successfully updated.');
-        } catch (Exception $exception) {
-            return back()->withInput()
-                ->withErrors(['unexpected_error' => 'Unexpected error occurred while trying to process your request.']);
-        }
-    }
-
-    /**
-     * Remove the specified blood sugar record from the storage.
-     *
-     * @param int $id
-     *
-     * @return \Illuminate\Http\RedirectResponse | \Illuminate\Routing\Redirector
+     * Delete blood sugar record
      */
     public function destroy($id)
     {
-        try {
-            $bsRecord = BsRecord::findOrFail($id);
-            $bsRecord->delete();
+        $this->bsRecordService->delete($id);
 
-            return redirect()->route('admin.config.bs_record.index')
-                ->with('success_message', 'Blood Sugar Record was successfully deleted.');
-        } catch (Exception $exception) {
-            return back()->withInput()
-                ->withErrors(['unexpected_error' => 'Unexpected error occurred while trying to process your request.']);
-        }
+        return redirect()->route('admin.config.bs_record.index')
+            ->with('success_message', 'Blood Sugar Record was successfully deleted.');
     }
 
     /**
-     * Get the request's data from the request.
-     *
-     * @param Illuminate\Http\Request $request 
-     * @return array
+     * Export blood sugar records to CSV
      */
-    protected function getData(Request $request)
+    public function exportToCsv(Request $request)
     {
-        $rules = [
-            'user_id' => 'required|exists:users,id',
-            'measurement_type_id' => 'required|exists:bs_measurement_types,id',
-            'value' => 'required|numeric',
-            'recorded_at' => 'required|date',
-            'notes' => 'nullable|string',
-            'status' => 'nullable|boolean',
-        ];
-
-        return $request->validate($rules);
+        return $this->bsRecordService->exportToCsv($request->ids);
     }
 }

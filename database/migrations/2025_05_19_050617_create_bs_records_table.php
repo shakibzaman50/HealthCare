@@ -17,7 +17,7 @@ return new class extends Migration {
             $table->foreignId('sugar_unit_id')->constrained('sugar_units')->cascadeOnDelete()->cascadeOnUpdate();
             $table->decimal('value', 8, 2);
             $table->string('status');
-            $table->dateTime('measurement_at');
+            $table->dateTime('measured_at');
             $table->timestamps();
         });
     }

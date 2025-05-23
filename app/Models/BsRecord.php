@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use App\Observers\BsRecordObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+#[ObservedBy(BsRecordObserver::class)]
 class BsRecord extends Model
 {
     use HasFactory;
@@ -18,12 +21,12 @@ class BsRecord extends Model
         'sugar_unit_id',
         'value',
         'status',
-        'measurement_at',
+        'measured_at',
     ];
 
     protected $casts = [
         'value' => 'decimal:2',
-        'measurement_at' => 'datetime',
+        'measured_at' => 'datetime',
     ];
 
     public function profile(): BelongsTo

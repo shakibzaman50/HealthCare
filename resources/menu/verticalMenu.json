@@ -59,7 +59,7 @@
           "icon": "fas fa-spinner"
         },
         {
-          "url": "/bs-records",
+          "url": "admin/bs-records",
           "name": "Blood Sugar Records",
           "slug": "bs-records",
           "icon": "fas fa-spinner"

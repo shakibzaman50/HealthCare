@@ -6,9 +6,9 @@ return [
         'inactive' => 0,
     ],
 
-    'bloodPressureUnits' => [
-        'mg/dL',
-        'mmol/L',
+
+    'bpUnits' => [
+        'mmHg',
     ],
 
     'heartRateUnits' => [
