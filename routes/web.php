@@ -121,5 +121,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::post('bulk-delete', 'bulkDelete')->name('bulk-delete');
         });
     });
+  Route::post('/admin/upload-image', [App\Http\Controllers\Admin\ImageUploadController::class, 'upload'])->name('admin.upload.image');
+
 });
 require __DIR__ . '/auth.php';

@@ -46,15 +46,14 @@ $customizerHidden = 'customizer-hide';
           @endisset
           <div class="app-brand justify-content-center mb-6">
             <a href="{{url('/')}}" class="app-brand-link">
-              @isset($globalSettings)
-              <img class="app-brand-logo" src="{{ asset('storage/' . $globalSettings->site_logo) }}" style="width: 70%">
-              <span class="app-brand-text demo text-heading fw-bold">{{ $globalSettings->site_title ?? 'Site Title'
-                }}</span>
+              @isset($globalSetting)
+              <img class="app-brand-logo" src="{{ asset('storage/' . $globalSetting->logo) }}"
+                style="width: 50%;margin:0px auto">
               @endisset
             </a>
           </div>
           <!-- /Logo -->
-          <h4 class="mb-1">Welcome to {{ $globalSettings->site_title ?? 'Site Title' }} ! 👋</h4>
+          <h4 class="mb-1">Welcome to {{ $globalSetting->site_title ?? 'Site Title' }} ! 👋</h4>
           <p class="mb-6">Please sign-in to your account and start the adventure</p>
 
           <form id="formAuthentication" class="mb-4" action="{{ route('login') }}" method="POST">
@@ -73,7 +72,7 @@ $customizerHidden = 'customizer-hide';
                 <span class="input-group-text cursor-pointer"><i class="ti ti-eye-off"></i></span>
               </div>
             </div>
-            <div class="my-8">
+            {{-- <div class="my-8">
               <div class="d-flex justify-content-between">
                 <div class="form-check mb-0 ms-2">
                   <input class="form-check-input" type="checkbox" id="remember-me">
@@ -85,18 +84,18 @@ $customizerHidden = 'customizer-hide';
                   <p class="mb-0">Forgot Password?</p>
                 </a>
               </div>
-            </div>
+            </div> --}}
             <div class="mb-6">
               <button class="btn btn-primary d-grid w-100" type="submit">Login</button>
             </div>
           </form>
 
-          <p class="text-center">
+          {{-- <p class="text-center">
             <span>New on our platform?</span>
             <a href="{{url('user/register')}}">
               <span>Create an account</span>
             </a>
-          </p>
+          </p> --}}
 
           {{-- <div class="divider my-6">
             <div class="divider-text">or</div>
