@@ -72,6 +72,11 @@ class BpUnitsController extends Controller
     {
         try {
             $bpUnit = BpUnit::findOrFail($id);
+            if (in_array($bpUnit->name, config('basic.bpUnits'))
+                // || BloodSugar::where('feeling_id', $id)->exists()
+            ) {
+                return back()->with('error_message', 'This BP Unit cannot be deleted');
+            }
             $this->bpUnitService->delete($bpUnit);
 
             return redirect()->route('bp-units.index')

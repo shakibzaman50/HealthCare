@@ -153,7 +153,6 @@
     $(document).ready(function() {
         $('.js-example-basic-multiple').select2();
     });
-
     ClassicEditor
         .create(document.querySelector('#editor'), {
             extraPlugins: [MyCustomUploadAdapterPlugin],
