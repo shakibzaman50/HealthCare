@@ -17,8 +17,8 @@
                 <input name="_method" value="DELETE" type="hidden">
                 {{ csrf_field() }}
 
-                <a href="{{ route('global_settings.edit', $globalSetting->id ) }}" class="btn btn-primary"
-                    title="Edit Global Setting">
+                <a href="{{ route('global_settings.edit', $globalSetting->id ) }}"
+                    class="btn btn-primary" title="Edit Global Setting">
                     <span class="fa-regular fa-pen-to-square" aria-hidden="true"></span>
                 </a>
 
@@ -27,7 +27,8 @@
                     <span class="fa-regular fa-trash-can" aria-hidden="true"></span>
                 </button>
 
-                <a href="{{ route('global_settings.index') }}" class="btn btn-primary" title="Show All Global Setting">
+                <a href="{{ route('global_settings.index') }}" class="btn btn-primary"
+                    title="Show All Global Setting">
                     <span class="fa-solid fa-table-list" aria-hidden="true"></span>
                 </a>
 
@@ -41,55 +42,31 @@
     </div>
 
     <div class="card-body">
-        <div class="table-responsive">
-            <table class="table table-bordered align-middle">
-                <tbody>
-                    <tr>
-                        <th class="text-end" style="width: 25%;">Logo</th>
-                        <td>
-                            <img src="{{ asset('storage/' . $globalSetting->logo) }}" alt="Logo" class="img-thumbnail"
-                                width="100">
-                        </td>
-                    </tr>
-                    <tr>
-                        <th class="text-end">Favicon</th>
-                        <td>
-                            <img src="{{ asset('storage/' . $globalSetting->favicon) }}" alt="Favicon"
-                                class="img-thumbnail" width="64">
-                        </td>
-                    </tr>
-                    <tr>
-                        <th class="text-end">Site Title</th>
-                        <td>{{ $globalSetting->site_title }}</td>
-                    </tr>
-                    <tr>
-                        <th class="text-end">Slogan</th>
-                        <td class="text-muted">{{ $globalSetting->slogan }}</td>
-                    </tr>
-                    <tr>
-                        <th class="text-end">Phone</th>
-                        <td>{{ $globalSetting->phone }}</td>
-                    </tr>
-                    <tr>
-                        <th class="text-end">Email</th>
-                        <td><a href="mailto:{{ $globalSetting->email }}">{{ $globalSetting->email }}</a></td>
-                    </tr>
-                    <tr>
-                        <th class="text-end">Website</th>
-                        <td><a href="{{ $globalSetting->website }}" target="_blank">{{ $globalSetting->website }}</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th class="text-end">Address</th>
-                        <td>{{ $globalSetting->address }}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+        <dl class="row">
+            <dt class="text-lg-end col-lg-2 col-xl-3">Logo</dt>
+            <dd class="col-lg-10 col-xl-9">
+                <img src="{{ asset('storage/' . $globalSetting->logo) }}" width="100">
+            </dd>
+            <dt class="text-lg-end col-lg-2 col-xl-3">Favicon</dt>
+            <dd class="col-lg-10 col-xl-9">
+                <img src="{{ asset('storage/' . $globalSetting->favicon) }}" width="100">
+            </dd>
+            <dt class="text-lg-end col-lg-2 col-xl-3">Site Title</dt>
+            <dd class="col-lg-10 col-xl-9">{{ $globalSetting->site_title }}</dd>
+            <dt class="text-lg-end col-lg-2 col-xl-3">Slogan</dt>
+            <dd class="col-lg-10 col-xl-9">{{ $globalSetting->slogan }}</dd>
+            <dt class="text-lg-end col-lg-2 col-xl-3">Phone</dt>
+            <dd class="col-lg-10 col-xl-9">{{ $globalSetting->phone }}</dd>
+            <dt class="text-lg-end col-lg-2 col-xl-3">Email</dt>
+            <dd class="col-lg-10 col-xl-9">{{ $globalSetting->email }}</dd>
+            <dt class="text-lg-end col-lg-2 col-xl-3">Website</dt>
+            <dd class="col-lg-10 col-xl-9">{{ $globalSetting->website }}</dd>
+            <dt class="text-lg-end col-lg-2 col-xl-3">Address</dt>
+            <dd class="col-lg-10 col-xl-9">{{ $globalSetting->address }}</dd>
+        </dl>
+
     </div>
-
-
-
+    
 </div>
 
 @endsection
