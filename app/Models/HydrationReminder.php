@@ -16,6 +16,11 @@ class HydrationReminder extends Model
         'drink_at'
     ];
 
+    public function profile()
+    {
+        return $this->belongsTo(Profile::class, 'profile_id')->select('id', 'user_id', 'name');
+    }
+
     public function unit(){
         return $this->belongsTo(WaterUnit::class,'unit_id')->select('id','name');
     }

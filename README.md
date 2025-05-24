@@ -60,17 +60,19 @@
 
    ```
 
-8. **Install Node.js dependencies and build assets:**
+8. mkdir -p storage/app/public/thumbnails
+
+9. **Install Node.js dependencies and build assets:**
    ```bash
    npm install
    npm run build
    ```
-9. **Start the development server:**
+10. **Start the development server:**
 
-   ```bash
-   php artisan serve
+```bash
+php artisan serve
 
-   ```
+```
 
-10. **Default Login for Superadmin**
+11. **Default Login for Superadmin**
     admin@gmail.com/12345678

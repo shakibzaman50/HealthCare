@@ -72,7 +72,7 @@ class HeartRateController extends Controller
         }
 
         $heartRates = $query->latest()->paginate(10);
-        $profiles = Profile::all();
+        $profiles = Profile::select('id', 'name')->get();
 
         return view('admin.heart-rate.index', compact('heartRates', 'profiles'));
     }
