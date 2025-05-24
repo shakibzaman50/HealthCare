@@ -5,6 +5,7 @@ namespace App\Services\Config;
 use App\Http\Resources\BsRecord\BsRecordCollection;
 use App\Http\Resources\BsRecord\BsRecordResource;
 use App\Models\BsRecord;
+use Carbon\Carbon;
 use Exception;
 use Spatie\QueryBuilder\AllowedFilter;
 use Spatie\QueryBuilder\QueryBuilder;
@@ -24,14 +25,15 @@ class BsRecordService
     {
         return new BsRecordCollection(
             QueryBuilder::for(BsRecord::class)
+                ->with(['profile', 'sugarSchedule', 'sugarUnit'])
                 ->allowedFilters([
                     'profile_id',
                     AllowedFilter::callback('date', function ($query, $value) {
-                        $query->where('measured_at', '>=', $value[0])
-                            ->where('measured_at', '<=', $value[1]);
+                        $startDate = Carbon::parse($value[0])->format('Y-m-d');
+                        $endDate = Carbon::parse($value[1])->addDay()->format('Y-m-d');
+                        $query->whereBetween('measured_at', [$startDate, $endDate]);
                     })
                 ])
-                ->with(['profile', 'sugarSchedule', 'sugarUnit'])
                 ->when($profileId, function ($query) use ($profileId) {
                     $query->where('profile_id', $profileId);
                 })

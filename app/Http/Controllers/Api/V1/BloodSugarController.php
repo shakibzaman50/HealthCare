@@ -67,4 +67,9 @@ class BloodSugarController extends Controller
             200
         );
     }
+
+    public function exportToCsv(Request $request)
+    {
+        return $this->bsRecordService->exportToCsv($request->ids);
+    }
 }
