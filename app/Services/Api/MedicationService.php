@@ -10,8 +10,17 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 use Spatie\QueryBuilder\QueryBuilder;
 
+/**
+ * Service class for handling medication-related operations
+ */
 class MedicationService
 {
+    /**
+     * Get paginated list of medicines with optional profile filter
+     *
+     * @param int|null $profileId Filter by profile ID
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     */
     public function list(int $profileId = null)
     {
         return QueryBuilder::for(Medicine::class)
@@ -22,12 +31,85 @@ class MedicationService
             ->paginate(request()->get('per_page', 15));
     }
 
+    /**
+     * Export medicines to CSV file
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query Query builder instance
+     * @return \Symfony\Component\HttpFoundation\StreamedResponse
+     */
+    public function exportCsv($query)
+    {
+        try {
+            $medicines = $query->get();
+            $filename = 'medicines_' . now()->format('Y_m_d_H_i_s') . '.csv';
+
+            $headers = [
+                'Content-Type' => 'text/csv',
+                'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+            ];
+
+            return response()->streamDownload(function () use ($medicines) {
+                try {
+                    $file = fopen('php://output', 'w');
+
+                    // CSV headers
+                    fputcsv($file, [
+                        'ID',
+                        'Profile Name',
+                        'Medicine Name',
+                        'Type',
+                        'Strength',
+                        'Unit',
+                        'Status',
+                        'Notes',
+                        'Created At'
+                    ]);
+
+                    // CSV data
+                    foreach ($medicines as $medicine) {
+                        fputcsv($file, [
+                            $medicine->id,
+                            $medicine->profile->name ?? 'N/A',
+                            $medicine->name,
+                            $medicine->medicineType->name ?? 'N/A',
+                            $medicine->strength,
+                            $medicine->medicineUnit->name ?? 'N/A',
+                            $medicine->is_active ? 'Active' : 'Inactive',
+                            $medicine->notes,
+                            $medicine->created_at->format('Y-m-d H:i:s')
+                        ]);
+                    }
+                } finally {
+                    if (isset($file)) {
+                        fclose($file);
+                    }
+                }
+            }, $filename, $headers);
+
+        } catch (\Exception $e) {
+            \Log::error('Failed to export medicines CSV: ' . $e->getMessage());
+            throw new \Exception('Failed to export medicines data');
+        }
+    }
+
+    /**
+     * Get a single medicine by ID with all relationships
+     *
+     * @param int $id Medicine ID
+     * @return Medicine
+     */
     public function getMedicine(int $id): Medicine
     {
         return Medicine::with(['profile', 'medicineType', 'medicineUnit', 'reminders.schedules.scheduleTimes'])
             ->findOrFail($id);
     }
 
+    /**
+     * Create a new medicine record with optional reminders
+     *
+     * @param array $data Medicine and reminder data
+     * @return Medicine
+     */
     public function storeMedicine(array $data): Medicine
     {
         return DB::transaction(function () use ($data) {
@@ -51,6 +133,13 @@ class MedicationService
         });
     }
 
+    /**
+     * Update an existing medicine record and its reminders
+     *
+     * @param int $id Medicine ID
+     * @param array $data Updated medicine and reminder data
+     * @return Medicine
+     */
     public function updateMedicine(int $id, array $data): Medicine
     {
         return DB::transaction(function () use ($id, $data) {
@@ -79,12 +168,25 @@ class MedicationService
         });
     }
 
+    /**
+     * Delete a medicine record
+     *
+     * @param int $id Medicine ID
+     * @return bool
+     */
     public function deleteMedicine(int $id): bool
     {
         $medicine = Medicine::findOrFail($id);
         return $medicine->delete();
     }
 
+    /**
+     * Create a new reminder for a medicine
+     *
+     * @param int $medicineId Medicine ID
+     * @param array $reminderData Reminder configuration data
+     * @return MedicineReminder
+     */
     public function createReminder(int $medicineId, array $reminderData): MedicineReminder
     {
         return DB::transaction(function () use ($medicineId, $reminderData) {
@@ -105,6 +207,13 @@ class MedicationService
         });
     }
 
+    /**
+     * Create a new schedule for a reminder
+     *
+     * @param int $reminderId Reminder ID
+     * @param array $scheduleData Schedule configuration data
+     * @return ReminderSchedule
+     */
     public function createSchedule(int $reminderId, array $scheduleData): ReminderSchedule
     {
         return DB::transaction(function () use ($reminderId, $scheduleData) {
@@ -129,6 +238,12 @@ class MedicationService
         });
     }
 
+    /**
+     * Get all active medicines for a specific profile
+     *
+     * @param int $profileId Profile ID
+     * @return Collection
+     */
     public function getMedicinesByProfile(int $profileId): Collection
     {
         return Medicine::with(['medicineType', 'medicineUnit', 'reminders.schedules.scheduleTimes'])
@@ -137,6 +252,12 @@ class MedicationService
             ->get();
     }
 
+    /**
+     * Get all active reminders optionally filtered by profile
+     *
+     * @param int|null $profileId Optional profile ID filter
+     * @return Collection
+     */
     public function getActiveReminders(int $profileId = null): Collection
     {
         $query = MedicineReminder::with(['medicine.profile', 'schedules.scheduleTimes'])

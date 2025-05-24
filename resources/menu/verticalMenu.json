@@ -65,12 +65,6 @@
           "icon": "fas fa-spinner"
         },
         {
-          "url": "admin/bs-records",
-          "name": "Blood Sugar Records",
-          "slug": "bs-records",
-          "icon": "fas fa-spinner"
-        },
-        {
           "url": "/sugar-units",
           "name": "Sugar Units",
           "slug": "sugar-units",
@@ -164,6 +158,20 @@
         }
       ]
     },
+    {
+      "name": "Blood Sugar",
+      "icon": "menu-icon fas fa-fw fa-user",
+      "slug": "layouts",
+      "submenu": [
+        {
+          "url": "/admin/bs-records",
+          "name": "Blood Sugar",
+          "slug": "bs-records",
+          "can": "role-list"
+        }
+      ]
+    },
+    
     {
       "name": "Blood Oxygen",
       "icon": "menu-icon fas fa-fw fa-user",

@@ -124,6 +124,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('medications/store', [MedicationController::class, 'store'])->name('medications.store');
     Route::delete('medications/{id}', [MedicationController::class, 'destroy'])->name('medications.destroy');
     Route::post('medications/bulk-delete', [MedicationController::class, 'bulkDelete'])->name('medications.bulk-delete');
+    Route::get('medications/bulk-export', [MedicationController::class, 'exportToCsv'])->name('medications.bulk-export');
   });
 
   Route::prefix('admin')->name('admin.')->group(function () {

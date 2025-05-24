@@ -22,13 +22,6 @@ class MedicationController extends Controller
 
     public function index(Request $request)
     {
-
-
-        // Handle export
-        // if ($request->has('export_csv')) {
-        //     return $this->exportCsv($query, $request);
-        // }
-
         $medicines = $this->medicationService->list();
         $profiles = Profile::select('id', 'name')->get();
         $medicineTypes = MedicineType::where('is_active', true)->get();
@@ -120,54 +113,6 @@ class MedicationController extends Controller
 
     private function exportCsv($query, Request $request)
     {
-        try {
-            $medicines = $query->get();
-
-            $filename = 'medicines_' . now()->format('Y_m_d_H_i_s') . '.csv';
-
-            $headers = [
-                'Content-Type' => 'text/csv',
-                'Content-Disposition' => 'attachment; filename="' . $filename . '"',
-            ];
-
-            $callback = function () use ($medicines) {
-                $file = fopen('php://output', 'w');
-
-                // CSV headers
-                fputcsv($file, [
-                    'ID',
-                    'Profile Name',
-                    'Medicine Name',
-                    'Type',
-                    'Strength',
-                    'Unit',
-                    'Status',
-                    'Notes',
-                    'Created At'
-                ]);
-
-                // CSV data
-                foreach ($medicines as $medicine) {
-                    fputcsv($file, [
-                        $medicine->id,
-                        $medicine->profile->name ?? 'N/A',
-                        $medicine->name,
-                        $medicine->medicineType->name ?? 'N/A',
-                        $medicine->strength,
-                        $medicine->medicineUnit->name ?? 'N/A',
-                        $medicine->is_active ? 'Active' : 'Inactive',
-                        $medicine->notes,
-                        $medicine->created_at->format('Y-m-d H:i:s')
-                    ]);
-                }
-
-                fclose($file);
-            };
-
-            return response()->stream($callback, 200, $headers);
-        } catch (\Exception $e) {
-            Log::error('Admin medication export failed: ' . $e->getMessage());
-            return back()->with('error', 'Failed to export medicines.');
-        }
+        return $this->medicationService->exportCsv($query);
     }
 }
