@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\Config\BsRangeController;
 use App\Http\Controllers\Admin\Config\BsRecordController;
 use App\Http\Controllers\Admin\Config\FeelingListController;
 use App\Http\Controllers\Admin\Config\HeightUnitController;
+use App\Http\Controllers\Admin\Config\MedicationController;
 use App\Http\Controllers\Admin\Config\MedicineScheduleController;
 use App\Http\Controllers\Admin\Config\MedicineTypeController;
 use App\Http\Controllers\Admin\Config\MedicineUnitController;
@@ -116,30 +117,39 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('bs-records/bulk-export', [BsRecordController::class, 'exportToCsv'])->name('bs-records.bulk-export');
   });
 
-    Route::prefix('admin')->name('admin.')->group(function () {
-        // Heart Rate Routes
-        Route::get('heart-rates', [HeartRateController::class, 'index'])->name('heart-rates.index');
-        Route::delete('heart-rates/{id}', [HeartRateController::class, 'destroy'])->name('heart-rates.destroy');
-        Route::post('heart-rates/bulk-delete', [HeartRateController::class, 'bulkDelete'])->name('heart-rates.bulk-delete');
+  // Medication Routes
+  Route::prefix('admin')->name('admin.')->group(function () {
+    Route::get('medications', [MedicationController::class, 'index'])->name('medications.index');
+    Route::get('medications/{medicine}', [MedicationController::class, 'show'])->name('medications.show')->where('medicine', '[0-9]+');
+    Route::post('medications/store', [MedicationController::class, 'store'])->name('medications.store');
+    Route::delete('medications/{id}', [MedicationController::class, 'destroy'])->name('medications.destroy');
+    Route::post('medications/bulk-delete', [MedicationController::class, 'bulkDelete'])->name('medications.bulk-delete');
+  });
 
-        // Blood Oxygen Routes
-        Route::resource('blood-oxygens', BloodOxygenController::class)->only(['index', 'destroy']);
-        Route::group(['prefix' => 'blood-oxygens', 'as' => 'blood-oxygens.', 'controller' => BloodOxygenController::class], function () {
-            Route::post('bulk-delete', 'bulkDelete')->name('bulk-delete');
-        });
+  Route::prefix('admin')->name('admin.')->group(function () {
+    // Heart Rate Routes
+    Route::get('heart-rates', [HeartRateController::class, 'index'])->name('heart-rates.index');
+    Route::delete('heart-rates/{id}', [HeartRateController::class, 'destroy'])->name('heart-rates.destroy');
+    Route::post('heart-rates/bulk-delete', [HeartRateController::class, 'bulkDelete'])->name('heart-rates.bulk-delete');
 
-        // Blood Pressure Routes
-        Route::resource('blood-pressures', BloodPressureController::class)->only(['index', 'destroy']);
-        Route::group(['prefix' => 'blood-pressures', 'as' => 'blood-pressures.', 'controller' => BloodPressureController::class], function () {
-            Route::post('bulk-delete', 'bulkDelete')->name('bulk-delete');
-        });
-
-        // Hydration Routes
-        Route::resource('hydration-reminders', HydrationReminderController::class)->only(['index', 'destroy']);
-        Route::group(['prefix' => 'hydration-reminders', 'as' => 'hydration-reminders.', 'controller' => HydrationReminderController::class], function () {
-            Route::post('bulk-delete', 'bulkDelete')->name('bulk-delete');
-        });
+    // Blood Oxygen Routes
+    Route::resource('blood-oxygens', BloodOxygenController::class)->only(['index', 'destroy']);
+    Route::group(['prefix' => 'blood-oxygens', 'as' => 'blood-oxygens.', 'controller' => BloodOxygenController::class], function () {
+      Route::post('bulk-delete', 'bulkDelete')->name('bulk-delete');
     });
+
+    // Blood Pressure Routes
+    Route::resource('blood-pressures', BloodPressureController::class)->only(['index', 'destroy']);
+    Route::group(['prefix' => 'blood-pressures', 'as' => 'blood-pressures.', 'controller' => BloodPressureController::class], function () {
+      Route::post('bulk-delete', 'bulkDelete')->name('bulk-delete');
+    });
+
+    // Hydration Routes
+    Route::resource('hydration-reminders', HydrationReminderController::class)->only(['index', 'destroy']);
+    Route::group(['prefix' => 'hydration-reminders', 'as' => 'hydration-reminders.', 'controller' => HydrationReminderController::class], function () {
+      Route::post('bulk-delete', 'bulkDelete')->name('bulk-delete');
+    });
+  });
   Route::post('/admin/upload-image', [App\Http\Controllers\Admin\ImageUploadController::class, 'upload'])->name('admin.upload.image');
 
 });

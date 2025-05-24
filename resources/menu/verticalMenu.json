@@ -53,6 +53,12 @@
           "icon": "fas fa-spinner"
         },
         {
+          "url": "admin/medications",
+          "name": "Medications",
+          "slug": "medications",
+          "icon": "fas fa-spinner"
+        },
+        {
           "url": "/bp-units",
           "name": "BP units",
           "slug": "logingInfo-customerLoging-Log",

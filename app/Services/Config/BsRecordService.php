@@ -37,7 +37,7 @@ class BsRecordService
                 ->when($profileId, function ($query) use ($profileId) {
                     $query->where('profile_id', $profileId);
                 })
-                ->paginate(15)
+                ->paginate(request()->get('per_page', 15))
         );
     }
 
