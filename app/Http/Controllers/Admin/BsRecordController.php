@@ -1,17 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Config;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreBloodSugerRequest;
-use App\Models\BsMeasurementType;
-use App\Models\BsRecord;
+use App\Http\Requests\BsRecord\StoreBsRecordRequest;
 use App\Models\Profile;
-use App\Models\User;
 use App\Services\Config\BsRecordService;
 use Illuminate\Http\Request;
-use Exception;
-use App\Helpers\ApiResponse;
 
 class BsRecordController extends Controller
 {
@@ -33,7 +28,7 @@ class BsRecordController extends Controller
     /**
      * Create new blood sugar record
      */
-    public function store(StoreBloodSugerRequest $request)
+    public function store(StoreBsRecordRequest $request)
     {
         $this->bsRecordService->create($request->validated());
 

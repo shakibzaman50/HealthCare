@@ -6,7 +6,7 @@ use App\Http\Controllers\Admin\Config\ActivityLevelController;
 use App\Http\Controllers\Admin\Config\BlogController;
 use App\Http\Controllers\Admin\Config\BsMeasurementTypeController;
 use App\Http\Controllers\Admin\Config\BsRangeController;
-use App\Http\Controllers\Admin\Config\BsRecordController;
+use App\Http\Controllers\Admin\BsRecordController;
 use App\Http\Controllers\Admin\Config\FeelingListController;
 use App\Http\Controllers\Admin\Config\HeightUnitController;
 use App\Http\Controllers\Admin\Config\MedicineScheduleController;

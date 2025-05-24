@@ -25,7 +25,7 @@ class BsRecordService
     {
         return new BsRecordCollection(
             QueryBuilder::for(BsRecord::class)
-                ->with(['profile', 'sugarSchedule', 'sugarUnit'])
+                ->with(['sugarSchedule', 'sugarUnit'])
                 ->allowedFilters([
                     'profile_id',
                     AllowedFilter::callback('date', function ($query, $value) {
@@ -34,6 +34,9 @@ class BsRecordService
                         $query->whereBetween('measured_at', [$startDate, $endDate]);
                     })
                 ])
+                ->when(!request()->has('filter[date]'), function ($query) {
+                    $query->whereBetween('measured_at', [Carbon::now()->subDays(6)->startOfDay(), Carbon::now()->endOfDay()->addDay()]);
+                })
                 ->when($profileId, function ($query) use ($profileId) {
                     $query->where('profile_id', $profileId);
                 })
@@ -84,21 +87,29 @@ class BsRecordService
         }
     }
 
+    function getStatistics($profileId)
+    {
+        return new BsRecordResource(BsRecord::where('profile_id', $profileId)
+        ->when(request()->has('last_week_avg'), function ($query) {
+            $query->whereBetween('measured_at', [Carbon::now()->subDays(7)->startOfDay(), Carbon::now()->endOfDay()->addDay()]);
+        })
+        ->when(request()->has('last_record'), function ($query) {
+            $query->orderBy('measured_at', 'desc')->first();
+        })
+        ->first());
+    }
+
     /**
      * Export blood sugar records to CSV
      *
      * @param array|null $selectedIds Array of record IDs to export, null for all records
      * @return string CSV content
      */
-    public function exportToCsv(string $selectedIds = null)
+    public function exportToCsv(string $from_date, string $to_date, string $file = 'pdf')
     {
-        $query = BsRecord::with(['profile', 'sugarSchedule', 'sugarUnit']);
-
-        if ($selectedIds) {
-            $query->whereIn('id', [$selectedIds]);
-        }
-
-        $records = $query->get();
+        $records = BsRecord::with(['profile', 'sugarSchedule', 'sugarUnit'])
+        ->whereBetween('measured_at', [Carbon::parse($from_date)->format('Y-m-d'), Carbon::parse($to_date)->addDay()->format('Y-m-d')])
+        ->get();
 
         $csvHeader = [
             'ID',
@@ -123,19 +134,28 @@ class BsRecordService
             ];
         }
 
-        $output = fopen('php://temp', 'r+');
-        fputcsv($output, $csvHeader);
+        if ($file == '2') { // CSV
+            $output = fopen('php://temp', 'r+');
+            fputcsv($output, $csvHeader);
 
-        foreach ($csvData as $row) {
-            fputcsv($output, $row);
+            foreach ($csvData as $row) {
+                fputcsv($output, $row);
+            }
+
+            rewind($output);
+            $csv = stream_get_contents($output);
+            fclose($output);
+
+            return response()->streamDownload(function () use ($csv) {
+                echo $csv;
+            }, 'blood_sugar_records.csv');
+        } else { // PDF
+            // $pdf = PDF::loadView('exports.blood-sugar-records', [
+            //     'header' => $csvHeader,
+            //     'data' => $csvData
+            // ]);
+            return "Working on it pdf"; // TODO: Implement PDF export
+            // return $pdf->download('blood_sugar_records.pdf');
         }
-
-        rewind($output);
-        $csv = stream_get_contents($output);
-        fclose($output);
-
-        return response()->streamDownload(function () use ($csv) {
-            echo $csv;
-        }, 'blood_sugar_records.csv');
     }
 }

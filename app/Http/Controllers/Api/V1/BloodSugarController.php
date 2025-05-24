@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\BsRecord\StoreBsRecordRequest;
 use App\Http\Requests\StoreBloodSugerRequest;
 use App\Services\Config\BsRecordService;
 use Illuminate\Http\Request;
@@ -26,8 +27,8 @@ class BloodSugarController extends Controller
     /**
      * Get paginated list of blood sugar records
      * 
-     * @param Request $request The incoming request
-     * @return \Illuminate\Http\Response
+     * @param int $profileId The profile ID to fetch records for
+     * @return \Illuminate\Http\Response JSON response with blood sugar records
      */
     public function index($profileId)
     {
@@ -43,10 +44,10 @@ class BloodSugarController extends Controller
     /**
      * Store a new blood sugar record
      * 
-     * @param StoreBloodSugerRequest $request The validated request
-     * @return \Illuminate\Http\Response
+     * @param StoreBsRecordRequest $request The validated request containing blood sugar data
+     * @return \Illuminate\Http\Response JSON response with created record
      */
-    public function store(StoreBloodSugerRequest $request)
+    public function store(StoreBsRecordRequest $request)
     {
         return ApiResponse::response(
             true,
@@ -57,6 +58,28 @@ class BloodSugarController extends Controller
         );
     }
 
+    /**
+     * Get statistics for blood sugar records
+     * 
+     * @param int $profileId The profile ID to get statistics for
+     * @return \Illuminate\Http\Response JSON response with blood sugar statistics
+     */
+    public function getStatistics($profileId)
+    {
+        return ApiResponse::response(
+            true,
+            'Blood sugar statistics fetched successfully',
+            $this->bsRecordService->getStatistics($profileId),
+        );
+    }
+    
+    /**
+     * Delete a blood sugar record
+     * 
+     * @param int $profile_id The profile ID the record belongs to
+     * @param int $id The ID of the record to delete
+     * @return \Illuminate\Http\Response JSON response indicating success
+     */
     public function destroy($profile_id, $id)
     {
         return ApiResponse::response(
@@ -68,8 +91,23 @@ class BloodSugarController extends Controller
         );
     }
 
+    /**
+     * Export blood sugar records to CSV or PDF
+     * 
+     * @param Request $request Request containing export parameters
+     * @return mixed CSV/PDF file download response
+     * 
+     * @throws \Illuminate\Validation\ValidationException When validation fails
+     */
     public function exportToCsv(Request $request)
     {
-        return $this->bsRecordService->exportToCsv($request->ids);
+        $validated = $request->validate([
+            'from_date' => 'required|date',
+            'to_date' => 'required|date', 
+            'file' => 'required|in:1,2',
+        ],[
+            'file.in' => 'The file field must be either pdf (1) or csv (2).',
+        ]);
+        return $this->bsRecordService->exportToCsv($validated['from_date'], $validated['to_date'], $validated['file']);
     }
 }

@@ -59,12 +59,6 @@
           "icon": "fas fa-spinner"
         },
         {
-          "url": "admin/bs-records",
-          "name": "Blood Sugar Records",
-          "slug": "bs-records",
-          "icon": "fas fa-spinner"
-        },
-        {
           "url": "/sugar-units",
           "name": "Sugar Units",
           "slug": "sugar-units",
@@ -180,6 +174,19 @@
           "url": "/admin/hydration-reminders",
           "name": "Hydration Reminder",
           "slug": "hydration-reminder",
+          "can": "role-list"
+        }
+      ]
+    },
+    {
+      "name": "BS Records",
+      "icon": "menu-icon fas fa-fw fa-tint",
+      "slug": "layouts",
+      "submenu": [
+        {
+          "url": "/admin/bs-records",
+          "name": "BS Records",
+          "slug": "bs-records",
           "can": "role-list"
         }
       ]

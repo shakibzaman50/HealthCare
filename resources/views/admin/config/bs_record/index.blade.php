@@ -235,9 +235,15 @@
                         </tbody>
                     </table>
                 </div>
-
-                <div class="mt-4">
-                    {{ $bsRecords->links() }}
+                <div class="d-flex justify-content-between align-items-center mt-4 px-3">
+                    <div class="text-muted">
+                        <span class="fw-semibold">{{ $bsRecords->total() }}</span> total results | 
+                        Showing <span class="fw-semibold">{{ $bsRecords->firstItem() ?? 0 }}</span> to 
+                        <span class="fw-semibold">{{ $bsRecords->lastItem() ?? 0 }}</span>
+                    </div>
+                    <div class="pagination-container">
+                        {{ $bsRecords->appends(request()->query())->links('pagination::bootstrap-5') }}
+                    </div>
                 </div>
             </div>
         </div>

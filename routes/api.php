@@ -55,6 +55,7 @@ Route::group([
 
     // Blood Sugar Routes
     Route::apiResource('bs-records', BloodSugarController::class)->only(['index', 'store', 'destroy']);
-    Route::get('bs-records/bulk-export', [BloodSugarController::class, 'exportToCsv']);
+    Route::get('bs-records/statistics', [BloodSugarController::class, 'getStatistics']);
+    Route::post('bs-records/bulk-export', [BloodSugarController::class, 'exportToCsv']);
 });
 

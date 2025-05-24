@@ -21,7 +21,6 @@ class BsRecordResource extends JsonResource
             'status' => $this->status,
             'measured_at' => $this->measured_at->format('Y-m-d H:i:s'),
             // Include relationships if needed
-            'profile' => new ProfileResource($this->whenLoaded('profile')),
             'sugar_schedule' => new SugarScheduleResource($this->whenLoaded('sugarSchedule')),
             'sugar_unit' => new SugarUnitResource($this->whenLoaded('sugarUnit')),
         ];
