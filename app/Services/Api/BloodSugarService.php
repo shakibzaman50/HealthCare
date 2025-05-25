@@ -2,9 +2,12 @@
 
 namespace App\Services\Api;
 
+use App\Helpers\BloodSugarStatus;
 use App\Http\Resources\BloodSugar\BloodSugarCollection;
 use App\Http\Resources\BloodSugar\BloodSugarResource;
 use App\Models\BloodSugar;
+use App\Models\SugarSchedule;
+use App\Models\SugarUnit;
 use Carbon\Carbon;
 use Exception;
 use Spatie\QueryBuilder\AllowedFilter;
@@ -42,6 +45,16 @@ class BloodSugarService
                 })
                 ->paginate(15)
         );
+    }
+
+    function units()
+    {
+        return SugarUnit::select('id', 'name')->get();
+    }
+
+    function sugarSchedules()
+    {
+        return SugarSchedule::select('id', 'name')->get();
     }
 
     /**
@@ -97,6 +110,19 @@ class BloodSugarService
             $query->orderBy('measured_at', 'desc')->first();
         })
         ->first());
+    }
+
+    function rangeGuideline($data)
+    {
+        return [
+            'status' => BloodSugarStatus::check(
+                value : $data['value'],
+                scheduleId : $data['sugar_schedule_id'],
+                unitId : $data['unit_id']
+            ),
+            'schedule' => SugarSchedule::find($data['sugar_schedule_id'])->name,
+            'unit' => SugarUnit::find($data['unit_id'])->name,
+        ];
     }
 
     /**
@@ -207,5 +233,54 @@ class BloodSugarService
     public function bulkDelete(array $selectedIds)
     {
         return BloodSugar::whereIn('id', $selectedIds)->delete();
+    }
+
+    public function statistics($data)
+    {
+        $sugarSchedules = SugarSchedule::query()->get();
+        // return last week average
+        $lastWeekAvg = [];
+        if(array_key_exists('last_week_avg', $data)){
+            $sugarSchedules->each(function($schedule) use (&$lastWeekAvg){
+                // Get distinct units used for this schedule
+                $units = BloodSugar::where('sugar_schedule_id', $schedule->id)
+                    ->whereBetween('measured_at', [Carbon::now()->subDays(7)->startOfDay(), Carbon::now()->endOfDay()])
+                    ->select('sugar_unit_id')
+                    ->distinct()
+                    ->get();
+                
+                // Calculate average for each unit within this schedule
+                foreach ($units as $unit) {
+                    $bloodSugar = BloodSugar::where('sugar_schedule_id', $schedule->id)
+                        ->where('sugar_unit_id', $unit->sugar_unit_id)
+                        ->whereBetween('measured_at', [Carbon::now()->subDays(7)->startOfDay(), Carbon::now()->endOfDay()]);
+                    
+                    if($bloodSugar->count() > 0){
+                        $lastWeekAvg[] = [
+                            'value' => $bloodSugar->avg('value'),
+                            'unit' => $bloodSugar->first()->sugarUnit->name,
+                            'schedule' => $schedule->name,
+                        ];
+                    }
+                }
+            });
+        }
+
+        // return last record
+        $lastRecord = [];
+        if(array_key_exists('last_record', $data)){
+            $sugarSchedules->each(function($schedule) use (&$lastRecord){
+                $lastRecord[] = [
+                    'value' => BloodSugar::orderBy('measured_at', 'desc')->first()->value,
+                    'unit' => BloodSugar::orderBy('measured_at', 'desc')->first()->sugarUnit->name,
+                    'schedule' => $schedule->name,
+                ];
+            });
+        }
+
+        return [
+            'last_week_avg' => $lastWeekAvg,
+            'last_record' => $lastRecord,
+        ];
     }
 }

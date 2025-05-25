@@ -40,6 +40,24 @@ class BloodSugarController extends Controller
         );
     }
 
+    public function units()
+    {
+        return ApiResponse::response(
+            true,
+            'Blood sugar units fetched successfully',
+            $this->bloodSugarService->units(),
+        );
+    }
+
+    public function sugarSchedules()
+    {
+        return ApiResponse::response(
+            true,
+            'Blood sugar schedules fetched successfully',
+            $this->bloodSugarService->sugarSchedules(),
+        );
+    }
+
     /**
      * Store a new blood sugar record
      * 
@@ -90,6 +108,19 @@ class BloodSugarController extends Controller
         );
     }
 
+    public function rangeGuideline(Request $request)
+    {
+        return ApiResponse::response(
+            true,
+            'Blood sugar range guideline fetched successfully',
+            $this->bloodSugarService->rangeGuideline($request->validate([
+                'value' => 'required|numeric',
+                'unit_id' => 'required|exists:sugar_units,id',
+                'sugar_schedule_id' => 'required|exists:sugar_schedules,id',
+            ])),
+        );
+    }
+
     /**
      * Export blood sugar records to CSV or PDF
      * 
@@ -108,5 +139,21 @@ class BloodSugarController extends Controller
             'file.in' => 'The file field must be either pdf or csv.',
         ]);
         return $this->bloodSugarService->export($validated);
+    }
+
+    public function statistics(Request $request)
+    {
+        return ApiResponse::response(
+            true,
+            'Blood sugar statistics fetched successfully',
+            $this->bloodSugarService->statistics(
+
+                $request->validate([
+                    'last_week_avg' => 'required_unless:last_record,true',
+                    'last_record' => 'required_unless:last_week_avg,true',
+                ])
+
+            ),
+        );
     }
 }

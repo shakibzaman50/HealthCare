@@ -12,13 +12,12 @@ class BloodSugarStatus
     /**
      * Get blood sugar status based on value, schedule and unit
      * @param float $value Blood sugar value
-     * @param string $schedule Schedule type (Fasting, After Eating, 2Hr After Eating)
-     * @param string $unit Unit of measurement (mg/dL or mmol/L)
-     * @return string Status classification
+     * @param int $scheduleId Schedule ID (1: Fasting, 2: After Eating, 3: 2Hr After Eating)
+     * @param int $unitId Unit ID of measurement (1: mg/dL, 2: mmol/L)
+     * @return array Status classification with category and range
      */
-    public static function check($value, $scheduleId, $unitId)
+    public static function check(float $value, int $scheduleId, int $unitId)
     {
-    
         if ($scheduleId === 1) {
             return self::fasting($value, $unitId);
         } elseif ($scheduleId === 2) {
@@ -26,43 +25,76 @@ class BloodSugarStatus
         } elseif ($scheduleId === 3) {
             return self::twoHoursAfterEating($value, $unitId);
         } else {
-            return "Doesn't match any schedule";
+            return [
+                'category' => "Doesn't match any schedule",
+                'range' => "Unknown"
+            ];
         }
     }
 
     /**
      * Get blood sugar status for fasting schedule
      * @param float $value Blood sugar value
-     * @param string $unit Unit of measurement (mg/dL or mmol/L)
-     * @return string Status classification
+     * @param int $unitId Unit ID of measurement (1: mg/dL, 2: mmol/L)
+     * @return array Status classification with category and range
      */
     public static function fasting($value, $unitId)
     {
         if ($unitId === 1) {
             if ($value < 80) {
-                return "Low Sugar";
+                return [
+                    'category' => "Low Sugar",
+                    'range' => "<80",
+                ];
             } elseif ($value >= 80 && $value <= 100) {
-                return "Normal";
+                return [
+                    'category' => "Normal",
+                    'range' => "80-100",
+                ];
             } elseif ($value >= 101 && $value <= 125) {
-                return "Impaired Glucose";
+                return [
+                    'category' => "Impaired Glucose",
+                    'range' => "101-125",
+                ];
             } elseif ($value >= 126) {
-                return "Diabetic";
+                return [
+                    'category' => "Diabetic",
+                    'range' => "126+",
+                ];
             } else {
-                return "Doesn't match any status";
+                return [
+                    'category' => "Doesn't match any status",
+                    'range' => "Unknown",
+                ];
             }
         }
 
         if ($unitId === 2) {
-            if ($value < 5.6) {
-                return "Low Sugar";
+            if ($value < 4.4) {
+                return [
+                    'category' => "Low Sugar",
+                    'range' => "<4.4",
+                ];
+            } elseif ($value >= 4.4 && $value <= 5.5) {
+                return [
+                    'category' => "Normal",
+                    'range' => "4.4-5.5",
+                ];
             } elseif ($value >= 5.6 && $value <= 7.0) {
-                return "Normal";
-            } elseif ($value >= 7.0 && $value <= 7.8) {
-                return "Impaired Glucose";
-            } elseif ($value > 7.8) {
-                return "Diabetic";
+                return [
+                    'category' => "Impaired Glucose",
+                    'range' => "5.6-7.0",
+                ];
+            } elseif ($value > 7.0) {
+                return [
+                    'category' => "Diabetic",
+                    'range' => ">7.0",
+                ];
             } else {
-                return "Doesn't match any status";
+                return [
+                    'category' => "Doesn't match any status",
+                    'range' => "Unknown",
+                ];
             }
         }
     }
@@ -70,34 +102,66 @@ class BloodSugarStatus
     /**
      * Get blood sugar status immediately after eating
      * @param float $value Blood sugar value
-     * @param string $unit Unit of measurement (mg/dL or mmol/L)
-     * @return string Status classification
+     * @param int $unitId Unit ID of measurement (1: mg/dL, 2: mmol/L)
+     * @return array Status classification with category and range
      */
     public static function afterEating($value, $unitId)
     {
         if ($unitId === 1) {
             if ($value < 170) {
-                return "Low Sugar";
+                return [
+                    'category' => "Low Sugar",
+                    'range' => "<170",
+                ];
             } elseif ($value >= 170 && $value <= 200) {
-                return "Normal";
+                return [
+                    'category' => "Normal",
+                    'range' => "170-200",
+                ];
             } elseif ($value >= 190 && $value <= 230) {
-                return "Impaired Glucose";
+                return [
+                    'category' => "Impaired Glucose",
+                    'range' => "190-230",
+                ];
             } elseif ($value > 220) {
-                return "Diabetic";
+                return [
+                    'category' => "Diabetic",
+                    'range' => "220-300",
+                ];
             } else {
-                return "Doesn't match any status";
+                return [
+                    'category' => "Doesn't match any status",
+                    'range' => "Unknown",
+                ];
             }
         }
 
         if ($unitId === 2) {
-            if ($value < 7.8) {
-                return "Low Sugar";
+            if ($value < 9.4) {
+                return [
+                    'category' => "Low Sugar",
+                    'range' => "<9.4",
+                ];
             } elseif ($value >= 7.8 && $value <= 11.1) {
-                return "Normal";
+                return [
+                    'category' => "Normal",
+                    'range' => "7.8-11.1",
+                ];
+            } elseif ($value >= 10.5 && $value <= 12.8) {
+                return [
+                    'category' => "Impaired Glucose",
+                    'range' => "10.5-12.8",
+                ];
             } elseif ($value > 11.1) {
-                return "Diabetic";
+                return [
+                    'category' => "Diabetic",
+                    'range' => ">11.1",
+                ];
             } else {
-                return "Doesn't match any status";
+                return [
+                    'category' => "Doesn't match any status",
+                    'range' => "Unknown",
+                ];
             }
         }
     }
@@ -105,36 +169,66 @@ class BloodSugarStatus
     /**
      * Get blood sugar status 2 hours after eating
      * @param float $value Blood sugar value
-     * @param string $unit Unit of measurement (mg/dL or mmol/L)
-     * @return string Status classification
+     * @param int $unitId Unit ID of measurement (1: mg/dL, 2: mmol/L)
+     * @return array Status classification with category and range
      */
-    public static function twoHoursAfterEating($value, $unit)
+    public static function twoHoursAfterEating($value, $unitId)
     {
-        if ($unit === 1) {
+        if ($unitId === 1) {
             if ($value < 120) {
-                return "Low Sugar";
+                return [
+                    'category' => "Low Sugar",
+                    'range' => "<120",
+                ];
             } elseif ($value >= 120 && $value <= 140) {
-                return "Normal";
+                return [
+                    'category' => "Normal",
+                    'range' => "120-140",
+                ];
             } elseif ($value > 140 && $value <= 160) {
-                return "Impaired Glucose";
+                return [
+                    'category' => "Impaired Glucose",
+                    'range' => "140-160",
+                ];
             } elseif ($value > 160) {
-                return "Diabetic";
+                return [
+                    'category' => "Diabetic",
+                    'range' => ">160",
+                ];
             } else {
-                return "Doesn't match any status";
+                return [
+                    'category' => "Doesn't match any status",
+                    'range' => "Unknown",
+                ];
             }
         }
 
-        if ($unit === 2) {
+        if ($unitId === 2) {
             if ($value < 6.7) {
-                return "Low Sugar";
+                return [
+                    'category' => "Low Sugar",
+                    'range' => "<6.7",
+                ];
             } elseif ($value >= 6.7 && $value <= 7.8) {
-                return "Normal";
-            } elseif ($value > 7.8 && $value <= 11.1) {
-                return "Impaired Glucose";
+                return [
+                    'category' => "Normal",
+                    'range' => "6.7-7.8",
+                ];
+            } elseif ($value > 7.8 && $value <= 8.9) {
+                return [
+                    'category' => "Impaired Glucose",
+                    'range' => "7.8-8.9",
+                ];
             } elseif ($value > 11.1) {
-                return "Diabetic";
+                return [
+                    'category' => "Diabetic",
+                    'range' => ">11.1",
+                ];
             } else {
-                return "Doesn't match any status";
+                return [
+                    'category' => "Doesn't match any status",
+                    'range' => "Unknown",
+                ];
             }
         }
     }

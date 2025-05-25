@@ -56,8 +56,12 @@ Route::group([
         // Blood Sugar Routes
     Route::apiResource('blood-sugars', BloodSugarController::class)->only(['index', 'store', 'destroy']);
     Route::group(['prefix' => 'blood-sugars'], function () {
+        Route::get('units', [BloodSugarController::class, 'units']);
+        Route::get('sugar-schedules', [BloodSugarController::class, 'sugarSchedules']);
+        Route::post('range-guideline', [BloodSugarController::class, 'rangeGuideline']);
         Route::get('statistics', [BloodSugarController::class, 'getStatistics']);
         Route::post('bulk-export', [BloodSugarController::class, 'exportToCsv']);
+        Route::post('statistics', [BloodSugarController::class, 'statistics']);
     });
 });
 
