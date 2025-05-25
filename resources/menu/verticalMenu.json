@@ -153,6 +153,19 @@
       ]
     },
     {
+      "name": "Blood Sugar",
+      "icon": "menu-icon fas fa-fw fa-tint",
+      "slug": "layouts",
+      "submenu": [
+        {
+          "url": "/admin/blood-sugars",
+          "name": "Blood Sugar",
+          "slug": "blood-sugar",
+          "can": "role-list"
+        }
+      ]
+    },
+    {
       "name": "Blood Oxygen",
       "icon": "menu-icon fas fa-fw fa-user",
       "slug": "layouts",

@@ -17,6 +17,7 @@ use App\Http\Controllers\Admin\HydrationReminderController;
 use App\Http\Controllers\GlobalSettingsController;
 
 use App\Http\Controllers\ActivityLogController;
+use App\Http\Controllers\Admin\BloodSugarController;
 use App\Http\Controllers\Admin\HomeController;
 use App\Http\Controllers\Admin\MigrationController;
 use App\Http\Controllers\Admin\ProfileController;
@@ -119,6 +120,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::resource('hydration-reminders', HydrationReminderController::class)->only(['index', 'destroy']);
         Route::group(['prefix' => 'hydration-reminders', 'as' => 'hydration-reminders.', 'controller' => HydrationReminderController::class], function () {
             Route::post('bulk-delete', 'bulkDelete')->name('bulk-delete');
+        });
+
+        // Blood Sugar Routes
+        Route::resource('blood-sugars', BloodSugarController::class)->only(['index', 'destroy']);
+        Route::group(['prefix' => 'blood-sugars', 'as' => 'blood-sugars.', 'controller' => BloodSugarController::class], function () {
+            Route::post('bulk-delete', 'bulkDelete')->name('bulk-delete');
+            Route::get('bulk-export', 'exportToCsv')->name('bulk-export');
         });
     });
   Route::post('/admin/upload-image', [App\Http\Controllers\Admin\ImageUploadController::class, 'upload'])->name('admin.upload.image');

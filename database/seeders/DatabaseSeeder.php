@@ -28,7 +28,8 @@ class DatabaseSeeder extends Seeder
             MedicineScheduleSeeder::class,
             HeartRateUnitSeeder::class,
             BPUnitSeeder::class,
-            PhysicalConditionSeeder::class,
+            PhysicalConditionSeeder::class, 
+            BloodSugarSeeder::class,
         ]);
     }
 }
