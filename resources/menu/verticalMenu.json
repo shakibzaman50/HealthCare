@@ -179,13 +179,13 @@
       ]
     },
     {
-      "name": "BS Records",
+      "name": "Blood Sugar",
       "icon": "menu-icon fas fa-fw fa-tint",
       "slug": "layouts",
       "submenu": [
         {
           "url": "/admin/bs-records",
-          "name": "BS Records",
+          "name": "Blood Sugar",
           "slug": "bs-records",
           "can": "role-list"
         }

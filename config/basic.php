@@ -2,7 +2,7 @@
 
 return [
     'status' => [
-        'active' => 1,
+        'active'   => 1,
         'inactive' => 0,
     ],
 

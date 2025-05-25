@@ -13,7 +13,7 @@ Route::prefix('v1')
 
 
 Route::group([
-    'prefix' => 'v1/{profile_id}',
+    'prefix'     => 'v1/{profile_id}',
     'middleware' => [
         'api',
         'auth:api',
@@ -21,7 +21,7 @@ Route::group([
     ]
 ], function () {
     // Heart Rate Routes
-    Route::apiResource('heart-rates', HeartRateController::class)->only(['index', 'store', 'destroy']);
+    Route::apiResource('heart-rates', HeartRateController::class)->only(['index','store', 'destroy']);
     Route::group(['prefix' => 'heart-rates', 'controller' => HeartRateController::class], function () {
         Route::get('last-week-average', 'lastWeekAverage');
         Route::post('chart-data', 'chartData');
@@ -29,7 +29,7 @@ Route::group([
         Route::post('export', 'export');
     });
     // Heart Rate Routes
-    Route::apiResource('blood-pressures', BloodPressureController::class)->only(['index', 'store', 'destroy']);
+    Route::apiResource('blood-pressures', BloodPressureController::class)->only(['index','store', 'destroy']);
     Route::group(['prefix' => 'blood-pressures', 'controller' => BloodPressureController::class], function () {
         Route::get('last-week-average', 'lastWeekAverage');
         Route::post('chart-data', 'chartData');
@@ -37,7 +37,7 @@ Route::group([
         Route::post('export', 'export');
     });
     // Heart Rate Routes
-    Route::apiResource('blood-oxygens', BloodOxygenController::class)->only(['index', 'store', 'destroy']);
+    Route::apiResource('blood-oxygens', BloodOxygenController::class)->only(['index','store', 'destroy']);
     Route::group(['prefix' => 'blood-oxygens', 'controller' => BloodOxygenController::class], function () {
         Route::get('last-week-average', 'lastWeekAverage');
         Route::post('chart-data', 'chartData');
@@ -45,7 +45,7 @@ Route::group([
         Route::post('export', 'export');
     });
     // Heart Rate Routes
-    Route::apiResource('hydration-reminders', HydrationReminderController::class)->only(['index', 'store', 'destroy']);
+    Route::apiResource('hydration-reminders', HydrationReminderController::class)->only(['index','store', 'destroy']);
     Route::group(['prefix' => 'hydration-reminders', 'controller' => HydrationReminderController::class], function () {
         Route::get('last-week-average', 'lastWeekAverage');
         Route::post('chart-data', 'chartData');

@@ -2,9 +2,8 @@
 
 namespace App\Http\Resources\BsRecord;
 
-use App\Http\Resources\SugarScheduleResource;
-use App\Http\Resources\SugarUnitResource;
-use App\Http\Resources\User\ProfileResource;
+use App\Http\Resources\BsRecord\SugarScheduleResource;
+use App\Http\Resources\BsRecord\SugarUnitResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
