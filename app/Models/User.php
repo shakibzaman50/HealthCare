@@ -61,8 +61,8 @@ class User extends Authenticatable
         return $this->belongsTo(RoleController::class, 'type', 'id');
     }
 
-    public function profile()
+    public function profiles()
     {
-        return $this->hasOne(Profile::class);
+        return $this->hasMany(Profile::class);
     }
 }

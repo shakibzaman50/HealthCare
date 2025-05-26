@@ -68,13 +68,14 @@ class AuthService
             ];
         }
 
-        if ($user->status == 0) {
+        if ($user->status != config('app.user_status.active')) {
             return [
                 'code' => 403,
-                'message' => 'This account is inactive.',
+                'message' => 'Your account is not active. Please activate your account first.',
                 'user' => $user,
                 'token' => null,
-                'error' => 'This account is inactive.',
+                'error' => 'Account is not active',
+                'can_activate' => true
             ];
         }
 
@@ -90,7 +91,7 @@ class AuthService
 
         return [
             'code'    => 200,
-            'message' => 'Login successfully',
+            'message' => 'Login successful',
             'user'    => $user,
             'token'   => $user->createToken('Personal Access Token')->accessToken,
         ];
@@ -99,7 +100,62 @@ class AuthService
 
     public function authLogout()
     {
-        Auth::user()->token()->revoke();
-        return true;
+        try {
+            $user = Auth::user();
+            if ($user) {
+                // Revoke all tokens for the user
+                $user->tokens()->delete();
+                return [
+                    'success' => true,
+                    'message' => 'Successfully logged out',
+                    'code' => 200
+                ];
+            }
+            return [
+                'success' => false,
+                'message' => 'No authenticated user found',
+                'code' => 401
+            ];
+        } catch (\Exception $e) {
+            return [
+                'success' => false,
+                'message' => 'Logout failed',
+                'error' => $e->getMessage(),
+                'code' => 500
+            ];
+        }
+    }
+
+    /**
+     * Activate user account
+     * 
+     * @param string $email
+     * @return array
+     */
+    public function activateAccount($email)
+    {
+        $user = User::where('email', $email)
+            ->where('type', config('app.user_type.user'))
+            ->first();
+
+        if (!$user) {
+            return [
+                'success' => false,
+                'code' => 404,
+                'message' => 'User not found',
+                'error' => 'Invalid email address'
+            ];
+        }
+
+        // Update user status to active
+        $user->status = config('app.user_status.active');
+        $user->save();
+
+        return [
+            'success' => true,
+            'code' => 200,
+            'message' => 'Account activated successfully. You can now login.',
+            'user' => $user
+        ];
     }
 }
