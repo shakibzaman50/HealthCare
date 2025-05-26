@@ -32,6 +32,7 @@ Route::group([], function () {
     // Blood Pressure Routes
     Route::apiResource('blood-pressures', BloodPressureController::class)->only(['index','store', 'destroy']);
     Route::group(['prefix' => 'blood-pressures', 'controller' => BloodPressureController::class], function () {
+        Route::get('latest-record', 'latestRecord');
         Route::get('last-week-average', 'lastWeekAverage');
         Route::post('chart-data', 'chartData');
         Route::post('filter', 'filter');
@@ -51,6 +52,7 @@ Route::group([], function () {
     // Hydration Reminder Routes
     Route::apiResource('hydration-reminders', HydrationReminderController::class)->only(['index','store', 'destroy']);
     Route::group(['prefix' => 'hydration-reminders', 'controller' => HydrationReminderController::class], function () {
+        Route::get('latest-record', 'latestRecord');
         Route::get('last-week-average', 'lastWeekAverage');
         Route::post('chart-data', 'chartData');
         Route::post('filter', 'filter');

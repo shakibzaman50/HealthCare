@@ -14,6 +14,17 @@ class BloodPressureCollection extends ResourceCollection
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'data' => BloodPressureResource::collection($this->collection),
+            'meta' => [
+                'current_page' => $this->currentPage(),
+                'total' => $this->total(),
+                'per_page' => $this->perPage(),
+            ],
+            'links' => [
+                'next' => $this->nextPageUrl(),
+                'prev' => $this->previousPageUrl(),
+            ],
+        ];
     }
 }

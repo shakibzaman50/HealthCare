@@ -48,31 +48,39 @@ class BloodPressureService
         );
     }
 
-    protected function getHeartRateStatus($bpm) : string
+    protected function getHeartRateStatus(int $systolic, int $diastolic) : string
     {
         return match (true) {
-            $bpm < 60   => 'Low',
-            $bpm <= 100 => 'Normal',
-            $bpm <= 120 => 'Elevated',
-            $bpm <= 140 => 'High',
-            default     => 'Very High',
+            $systolic < 90 || $diastolic < 60 => 'Low Pressure',
+            $systolic < 120 && $diastolic < 80 => 'Normal',
+            $systolic < 130 && $diastolic < 80 => 'Elevated',
+            ($systolic >= 130 && $systolic < 140) || ($diastolic >= 80 && $diastolic < 90) => 'High BP (stage-1)',
+            ($systolic >= 140 && $systolic < 180) || ($diastolic >= 90 && $diastolic < 120) => 'High BP (stage-2)',
+            $systolic >= 180 || $diastolic >= 120 => 'Hypertensive Crisis',
+            default => 'Unclassified',
         };
     }
 
     public function lastWeekAverageRecord() : array
     {
-        $averageHeartRate = BloodPressure::where('profile_id', $this->profileId)
+        $averageSystolic = BloodPressure::where('profile_id', $this->profileId)
             ->whereDate('measured_at', '>=', Carbon::now()->subWeek())
-            ->avg('heart_rate');
+            ->avg('systolic');
 
-        if ($averageHeartRate == 0) return [];
+        $averageDiastolic = BloodPressure::where('profile_id', $this->profileId)
+            ->whereDate('measured_at', '>=', Carbon::now()->subWeek())
+            ->avg('diastolic');
 
-        $averageHeartRate = round($averageHeartRate);
-        $status = $this->getHeartRateStatus($averageHeartRate);
+        if ($averageSystolic == 0 || $averageDiastolic == 0) return [];
+
+        $averageSystolic = round($averageSystolic);
+        $averageDiastolic = round($averageDiastolic);
+        $status = $this->getHeartRateStatus($averageSystolic, $averageDiastolic);
 
         return [
-            'average_status'     => $status,
-            'average_heart_rate' => $averageHeartRate,
+            'average_status'    => $status,
+            'average_systolic'  => $averageSystolic,
+            'average_diastolic' => $averageDiastolic,
         ];
     }
 
@@ -103,13 +111,14 @@ class BloodPressureService
 
     public function store($request) : BloodPressureResource
     {
-        $status = $this->getHeartRateStatus($request->heart_rate);
+        $status = $this->getHeartRateStatus($request->systolic, $request->diastolic);
 
         return new BloodPressureResource(
             BloodPressure::create([
                 'profile_id'  => $this->profileId,
                 'unit_id'     => $request->unit_id,
-                'heart_rate'  => $request->heart_rate,
+                'systolic'    => $request->systolic,
+                'diastolic'   => $request->diastolic,
                 'status'      => $status,
                 'measured_at' => $request->measured_at,
             ])

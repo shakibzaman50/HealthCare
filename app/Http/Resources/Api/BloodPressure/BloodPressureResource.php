@@ -14,6 +14,13 @@ class BloodPressureResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'id'          => $this->id,
+            'systolic'    => $this->systolic,
+            'diastolic'   => $this->diastolic,
+            'unit'        => $this->unit?->name,
+            'status'      => $this->status,
+            'measured_at' => $this->measured_at,
+        ];
     }
 }

@@ -14,6 +14,7 @@ class BloodPressure extends Model
         'unit_id',
         'systolic',
         'diastolic',
+        'status',
         'measured_at'
     ];
 
