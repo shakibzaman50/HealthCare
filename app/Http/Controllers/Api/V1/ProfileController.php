@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Profile\ProfileRequest;
 use App\Http\Resources\Profile\ProfileCollection;
 use App\Http\Resources\Profile\ProfileResource;
-use App\Services\Profile\ProfileService;
+use App\Services\Api\Profile\ProfileService;
 use App\Helpers\ApiResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;

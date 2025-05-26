@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Api\Profile;
 
 use App\Models\Profile;
 use Illuminate\Database\Eloquent\Collection;
@@ -9,9 +9,23 @@ use Exception;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Auth\AuthManager;
 
 class ProfileService
 {
+    protected $auth;
+
+    public function __construct(AuthManager $auth)
+    {
+        $this->auth = $auth;
+    }
+
+    protected function getUserId(): ?int
+    {
+        return $this->auth->guard('api')->id();
+    }
+
     /**
      * Convert height to meters based on unit
      *
@@ -77,7 +91,8 @@ class ProfileService
      */
     public function getAllProfiles(int $perPage = 10): LengthAwarePaginator
     {
-        return Profile::with('user')->latest()->paginate($perPage);
+        info('C user', [$this->getUserId()]);
+        return Profile::where('user_id', $this->getUserId())->with('user')->latest()->paginate($perPage);
     }
 
     /**
@@ -89,7 +104,7 @@ class ProfileService
      */
     public function getProfileById(int $id): Profile
     {
-        $profile = Profile::with('user')->findOrFail($id);
+        $profile = Profile::where('user_id', $this->getUserId())->with('user')->findOrFail($id);
         if (!$profile) {
             throw new Exception('Profile not found');
         }
@@ -130,7 +145,7 @@ class ProfileService
     {
         try {
             // Set user_id from authenticated user
-            $data['user_id'] = Auth::id();
+            $data['user_id'] = $this->getUserId();
 
             // Handle avatar upload if present
             if (isset($data['avatar']) && $data['avatar'] instanceof UploadedFile) {
@@ -167,7 +182,7 @@ class ProfileService
     public function updateProfile(int $id, array $data): Profile
     {
         try {
-            $profile = Profile::findOrFail($id);
+            $profile = Profile::where('user_id', $this->getUserId())->findOrFail($id);
 
             // Handle avatar upload if present
             if (isset($data['avatar']) && $data['avatar'] instanceof UploadedFile) {
@@ -204,7 +219,7 @@ class ProfileService
     public function deleteProfile(int $id): bool
     {
         try {
-            $profile = Profile::findOrFail($id);
+            $profile = Profile::where('user_id', $this->getUserId())->findOrFail($id);
 
             // Delete avatar if exists
             if ($profile->avatar) {
