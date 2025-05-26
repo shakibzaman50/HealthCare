@@ -15,6 +15,23 @@ class UserProfileController extends Controller
         return view('admin.user-profiles.index', compact('users'));
     }
 
+    public function search(Request $request)
+    {
+        $query = $request->get('q');
+
+        $users = User::where('type', config('app.user_role.user'))
+            ->where(function ($q) use ($query) {
+                $q->where('name', 'LIKE', "%{$query}%")
+                    ->orWhere('email', 'LIKE', "%{$query}%");
+            })
+            ->with('profiles')
+            ->get();
+
+        $html = view('admin.user-profiles._table_rows', compact('users'))->render();
+
+        return response()->json(['html' => $html]);
+    }
+
     public function showProfiles(User $user)
     {
         $profiles = $user->profiles;

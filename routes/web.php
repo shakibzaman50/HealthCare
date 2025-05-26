@@ -61,6 +61,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
   // User Profiles Management Routes
   Route::prefix('user-profiles')->group(function () {
     Route::get('/', [UserProfileController::class, 'index'])->name('user-profiles.index');
+    Route::get('/search', [UserProfileController::class, 'search'])->name('user-profiles.search');
     Route::get('/{user}/profiles', [UserProfileController::class, 'showProfiles'])->name('user-profiles.show');
     Route::get('/{user}/profiles/{profile}', [UserProfileController::class, 'showProfileDetails'])->name('user-profiles.details');
   });

@@ -8,6 +8,13 @@
         <div class="card">
             <div class="card-header">
                 <h4 class="card-title">Users List</h4>
+                <div class="d-flex justify-content-end">
+                    <div class="input-group" style="max-width: 300px;">
+                        <input type="text" id="searchInput" class="form-control"
+                            placeholder="Search by name or email...">
+                        <span class="input-group-text"><i class="fas fa-search"></i></span>
+                    </div>
+                </div>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -22,31 +29,8 @@
                                 <th>Actions</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            @foreach($users as $user)
-                            <tr>
-                                <td>{{ $user->name }}</td>
-                                <td>{{ $user->email }}</td>
-                                <td>{{ $user->phone }}</td>
-                                <td>
-                                    @if($user->status == 1)
-                                    <span class="badge bg-success">Active</span>
-                                    @else
-                                    <span class="badge bg-danger">Inactive</span>
-                                    @endif
-                                </td>
-                                <td>
-                                    <span class="badge bg-primary rounded-pill">
-                                        {{ $user->profiles->count() }} Profile(s)
-                                    </span>
-                                </td>
-                                <td>
-                                    <a href="{{ route('user-profiles.show', $user) }}" class="btn btn-primary btn-sm">
-                                        View Profiles
-                                    </a>
-                                </td>
-                            </tr>
-                            @endforeach
+                        <tbody id="usersTableBody">
+                            @include('admin.user-profiles._table_rows')
                         </tbody>
                     </table>
                 </div>
@@ -54,4 +38,36 @@
         </div>
     </div>
 </div>
+<script>
+    let searchTimeout;
+    const searchInput = document.getElementById('searchInput');
+    const usersTableBody = document.getElementById('usersTableBody');
+
+    searchInput.addEventListener('input', function(e) {
+        clearTimeout(searchTimeout);
+        const searchTerm = e.target.value.trim();
+
+        searchTimeout = setTimeout(() => {
+            if (searchTerm.length >= 2) {
+                fetch(`/user-profiles/search?q=${encodeURIComponent(searchTerm)}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        usersTableBody.innerHTML = data.html;
+                    })
+                    .catch(error => console.error('Error:', error));
+            } else if (searchTerm.length === 0) {
+                // Reset to original table content
+                fetch('/user-profiles')
+                    .then(response => response.text())
+                    .then(html => {
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(html, 'text/html');
+                        const newTableBody = doc.getElementById('usersTableBody');
+                        usersTableBody.innerHTML = newTableBody.innerHTML;
+                    })
+                    .catch(error => console.error('Error:', error));
+            }
+        }, 300); // 300ms debounce
+    });
+</script>
 @endsection
