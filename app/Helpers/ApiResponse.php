@@ -2,23 +2,53 @@
 
 namespace App\Helpers;
 
+use Illuminate\Http\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
+
 class ApiResponse
 {
-    public static function response($success, $message, $data = null, $error = null, $code = 200)
-    {
+    /**
+     * Return success response
+     *
+     * @param string $message
+     * @param mixed|null $data
+     * @param int $status
+     * @return JsonResponse
+     */
+    public static function success(
+        string $message,
+        mixed $data = null,
+        int $status = Response::HTTP_OK
+    ): JsonResponse {
         return response()->json([
-            'success' => $success,
+            'success' => true,
             'message' => $message,
             'data' => $data,
-            'error' => $error,
-        ], $code);
+        ], $status);
     }
 
-    public static function serverError($error = 'Something went wrong.', $code = 500)
-    {
-        return response()->json([
+    /**
+     * Return error response
+     *
+     * @param string $message
+     * @param int $status
+     * @param mixed|null $errors
+     * @return JsonResponse
+     */
+    public static function error(
+        string $message,
+        int $status = Response::HTTP_BAD_REQUEST,
+        mixed $errors = null
+    ): JsonResponse {
+        $response = [
             'success' => false,
-            'error' => $error,
-        ], $code);
+            'message' => $message,
+        ];
+
+        if ($errors !== null) {
+            $response['errors'] = $errors;
+        }
+
+        return response()->json($response, $status);
     }
 }

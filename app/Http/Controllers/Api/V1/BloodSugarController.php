@@ -31,19 +31,15 @@ class BloodSugarController extends Controller
      */
     public function index($profileId)
     {
-        return ApiResponse::response(
-            true,
+        return ApiResponse::success(
             'Blood sugar records fetched successfully',
             $this->bloodSugarService->list($profileId),
-            null,
-            200
         );
     }
 
     public function units()
     {
-        return ApiResponse::response(
-            true,
+        return ApiResponse::success(
             'Blood sugar units fetched successfully',
             $this->bloodSugarService->units(),
         );
@@ -51,8 +47,7 @@ class BloodSugarController extends Controller
 
     public function sugarSchedules()
     {
-        return ApiResponse::response(
-            true,
+        return ApiResponse::success(
             'Blood sugar schedules fetched successfully',
             $this->bloodSugarService->sugarSchedules(),
         );
@@ -66,11 +61,9 @@ class BloodSugarController extends Controller
      */
     public function store(StoreBloodSugarRequest $request)
     {
-        return ApiResponse::response(
-            true,
+        return ApiResponse::success(
             'Blood sugar record created successfully',
             $this->bloodSugarService->create($request->validated()),
-            null,
             200
         );
     }
@@ -83,8 +76,7 @@ class BloodSugarController extends Controller
      */
     public function getStatistics($profileId)
     {
-        return ApiResponse::response(
-            true,
+        return ApiResponse::success(
             'Blood sugar statistics fetched successfully',
             $this->bloodSugarService->getStatistics($profileId),
         );
@@ -99,19 +91,15 @@ class BloodSugarController extends Controller
      */
     public function destroy($profile_id, $id)
     {
-        return ApiResponse::response(
-            true,
+        return ApiResponse::success(
             'Blood sugar record deleted successfully',
             $this->bloodSugarService->delete($id),
-            null,
-            200
         );
     }
 
     public function rangeGuideline(Request $request)
     {
-        return ApiResponse::response(
-            true,
+        return ApiResponse::success(
             'Blood sugar range guideline fetched successfully',
             $this->bloodSugarService->rangeGuideline($request->validate([
                 'value' => 'required|numeric',
@@ -138,13 +126,12 @@ class BloodSugarController extends Controller
         ],[
             'file.in' => 'The file field must be either pdf or csv.',
         ]);
-        return $this->bloodSugarService->export($validated);
+        // return $this->bloodSugarService->exportToCsv($validated);
     }
 
     public function statistics(Request $request)
     {
-        return ApiResponse::response(
-            true,
+        return ApiResponse::success(
             'Blood sugar statistics fetched successfully',
             $this->bloodSugarService->statistics(
 

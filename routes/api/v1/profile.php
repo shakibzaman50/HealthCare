@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\V1\BloodPressureController;
 use App\Http\Controllers\Api\V1\BloodSugarController;
 use App\Http\Controllers\Api\V1\HeartRateController;
 use App\Http\Controllers\Api\V1\HydrationReminderController;
+use App\Http\Controllers\Api\V1\MedicationController;
 use App\Http\Controllers\Api\V1\ProfileAssesmentController;
 use App\Http\Controllers\Api\V1\ProfileController;
 
@@ -63,5 +64,13 @@ Route::group([], function () {
         Route::get('statistics', [BloodSugarController::class, 'getStatistics']);
         Route::post('bulk-export', [BloodSugarController::class, 'exportToCsv']);
         Route::post('statistics', [BloodSugarController::class, 'statistics']);
+    });
+
+    // Medication Routes
+    Route::apiResource('medications', MedicationController::class)->only(['index', 'store', 'destroy']);
+    Route::group(['prefix' => 'medications'], function () {
+        Route::get('types', [MedicationController::class, 'types']);
+        Route::get('units', [MedicationController::class, 'units']);
+        Route::get('frequencies', [MedicationController::class, 'frequencies']);
     });
 });

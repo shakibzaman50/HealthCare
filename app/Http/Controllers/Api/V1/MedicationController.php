@@ -4,180 +4,160 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\MedicineResource;
-use App\Http\Resources\MedicineReminderResource;
+use App\Http\Resources\Medicine\MedicineResource;
+use App\Http\Resources\Medicine\MedicineCollection;
+use App\Http\Resources\Medicine\MedicineFrequencyResource;
+use App\Models\Medicine;
+use App\Models\MedicineFrequency;
+use App\Models\MedicineSchedule;
 use App\Services\Api\MedicationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
+use Symfony\Component\HttpFoundation\Response;
 
 class MedicationController extends Controller
 {
-    protected $medicationService;
-
-    public function __construct(MedicationService $medicationService)
-    {
-        $this->medicationService = $medicationService;
+    public function __construct(
+        private MedicationService $medicationService
+    ) {
+        //
     }
 
+    /**
+     * Get paginated list of medications
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function index(Request $request)
     {
-        try {
-            $profileId = $request->get('profile_id');
-            $medicines = $this->medicationService->getAllMedicines($profileId);
-
-            return ApiResponse::response(
-                true,
-                'Medicines successfully fetched.',
-                MedicineResource::collection($medicines)
-            );
-        } catch (\Exception $e) {
-            Log::error('Medicine fetch failed: ' . $e->getMessage());
-            return ApiResponse::serverError();
-        }
+        $medications = $this->medicationService->list($request->profile_id);
+        return ApiResponse::success(
+            'Medications retrieved successfully',
+            new MedicineCollection($medications)
+        );
     }
 
+    /**
+     * Store a new medication
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function store(Request $request)
     {
         try {
             $validator = Validator::make($request->all(), [
                 'profile_id' => 'required|exists:profiles,id',
+                'medicine_type_id' => 'required|exists:medicine_types,id',
+                'medicine_unit_id' => 'required|exists:medicine_units,id',
                 'name' => 'required|string|max:255',
-                'type' => 'required|exists:medicine_types,id',
-                'strength' => 'required|integer|min:1',
-                'unit' => 'required|exists:medicine_units,id',
-                'is_active' => 'boolean',
+                'strength' => 'required|integer',
                 'notes' => 'nullable|string',
-                'reminders' => 'array',
-                'reminders.*.end_date' => 'nullable|date',
-                'reminders.*.is_repeat' => 'boolean',
-                'reminders.*.till_turn_off' => 'boolean',
-                'reminders.*.schedules' => 'array',
-                'reminders.*.schedules.*.schedule_type' => 'required|string',
-                'reminders.*.schedules.*.how_many_times' => 'nullable|integer|min:1',
-                'reminders.*.schedules.*.times' => 'array',
-                'reminders.*.schedules.*.times.*.time' => 'required|date_format:H:i',
-                'reminders.*.schedules.*.times.*.label' => 'nullable|string|max:255',
-                'reminders.*.schedules.*.times.*.is_active' => 'boolean'
+                'is_active' => 'boolean',
             ]);
 
             if ($validator->fails()) {
-                return ApiResponse::response(false, 'Validation failed.', $validator->errors(), 422);
+                return ApiResponse::error(
+                    'Validation failed',
+                    Response::HTTP_UNPROCESSABLE_ENTITY,
+                    $validator->errors()
+                );
             }
 
-            $medicine = $this->medicationService->storeMedicine($request->all());
-
-            return ApiResponse::response(
-                true,
-                'Medicine was successfully created.',
-                new MedicineResource($medicine),
-                201
+            $medication = $this->medicationService->create($request->all());
+            return ApiResponse::success(
+                'Medication created successfully',
+                new MedicineResource($medication),
+                Response::HTTP_CREATED
             );
         } catch (\Exception $e) {
-            Log::error('Medicine create failed: ' . $e->getMessage());
-            return ApiResponse::serverError();
+            Log::error('Error creating medication: ' . $e->getMessage());
+            return ApiResponse::error(
+                'Error creating medication',
+                Response::HTTP_INTERNAL_SERVER_ERROR
+            );
         }
     }
 
-    public function show(string $id)
+    /**
+     * Get a specific medication
+     *
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function frequencies()
+    {
+      return ApiResponse::success(
+        'Medication frequencies retrieved successfully',
+        MedicineSchedule::select('id', 'name')->get()
+      );
+    }
+
+    /**
+     * Delete a medication
+     *
+     * @param int $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function destroy($id)
     {
         try {
-            $medicine = $this->medicationService->getMedicine($id);
-
-            return ApiResponse::response(
-                true,
-                'Medicine successfully fetched.',
-                new MedicineResource($medicine)
+            $this->medicationService->delete($id);
+            return ApiResponse::success(
+                'Medication deleted successfully'
             );
         } catch (\Exception $e) {
-            Log::error('Medicine show failed: ' . $e->getMessage());
-            return ApiResponse::serverError();
+            Log::error('Error deleting medication: ' . $e->getMessage());
+            return ApiResponse::error(
+                'Error deleting medication',
+                Response::HTTP_INTERNAL_SERVER_ERROR
+            );
         }
     }
 
-    public function update(Request $request, string $id)
+    /**
+     * Get medication types
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function types()
     {
         try {
-            $validator = Validator::make($request->all(), [
-                'profile_id' => 'exists:profiles,id',
-                'name' => 'string|max:255',
-                'type' => 'exists:medicine_types,id',
-                'strength' => 'integer|min:1',
-                'unit' => 'exists:medicine_units,id',
-                'is_active' => 'boolean',
-                'notes' => 'nullable|string',
-                'reminders' => 'array',
-                'reminders.*.end_date' => 'nullable|date',
-                'reminders.*.is_repeat' => 'boolean',
-                'reminders.*.till_turn_off' => 'boolean',
-                'reminders.*.schedules' => 'array',
-                'reminders.*.schedules.*.schedule_type' => 'required|string',
-                'reminders.*.schedules.*.how_many_times' => 'nullable|integer|min:1',
-                'reminders.*.schedules.*.times' => 'array',
-                'reminders.*.schedules.*.times.*.time' => 'required|date_format:H:i',
-                'reminders.*.schedules.*.times.*.label' => 'nullable|string|max:255',
-                'reminders.*.schedules.*.times.*.is_active' => 'boolean'
-            ]);
-
-            if ($validator->fails()) {
-                return ApiResponse::response(false, 'Validation failed.', $validator->errors(), 422);
-            }
-
-            $medicine = $this->medicationService->updateMedicine($id, $request->all());
-
-            return ApiResponse::response(
-                true,
-                'Medicine was successfully updated.',
-                new MedicineResource($medicine)
+            $types = $this->medicationService->types();
+            return ApiResponse::success(
+                'Medication types retrieved successfully',
+                $types
             );
         } catch (\Exception $e) {
-            Log::error('Medicine update failed: ' . $e->getMessage());
-            return ApiResponse::serverError();
+            Log::error('Error retrieving medication types: ' . $e->getMessage());
+            return ApiResponse::error(
+                'Error retrieving medication types',
+                Response::HTTP_INTERNAL_SERVER_ERROR
+            );
         }
     }
 
-    public function destroy(string $id)
+    /**
+     * Get medication units
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function units()
     {
         try {
-            $this->medicationService->deleteMedicine($id);
-
-            return ApiResponse::response(true, 'Medicine was successfully deleted.');
-        } catch (\Exception $e) {
-            Log::error('Medicine delete failed: ' . $e->getMessage());
-            return ApiResponse::serverError();
-        }
-    }
-
-    public function reminders(Request $request)
-    {
-        try {
-            $profileId = $request->get('profile_id');
-            $reminders = $this->medicationService->getActiveReminders($profileId);
-
-            return ApiResponse::response(
-                true,
-                'Medicine reminders successfully fetched.',
-                MedicineReminderResource::collection($reminders)
+            $units = $this->medicationService->units();
+            return ApiResponse::success(
+                'Medication units retrieved successfully',
+                $units
             );
         } catch (\Exception $e) {
-            Log::error('Medicine reminders fetch failed: ' . $e->getMessage());
-            return ApiResponse::serverError();
-        }
-    }
-
-    public function medicinesByProfile(Request $request, string $profileId)
-    {
-        try {
-            $medicines = $this->medicationService->getMedicinesByProfile($profileId);
-
-            return ApiResponse::response(
-                true,
-                'Profile medicines successfully fetched.',
-                MedicineResource::collection($medicines)
+            Log::error('Error retrieving medication units: ' . $e->getMessage());
+            return ApiResponse::error(
+                'Error retrieving medication units',
+                Response::HTTP_INTERNAL_SERVER_ERROR
             );
-        } catch (\Exception $e) {
-            Log::error('Profile medicines fetch failed: ' . $e->getMessage());
-            return ApiResponse::serverError();
         }
     }
 }
