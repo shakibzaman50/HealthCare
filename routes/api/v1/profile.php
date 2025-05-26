@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V1\BloodOxygenController;
 use App\Http\Controllers\Api\V1\BloodPressureController;
+use App\Http\Controllers\Api\V1\BloodSugarController;
 use App\Http\Controllers\Api\V1\HeartRateController;
 use App\Http\Controllers\Api\V1\HydrationReminderController;
 use App\Http\Controllers\Api\V1\ProfileAssesmentController;
@@ -51,5 +52,16 @@ Route::group([], function () {
         Route::post('chart-data', 'chartData');
         Route::post('filter', 'filter');
         Route::post('export', 'export');
+    });
+
+        // Blood Sugar Routes
+    Route::apiResource('blood-sugars', BloodSugarController::class)->only(['index', 'store', 'destroy']);
+    Route::group(['prefix' => 'blood-sugars'], function () {
+        Route::get('units', [BloodSugarController::class, 'units']);
+        Route::get('sugar-schedules', [BloodSugarController::class, 'sugarSchedules']);
+        Route::post('range-guideline', [BloodSugarController::class, 'rangeGuideline']);
+        Route::get('statistics', [BloodSugarController::class, 'getStatistics']);
+        Route::post('bulk-export', [BloodSugarController::class, 'exportToCsv']);
+        Route::post('statistics', [BloodSugarController::class, 'statistics']);
     });
 });
