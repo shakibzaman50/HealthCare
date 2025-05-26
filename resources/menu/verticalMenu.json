@@ -184,6 +184,19 @@
       ]
     },
     {
+      "name": "Medication",
+      "icon": "menu-icon fas fa-fw fa-pills",
+      "slug": "layouts",
+      "submenu": [
+        {
+          "url": "/admin/medications",
+          "name": "Medication",
+          "slug": "medication",
+          "can": "role-list"
+        }
+      ]
+    },
+    {
       "name": "Blood Oxygen",
       "icon": "menu-icon fas fa-fw fa-user",
       "slug": "layouts",

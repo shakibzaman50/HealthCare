@@ -2,26 +2,30 @@
 
 namespace App\Models;
 
+use App\Enums\ScheduleEnums;
+use Database\Factories\MedicineFrequencyFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class MedicineReminder extends Model
+class MedicineFrequency extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'medicine_id',
         'end_date',
+        'frequency_type',
         'is_repeat',
-        'till_turn_off'
+        'till_turn_off',
     ];
 
     protected $casts = [
+        'end_date' => 'date',
         'is_repeat' => 'boolean',
         'till_turn_off' => 'boolean',
-        'end_date' => 'date'
+        'frequency_type' => ScheduleEnums::class,
     ];
 
     public function medicine(): BelongsTo
@@ -29,13 +33,8 @@ class MedicineReminder extends Model
         return $this->belongsTo(Medicine::class);
     }
 
-    public function schedules(): HasMany
+    public function times(): HasMany
     {
-        return $this->hasMany(ReminderSchedule::class, 'reminder_id');
+        return $this->hasMany(MedicineFrequencyTime::class, 'frequency_id');
     }
-
-    public function scheduleTimes(): HasMany
-    {
-        return $this->hasMany(ReminderScheduleTime::class, 'reminder_id');
-    }
-}
+} 

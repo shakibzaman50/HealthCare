@@ -10,12 +10,10 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('reminder_schedule_times', function (Blueprint $table) {
+        Schema::create('medicine_frequency_times', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('schedule_id')->constrained('reminder_schedules')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('frequency_id')->constrained('medicine_frequencies')->cascadeOnDelete()->cascadeOnUpdate();
             $table->time('time');
-            $table->string('label')->nullable();
-            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }

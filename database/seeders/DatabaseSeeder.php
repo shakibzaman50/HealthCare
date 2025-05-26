@@ -32,6 +32,7 @@ class DatabaseSeeder extends Seeder
             BPUnitSeeder::class,
             PhysicalConditionSeeder::class, 
             BloodSugarSeeder::class,
+            MedicineSeeder::class,
         ]);
     }
 }

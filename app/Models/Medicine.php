@@ -13,12 +13,12 @@ class Medicine extends Model
 
     protected $fillable = [
         'profile_id',
+        'medicine_type_id',
+        'medicine_unit_id',
         'name',
-        'type',
         'strength',
-        'unit',
         'is_active',
-        'notes'
+        'notes',
     ];
 
     protected $casts = [
@@ -33,16 +33,16 @@ class Medicine extends Model
 
     public function medicineType(): BelongsTo
     {
-        return $this->belongsTo(MedicineType::class, 'type');
+        return $this->belongsTo(MedicineType::class);
     }
 
     public function medicineUnit(): BelongsTo
     {
-        return $this->belongsTo(MedicineUnit::class, 'unit');
+        return $this->belongsTo(MedicineUnit::class);
     }
 
-    public function reminders(): HasMany
+    public function frequencies(): HasMany
     {
-        return $this->hasMany(MedicineReminder::class);
+        return $this->hasMany(MedicineFrequency::class);
     }
-}
+} 

@@ -30,7 +30,7 @@ class UserWithProfileSeeder extends Seeder
             'age'     => 35,
             'weight'  => 75.5,
             'height'  => 175,
-            'dob'     => '1990-03-24',
+            'birth_year'     => '1990',
             'bmi'     => 24.7,
         ]);
     }

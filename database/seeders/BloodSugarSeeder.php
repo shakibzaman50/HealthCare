@@ -12,9 +12,6 @@ class BloodSugarSeeder extends Seeder
     public function run(): void
     {
         // Only generate records if there are user profiles
-        // $userProfiles = Profile::factory()->create();
-        $this->call(UserWithProfileSeeder::class);
-
         BloodSugar::factory()
             ->count(5)
             ->create([

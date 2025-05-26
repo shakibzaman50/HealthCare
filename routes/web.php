@@ -33,7 +33,7 @@ use App\Http\Controllers\authentications\RegisterBasic;
 use App\Http\Controllers\Admin\Config\PhysicalConditionsController;
 use App\Http\Controllers\Admin\Config\HeartRateUnitsController;
 use App\Http\Controllers\Admin\Config\BpUnitsController;
-use App\Http\Controllers\Admin\Config\MedicationController;
+use App\Http\Controllers\Admin\MedicationController;
 use App\Http\Controllers\Admin\HeartRateController;
 use App\Http\Controllers\Admin\LoginInfoController;
 use App\Http\Controllers\Admin\UserProfileController;
@@ -131,23 +131,22 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::group(['prefix' => 'hydration-reminders', 'as' => 'hydration-reminders.', 'controller' => HydrationReminderController::class], function () {
       Route::post('bulk-delete', 'bulkDelete')->name('bulk-delete');
     });
+
+     // Blood Sugar Routes
+    Route::resource('blood-sugars', BloodSugarController::class)->only(['index', 'destroy']);
+    Route::group(['prefix' => 'blood-sugars', 'as' => 'blood-sugars.'], function () {
+        Route::post('bulk-delete', [BloodSugarController::class, 'bulkDelete'])->name('bulk-delete');
+        Route::get('bulk-export', [BloodSugarController::class, 'exportToCsv'])->name('bulk-export');
+    });
+
+    // Medication Routes
+    Route::resource('medications', MedicationController::class)->only(['index', 'show', 'destroy']);
+    Route::group(['prefix' => 'medications', 'as' => 'medications.'], function () {
+        Route::post('store', [MedicationController::class, 'store'])->name('store');
+        Route::post('bulk-delete', [MedicationController::class, 'bulkDelete'])->name('bulk-delete');
+        Route::get('bulk-export', [MedicationController::class,'exportToCsv'])->name('bulk-export');
+    });
   });
   Route::post('/admin/upload-image', [App\Http\Controllers\Admin\ImageUploadController::class, 'upload'])->name('admin.upload.image');
-
- // Blood Sugar Routes
- Route::resource('blood-sugars', BloodSugarController::class)->only(['index', 'destroy']);
- Route::group(['prefix' => 'blood-sugars', 'as' => 'blood-sugars.', 'controller' => BloodSugarController::class], function () {
-     Route::post('bulk-delete', 'bulkDelete')->name('bulk-delete');
-     Route::get('bulk-export', 'exportToCsv')->name('bulk-export');
- });
-
-// Medication Routes
-  Route::get('medications', [MedicationController::class, 'index'])->name('medications.index');
-  Route::get('medications/{medicine}', [MedicationController::class, 'show'])->name('medications.show')->where('medicine', '[0-9]+');
-  Route::post('medications/store', [MedicationController::class, 'store'])->name('medications.store');
-  Route::delete('medications/{id}', [MedicationController::class, 'destroy'])->name('medications.destroy');
-  Route::post('medications/bulk-delete', [MedicationController::class, 'bulkDelete'])->name('medications.bulk-delete');
-  Route::get('medications/bulk-export', [MedicationController::class, 'exportToCsv'])->name('medications.bulk-export');
-
 });
 require __DIR__ . '/auth.php';

@@ -13,10 +13,10 @@ return new class extends Migration {
         Schema::create('medicines', function (Blueprint $table) {
             $table->id();
             $table->foreignId('profile_id')->constrained('profiles')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('medicine_type_id')->constrained('medicine_types');
+            $table->bigInteger('medicine_unit_id')->constrained('medicine_units');
             $table->string('name');
-            $table->string('type');
             $table->bigInteger('strength');
-            $table->bigInteger('unit');
             $table->boolean('is_active')->default(value: config('basic.status.active'));
             $table->text('notes')->nullable();
             $table->timestamps();

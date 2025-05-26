@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Config;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Medicine;
@@ -27,7 +27,7 @@ class MedicationController extends Controller
         $medicineTypes = MedicineType::where('is_active', true)->get();
         $medicineUnits = MedicineUnit::where('is_active', true)->get();
 
-        return view('admin.config.medication.index', compact(
+        return view('admin.medication.index', compact(
             'medicines',
             'profiles',
             'medicineTypes',
@@ -40,7 +40,7 @@ class MedicationController extends Controller
         try {
             $medicine->load(['profile', 'medicineType', 'medicineUnit', 'reminders.schedules.scheduleTimes']);
 
-            return view('admin.config.medication.show', compact('medicine'));
+            return view('admin.medication.show', compact('medicine'));
         } catch (\Exception $e) {
             Log::error('Admin medication show failed: ' . $e->getMessage());
             return back()->with('error', 'Failed to load medication details.');
