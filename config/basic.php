@@ -94,7 +94,7 @@ return [
     ],
 
     'sugarSchedules' => [
-        'Fating',
+        'Fasting',
         'After Eating',
         '2-3hr',
     ],

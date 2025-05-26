@@ -23,6 +23,7 @@ Route::group([
     // Heart Rate Routes
     Route::apiResource('heart-rates', HeartRateController::class)->only(['index','store', 'destroy']);
     Route::group(['prefix' => 'heart-rates', 'controller' => HeartRateController::class], function () {
+        Route::get('latest-record', 'latestRecord');
         Route::get('last-week-average', 'lastWeekAverage');
         Route::post('chart-data', 'chartData');
         Route::post('filter', 'filter');

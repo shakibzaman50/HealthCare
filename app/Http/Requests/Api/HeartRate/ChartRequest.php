@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Api\HeartRate;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class ChartRequest extends FormRequest
 {
@@ -11,7 +13,7 @@ class ChartRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +24,15 @@ class ChartRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'date' => ['required', 'date_format:Y-m-d'],
         ];
+    }
+
+    protected function failedValidation(Validator $validator){
+        throw new HttpResponseException(response()->json([
+            'success' => false,
+            'data'    => null,
+            'errors'  => $validator->errors(),
+        ], 422));
     }
 }
