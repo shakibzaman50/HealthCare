@@ -12,6 +12,7 @@ class BloodOxygen extends Model
     protected $fillable = [
         'profile_id',
         'oxygen_level',
+        'status',
         'measured_at'
     ];
 

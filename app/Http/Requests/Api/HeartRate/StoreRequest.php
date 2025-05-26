@@ -34,13 +34,6 @@ class StoreRequest extends FormRequest
         ];
     }
 
-    protected function prepareForValidation()
-    {
-        $this->merge([
-            'profile_id' => $this->route('profile_id'),
-        ]);
-    }
-
     protected function failedValidation(Validator $validator){
         throw new HttpResponseException(response()->json([
             'success' => false,
