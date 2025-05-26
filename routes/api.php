@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\V1\BloodSugarController;
 
 Route::prefix('v1')
     ->middleware('api')

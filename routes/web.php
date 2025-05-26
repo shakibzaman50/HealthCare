@@ -4,12 +4,8 @@ use App\Http\Controllers\Admin\BloodOxygenController;
 use App\Http\Controllers\Admin\BloodPressureController;
 use App\Http\Controllers\Admin\Config\ActivityLevelController;
 use App\Http\Controllers\Admin\Config\BlogController;
-use App\Http\Controllers\Admin\Config\BsMeasurementTypeController;
-use App\Http\Controllers\Admin\Config\BsRangeController;
-use App\Http\Controllers\Admin\Config\BsRecordController;
 use App\Http\Controllers\Admin\Config\FeelingListController;
 use App\Http\Controllers\Admin\Config\HeightUnitController;
-use App\Http\Controllers\Admin\Config\MedicationController;
 use App\Http\Controllers\Admin\Config\MedicineScheduleController;
 use App\Http\Controllers\Admin\Config\MedicineTypeController;
 use App\Http\Controllers\Admin\Config\MedicineUnitController;
@@ -21,6 +17,7 @@ use App\Http\Controllers\Admin\HydrationReminderController;
 use App\Http\Controllers\GlobalSettingsController;
 
 use App\Http\Controllers\ActivityLogController;
+use App\Http\Controllers\Admin\BloodSugarController;
 use App\Http\Controllers\Admin\HomeController;
 use App\Http\Controllers\Admin\MigrationController;
 use App\Http\Controllers\Admin\ProfileController;
@@ -36,6 +33,7 @@ use App\Http\Controllers\authentications\RegisterBasic;
 use App\Http\Controllers\Admin\Config\PhysicalConditionsController;
 use App\Http\Controllers\Admin\Config\HeartRateUnitsController;
 use App\Http\Controllers\Admin\Config\BpUnitsController;
+use App\Http\Controllers\Admin\Config\MedicationController;
 use App\Http\Controllers\Admin\HeartRateController;
 use App\Http\Controllers\Admin\LoginInfoController;
 use App\Http\Controllers\Admin\UserProfileController;
@@ -94,27 +92,21 @@ Route::middleware(['auth', 'verified'])->group(function () {
     'physical-conditions' => PhysicalConditionsController::class,
     'heart-rate-units' => HeartRateUnitsController::class,
     'bp-units' => BpUnitsController::class,
-    'global_settings' => GlobalSettingsController::class,
+    'global_settings'  => GlobalSettingsController::class,
 
-    'blogs' => BlogController::class,
-    'sugar-units' => SugarUnitController::class,
-    'water-units' => WaterUnitController::class,
-    'weight-units' => WeightUnitController::class,
-    'height-units' => HeightUnitController::class,
-    'feeling-lists' => FeelingListController::class,
-    'medicine-units' => MedicineUnitController::class,
-    'medicine-types' => MedicineTypeController::class,
-    'sugar-schedules' => SugarScheduleController::class,
-    'activity-levels' => ActivityLevelController::class,
+    'blogs'              => BlogController::class,
+    'sugar-units'        => SugarUnitController::class,
+    'water-units'        => WaterUnitController::class,
+    'weight-units'       => WeightUnitController::class,
+    'height-units'       => HeightUnitController::class,
+    'feeling-lists'      => FeelingListController::class,
+    'medicine-units'     => MedicineUnitController::class,
+    'medicine-types'     => MedicineTypeController::class,
+    'sugar-schedules'    => SugarScheduleController::class,
+    'activity-levels'    => ActivityLevelController::class,
     'medicine-schedules' => MedicineScheduleController::class,
   ]);
 
-  // Heart Rate Routes
-  Route::prefix('admin')->name('admin.')->group(function () {
-    Route::get('heart-rates', [HeartRateController::class, 'index'])->name('heart-rates.index');
-    Route::delete('heart-rates/{id}', [HeartRateController::class, 'destroy'])->name('heart-rates.destroy');
-    Route::post('heart-rates/bulk-delete', [HeartRateController::class, 'bulkDelete'])->name('heart-rates.bulk-delete');
-  });
 
   Route::prefix('admin')->name('admin.')->group(function () {
     // Heart Rate Routes
@@ -139,27 +131,23 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::group(['prefix' => 'hydration-reminders', 'as' => 'hydration-reminders.', 'controller' => HydrationReminderController::class], function () {
       Route::post('bulk-delete', 'bulkDelete')->name('bulk-delete');
     });
-
-    // Blood Sugar Routes
-  Route::prefix('admin')->name('admin.')->group(function () {
-    Route::get('bs-records', [BsRecordController::class, 'index'])->name('bs-records.index');
-    Route::post('bs-records/store', [BsRecordController::class, 'store'])->name('bs-records.store');
-    Route::delete('bs-records/{id}', [BsRecordController::class, 'destroy'])->name('bs-records.destroy');
-    Route::post('bs-records/bulk-delete', [BsRecordController::class, 'bulkDelete'])->name('bs-records.bulk-delete');
-    Route::get('bs-records/bulk-export', [BsRecordController::class, 'exportToCsv'])->name('bs-records.bulk-export');
-  });
-
-  // Medication Routes
-  Route::prefix('admin')->name('admin.')->group(function () {
-    Route::get('medications', [MedicationController::class, 'index'])->name('medications.index');
-    Route::get('medications/{medicine}', [MedicationController::class, 'show'])->name('medications.show')->where('medicine', '[0-9]+');
-    Route::post('medications/store', [MedicationController::class, 'store'])->name('medications.store');
-    Route::delete('medications/{id}', [MedicationController::class, 'destroy'])->name('medications.destroy');
-    Route::post('medications/bulk-delete', [MedicationController::class, 'bulkDelete'])->name('medications.bulk-delete');
-    Route::get('medications/bulk-export', [MedicationController::class, 'exportToCsv'])->name('medications.bulk-export');
-  });
-
   });
   Route::post('/admin/upload-image', [App\Http\Controllers\Admin\ImageUploadController::class, 'upload'])->name('admin.upload.image');
+
+ // Blood Sugar Routes
+ Route::resource('blood-sugars', BloodSugarController::class)->only(['index', 'destroy']);
+ Route::group(['prefix' => 'blood-sugars', 'as' => 'blood-sugars.', 'controller' => BloodSugarController::class], function () {
+     Route::post('bulk-delete', 'bulkDelete')->name('bulk-delete');
+     Route::get('bulk-export', 'exportToCsv')->name('bulk-export');
+ });
+
+// Medication Routes
+  Route::get('medications', [MedicationController::class, 'index'])->name('medications.index');
+  Route::get('medications/{medicine}', [MedicationController::class, 'show'])->name('medications.show')->where('medicine', '[0-9]+');
+  Route::post('medications/store', [MedicationController::class, 'store'])->name('medications.store');
+  Route::delete('medications/{id}', [MedicationController::class, 'destroy'])->name('medications.destroy');
+  Route::post('medications/bulk-delete', [MedicationController::class, 'bulkDelete'])->name('medications.bulk-delete');
+  Route::get('medications/bulk-export', [MedicationController::class, 'exportToCsv'])->name('medications.bulk-export');
+
 });
 require __DIR__ . '/auth.php';

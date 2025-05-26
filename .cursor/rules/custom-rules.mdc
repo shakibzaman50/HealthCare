@@ -1,0 +1,7 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+- when use resource never add updated_at and created_at
+- always create and controller code must all login write in the related service

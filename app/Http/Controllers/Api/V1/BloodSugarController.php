@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreBloodSugerRequest;
-use App\Services\Config\BsRecordService;
+use App\Http\Requests\BloodSugar\StoreBloodSugarRequest;
+use App\Services\Api\BloodSugarService;
 use Illuminate\Http\Request;
 
 /**
@@ -16,60 +16,144 @@ class BloodSugarController extends Controller
     /**
      * Constructor
      * 
-     * @param BsRecordService $bsRecordService Service for blood sugar record operations
+     * @param BloodSugarService $bloodSugarService Service for blood sugar record operations
      */
     public function __construct(
-        private BsRecordService $bsRecordService
+        private BloodSugarService $bloodSugarService
     ) {
     }
 
     /**
      * Get paginated list of blood sugar records
      * 
-     * @param Request $request The incoming request
-     * @return \Illuminate\Http\Response
+     * @param int $profileId The profile ID to fetch records for
+     * @return \Illuminate\Http\Response JSON response with blood sugar records
      */
     public function index($profileId)
     {
         return ApiResponse::response(
             true,
             'Blood sugar records fetched successfully',
-            $this->bsRecordService->list($profileId),
+            $this->bloodSugarService->list($profileId),
             null,
             200
+        );
+    }
+
+    public function units()
+    {
+        return ApiResponse::response(
+            true,
+            'Blood sugar units fetched successfully',
+            $this->bloodSugarService->units(),
+        );
+    }
+
+    public function sugarSchedules()
+    {
+        return ApiResponse::response(
+            true,
+            'Blood sugar schedules fetched successfully',
+            $this->bloodSugarService->sugarSchedules(),
         );
     }
 
     /**
      * Store a new blood sugar record
      * 
-     * @param StoreBloodSugerRequest $request The validated request
-     * @return \Illuminate\Http\Response
+     * @param StoreBsRecordRequest $request The validated request containing blood sugar data
+     * @return \Illuminate\Http\Response JSON response with created record
      */
-    public function store(StoreBloodSugerRequest $request)
+    public function store(StoreBloodSugarRequest $request)
     {
         return ApiResponse::response(
             true,
             'Blood sugar record created successfully',
-            $this->bsRecordService->create($request->validated()),
+            $this->bloodSugarService->create($request->validated()),
             null,
             200
         );
     }
 
+    /**
+     * Get statistics for blood sugar records
+     * 
+     * @param int $profileId The profile ID to get statistics for
+     * @return \Illuminate\Http\Response JSON response with blood sugar statistics
+     */
+    public function getStatistics($profileId)
+    {
+        return ApiResponse::response(
+            true,
+            'Blood sugar statistics fetched successfully',
+            $this->bloodSugarService->getStatistics($profileId),
+        );
+    }
+    
+    /**
+     * Delete a blood sugar record
+     * 
+     * @param int $profile_id The profile ID the record belongs to
+     * @param int $id The ID of the record to delete
+     * @return \Illuminate\Http\Response JSON response indicating success
+     */
     public function destroy($profile_id, $id)
     {
         return ApiResponse::response(
             true,
             'Blood sugar record deleted successfully',
-            $this->bsRecordService->delete($id),
+            $this->bloodSugarService->delete($id),
             null,
             200
         );
     }
 
+    public function rangeGuideline(Request $request)
+    {
+        return ApiResponse::response(
+            true,
+            'Blood sugar range guideline fetched successfully',
+            $this->bloodSugarService->rangeGuideline($request->validate([
+                'value' => 'required|numeric',
+                'unit_id' => 'required|exists:sugar_units,id',
+                'sugar_schedule_id' => 'required|exists:sugar_schedules,id',
+            ])),
+        );
+    }
+
+    /**
+     * Export blood sugar records to CSV or PDF
+     * 
+     * @param Request $request Request containing export parameters
+     * @return mixed CSV/PDF file download response
+     * 
+     * @throws \Illuminate\Validation\ValidationException When validation fails
+     */
     public function exportToCsv(Request $request)
     {
-        return $this->bsRecordService->exportToCsv($request->ids);
+        $validated = $request->validate([
+            'from_date' => 'required|date',
+            'to_date' => 'required|date', 
+            'file' => 'required|in:1,2',
+        ],[
+            'file.in' => 'The file field must be either pdf or csv.',
+        ]);
+        return $this->bloodSugarService->export($validated);
+    }
+
+    public function statistics(Request $request)
+    {
+        return ApiResponse::response(
+            true,
+            'Blood sugar statistics fetched successfully',
+            $this->bloodSugarService->statistics(
+
+                $request->validate([
+                    'last_week_avg' => 'required_unless:last_record,true',
+                    'last_record' => 'required_unless:last_week_avg,true',
+                ])
+
+            ),
+        );
     }
 }
