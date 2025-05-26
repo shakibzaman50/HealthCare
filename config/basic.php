@@ -6,6 +6,40 @@ return [
         'inactive' => 0,
     ],
 
+    'habitTasks' => [
+        'Popular' =>[
+            'Walk',
+            'Run',
+            'Active Calories',
+        ],
+        'Health' =>[
+            'Exercise',
+            'Workout',
+            'Walk',
+        ],
+        'Sports' =>[
+            'Stand',
+            'Cycling',
+            'Burn Calories',
+        ],
+        'Lifestyle' =>[
+            'Read a book',
+            'Learning',
+            'Review Today',
+            'Drink Water',
+        ],
+        'Time' =>[
+            'Yoga',
+            'Swimming',
+            'Meditation',
+            'Breathe',
+        ],
+        'Quit' =>[
+            'Less Carbohydrate',
+            'Eat Less Sugar',
+            'Smoke less',
+        ]
+    ],
 
     'bpUnits' => [
         'mmHg',
@@ -50,12 +84,6 @@ return [
         'Drops',
         'Gel',
         'Foam',
-    ],
-
-    'medicineSchedules' => [
-        'As needed',
-        'Everyday',
-        'On a Cycle',
     ],
 
     'activityLevels' => [

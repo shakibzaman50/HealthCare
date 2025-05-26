@@ -95,12 +95,6 @@
           "icon": "fas fa-spinner"
         },
         {
-          "url": "/medicine-schedules",
-          "name": "Medicine Schedule",
-          "slug": "medicine-schedule",
-          "icon": "fas fa-spinner"
-        },
-        {
           "url": "/feeling-lists",
           "name": "Feeling List",
           "slug": "feeling-lists",
@@ -174,6 +168,25 @@
           "url": "/admin/hydration-reminders",
           "name": "Hydration Reminder",
           "slug": "hydration-reminder",
+          "can": "role-list"
+        }
+      ]
+    },
+    {
+      "name": "Habit Reminder",
+      "icon": "menu-icon fas fa-fw fa-user",
+      "slug": "habit-reminder",
+      "submenu": [
+        {
+          "url": "/admin/habit-lists",
+          "name": "Habit List",
+          "slug": "habit-list",
+          "can": "role-list"
+        },
+        {
+          "url": "/admin/habit-tasks",
+          "name": "Habit Task",
+          "slug": "habit-task",
           "can": "role-list"
         }
       ]

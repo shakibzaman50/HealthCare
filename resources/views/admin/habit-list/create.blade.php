@@ -1,6 +1,6 @@
 @extends('layouts/contentNavbarLayout')
 
-@section('title', 'Create Medicine Schedule Unit')
+@section('title', 'Create Habit List')
 
 @section('vendor-script')
 @vite('resources/assets/vendor/libs/masonry/masonry.js')
@@ -11,17 +11,14 @@
 <div class="card text-bg-theme">
 
     <div class="card-header d-flex justify-content-between align-items-center p-3">
-        <h4 class="m-0">Create New Medicine Schedule</h4>
+        <h4 class="m-0">Create New Habit List</h4>
         <div>
-            <a href="{{ route('medicine-schedules.index') }}" class="btn btn-primary" title="Show All Medicine Schedules">
+            <a href="{{ route('admin.habit-lists.index') }}" class="btn btn-primary" title="Show All Habit List">
                 <span class="fa-solid fa-table-list" aria-hidden="true"></span>
             </a>
         </div>
     </div>
-
-
     <div class="card-body">
-
         @if ($errors->any())
         <div class="alert alert-danger" role="alert">
             <ul class="list-unstyled mb-0">
@@ -32,11 +29,11 @@
         </div>
         @endif
 
-        <form method="POST" class="needs-validation" novalidate action="{{ route('medicine-schedules.store') }}"
-            accept-charset="UTF-8" id="create_medicine-schedule_form" name="create_medicine-schedule_form">
+        <form method="POST" class="needs-validation" novalidate action="{{ route('admin.habit-lists.store') }}" enctype="multipart/form-data"
+            accept-charset="UTF-8" id="create_habit_list_form" name="create_habit_list_form">
             {{ csrf_field() }}
-            @include ('admin.config.medicine_schedules.form', [
-            'medicineSchedule' => null,
+            @include ('admin.habit-list.form', [
+            'habitList' => null,
             ])
 
             <div class="col-lg-10 col-xl-9 offset-lg-2 offset-xl-3">
