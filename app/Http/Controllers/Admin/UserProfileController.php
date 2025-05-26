@@ -23,6 +23,18 @@ class UserProfileController extends Controller
 
     public function showProfileDetails(User $user, Profile $profile)
     {
+        // Load all necessary relationships
+        $profile->load([
+            'assessment.activityLevel',
+            'assessment.physicalCondition',
+            'weightUnit',
+            'heightUnit',
+            'bloodPressures.unit',
+            'bloodOxygens',
+            'heartRates.unit',
+            'hydrationReminders.unit'
+        ]);
+
         return view('admin.user-profiles.details', compact('user', 'profile'));
     }
 }

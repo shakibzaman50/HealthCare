@@ -39,6 +39,11 @@ class Profile extends Model
             : asset('images/default-avatar.png'); // fallback image
     }
 
+    public function assessment()
+    {
+        return $this->hasOne(ProfileAssessment::class);
+    }
+
     public function weightUnit()
     {
         return $this->belongsTo(WeightUnit::class, 'weight_unit', 'id');
@@ -46,5 +51,25 @@ class Profile extends Model
     public function heightUnit()
     {
         return $this->belongsTo(HeightUnit::class, 'height_unit', 'id');
+    }
+
+    public function bloodPressures()
+    {
+        return $this->hasMany(BloodPressure::class, 'profile_id', 'id')->with('unit');
+    }
+
+    public function bloodOxygens()
+    {
+        return $this->hasMany(BloodOxygen::class, 'profile_id', 'id');
+    }
+
+    public function heartRates()
+    {
+        return $this->hasMany(HeartRate::class, 'profile_id', 'id')->with('unit');
+    }
+
+    public function hydrationReminders()
+    {
+        return $this->hasMany(HydrationReminder::class, 'profile_id', 'id')->with('unit');
     }
 }
