@@ -6,6 +6,7 @@ use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Auth\LoginRequest;
 use App\Http\Requests\Api\Auth\RegisterRequest;
+use App\Http\Requests\Api\Auth\ActivateAccountRequest;
 use App\Http\Requests\GuestLoginRequest;
 use App\Http\Requests\UserUpdateRequest;
 use App\Http\Resources\User\UserResource;
@@ -74,6 +75,27 @@ class AuthController extends Controller
                 : ApiResponse::serverError('Logout failed');
         } catch (\Exception $e) {
             Log::error('Auth API Logout Error: ' . $e->getMessage());
+            return ApiResponse::serverError($e->getMessage());
+        }
+    }
+
+    /**
+     * Activate user account
+     */
+    public function activateAccount(ActivateAccountRequest $request)
+    {
+        try {
+            $response = $this->authService->activateAccount($request->email);
+
+            return ApiResponse::response(
+                $response['success'],
+                $response['message'],
+                $response['user'] ? new UserResource($response['user']) : null,
+                $response['error'] ?? null,
+                $response['code'] ?? 200
+            );
+        } catch (\Exception $e) {
+            Log::error('Auth API Account Activation Error: ' . $e->getMessage());
             return ApiResponse::serverError($e->getMessage());
         }
     }

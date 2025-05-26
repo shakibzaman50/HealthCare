@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Route;
 Route::group(['controller' => AuthController::class], function () {
     Route::post('/login', 'login')->name('user.login');
     Route::post('/register', 'register')->name('user.register');
+    Route::post('/activate-account', 'activateAccount')->name('user.activate');
 
     Route::group(['middleware' => ['auth:api']], function () {
         Route::post('profile', [ProfileController::class, 'store'])->name('user.profile.store');
