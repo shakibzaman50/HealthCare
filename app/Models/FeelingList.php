@@ -16,8 +16,15 @@ class FeelingList extends Model
         'emoji'
     ];
 
+    protected $appends = ['emoji_url'];
     public function scopeActive($query)
     {
         return $query->where('is_active', config('basic.status.active'));
+    }
+    public function getEmojiUrlAttribute()
+    {
+        return $this->emoji
+            ? asset('storage/' . $this->emoji)
+            : asset('images/default-avatar.png'); // fallback image
     }
 }

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class BpUnit extends Model
 {
-    
+
     use SoftDeletes;
 
 
@@ -19,10 +19,10 @@ class BpUnit extends Model
     protected $table = 'bp_units';
 
     /**
-    * The database primary key value.
-    *
-    * @var string
-    */
+     * The database primary key value.
+     *
+     * @var string
+     */
     protected $primaryKey = 'id';
 
     /**
@@ -31,9 +31,9 @@ class BpUnit extends Model
      * @var array
      */
     protected $fillable = [
-                  'name',
-                  'is_active'
-              ];
+        'name',
+        'is_active'
+    ];
 
     /**
      * The attributes that should be mutated to dates.
@@ -41,17 +41,18 @@ class BpUnit extends Model
      * @var array
      */
     protected $dates = [
-               'deleted_at'
-           ];
-    
+        'deleted_at'
+    ];
+
     /**
      * The attributes that should be cast to native types.
      *
      * @var array
      */
     protected $casts = [];
-    
 
-
-
+    public function scopeActive($query)
+    {
+        return $query->where('is_active', config('basic.status.active'));
+    }
 }
