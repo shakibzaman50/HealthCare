@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Api\HydrationReminder;
+namespace App\Http\Requests\Api\WaterIntake;
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
@@ -13,7 +13,7 @@ class FilterRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**

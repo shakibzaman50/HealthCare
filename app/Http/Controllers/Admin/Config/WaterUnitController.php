@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\Config;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Config\WaterUnitRequest;
+use App\Models\HydrationReminder;
 use App\Models\WaterUnit;
 use App\Services\Config\WaterUnitService;
 use Illuminate\Http\Request;
@@ -97,7 +98,7 @@ class WaterUnitController extends Controller
         try {
             $waterUnit = $this->findWaterUnit($id);
             if (in_array($waterUnit->name, config('basic.waterUnits'))
-                // || BloodSugar::where('feeling_id', $id)->exists()
+                || HydrationReminder::where('unit_id', $id)->exists()
             ) {
                 return back()->with('error_message', 'This Water Unit cannot be deleted');
             }

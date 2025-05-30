@@ -105,10 +105,10 @@ return [
     ],
 
     'waterUnits' => [
-        'pt',
-        'Oz',
-        'ml',
-        'L',
+        'L'  => 1,
+        'ml' => 1000,
+        'pt' => 1.75975,
+        'Oz' => 35.1951,
     ],
 
     'feelingLists' => [

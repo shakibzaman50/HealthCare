@@ -53,7 +53,7 @@ class HeartRateController extends Controller
         }
         catch (\Exception $e) {
             Log::error('Latest Heart Rate fetch failed: ' . $e->getMessage());
-            return  ApiResponse::serverError();
+            return  ApiResponse::serverError($e->getMessage());
         }
     }
 

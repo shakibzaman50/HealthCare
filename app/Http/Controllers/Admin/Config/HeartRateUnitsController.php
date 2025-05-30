@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin\Config;
 
 use App\Http\Controllers\Controller;
+use App\Models\HeartRate;
 use App\Models\HeartRateUnit;
 use App\Http\Requests\Config\HeartRateUnitRequest;
 use App\Services\Config\HeartRateUnitService;
@@ -74,7 +75,7 @@ class HeartRateUnitsController extends Controller
         try {
             $heartRateUnit = HeartRateUnit::findOrFail($id);
             if (in_array($heartRateUnit->name, config('basic.heartRateUnits'))
-              // || BloodSugar::where('feeling_id', $id)->exists()
+                || HeartRate::where('unit_id', $id)->exists()
             ) {
               return back()->with('error_message', 'This Heart Rate Unit cannot be deleted');
             }

@@ -16,14 +16,17 @@ class HeartRateService
         $this->profileId = $id;
     }
 
-    public function latestRecord() : HeartRateResource
+    public function latestRecord() : HeartRateResource|null
     {
-        return new HeartRateResource(
-            HeartRate::with(['unit'])
-                ->where('profile_id', $this->profileId)
-                ->latest('measured_at')
-                ->first()
-        );
+        $latestRecord = HeartRate::with(['unit'])
+            ->where('profile_id', $this->profileId)
+            ->latest('measured_at')
+            ->first();
+
+        if ($latestRecord) {
+          return new HeartRateResource($latestRecord);
+        }
+        return null;
     }
 
     public function history() : HeartRateCollection
@@ -58,16 +61,33 @@ class HeartRateService
         };
     }
 
-    protected function calculateHrvAndStress($bpm) : array
+    protected function getHRVStatus($hrv) : string
     {
-        $hrv = round(12000 / $bpm);
-        $minHrv = min($hrv, 120);
-        $stress = 100 - ($minHrv / 120 * 100);
-        $stress = round($stress);
-        return [
-            'hrv'    => $hrv,
-            'stress' => $stress,
-        ];
+        return match (true) {
+            $hrv > 100    => 'Excellent',
+            $hrv >= 70    => 'Good',
+            $hrv >= 50    => 'Average',
+            $hrv >= 30    => 'Below Average',
+            default       => 'Low',
+        };
+    }
+
+    protected function calculateStress($hrv) : string
+    {
+        return match (true) {
+            $hrv > 100    => rand(0, 10),
+            $hrv >= 70    => rand(10, 30),
+            $hrv >= 50    => rand(30, 50),
+            $hrv >= 30    => rand(50, 70),
+            default       => rand(70, 100),
+        };
+    }
+
+    protected function calculateHRV($bpm) : float
+    {
+        $rrInterval = 60000 / $bpm;
+        $variation = rand(3, 10) / 100;
+        return round($rrInterval * $variation);
     }
 
     public function lastWeekAverageRecord() : array
@@ -81,13 +101,16 @@ class HeartRateService
 
         $averageHeartRate = round($averageHeartRate);
         $status = $this->getHeartRateStatus($averageHeartRate);
-        $result = $this->calculateHrvAndStress($averageHeartRate);
+        $hrv = $this->calculateHRV($averageHeartRate);
+        $hrvStatus = $this->getHRVStatus($hrv);
+        $stress = $this->calculateStress($hrv);
 
         return [
             'average_status'     => $status,
             'average_heart_rate' => $averageHeartRate,
-            'average_hrv'        => $result['hrv'],
-            'average_stress'     => $result['stress'],
+            'average_hrv'        => $hrv,
+            'average_hrv_status' => $hrvStatus,
+            'average_stress'     => $stress,
         ];
     }
 
@@ -119,7 +142,9 @@ class HeartRateService
     public function store($request) : HeartRateResource
     {
         $status = $this->getHeartRateStatus($request->heart_rate);
-        $result = $this->calculateHrvAndStress($request->heart_rate);
+        $hrv = $this->calculateHRV($request->heart_rate);
+        $hrvStatus = $this->getHRVStatus($hrv);
+        $stress = $this->calculateStress($hrv);
 
         return new HeartRateResource(
             HeartRate::create([
@@ -127,8 +152,9 @@ class HeartRateService
                 'unit_id'     => $request->unit_id,
                 'heart_rate'  => $request->heart_rate,
                 'status'      => $status,
-                'hrv'         => $result['hrv'],
-                'stress'      => $result['stress'],
+                'hrv'         => $hrv,
+                'hrv_status'  => $hrvStatus,
+                'stress'      => $stress,
                 'measured_at' => $request->measured_at,
             ])
         );

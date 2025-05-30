@@ -15,6 +15,7 @@ class HeartRate extends Model
         'heart_rate',
         'status',
         'hrv',
+        'hrv_status',
         'stress',
         'measured_at'
     ];

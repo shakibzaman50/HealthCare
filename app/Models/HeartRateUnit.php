@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class HeartRateUnit extends Model
 {
-    
+
     use SoftDeletes;
 
 
@@ -32,6 +32,7 @@ class HeartRateUnit extends Model
      */
     protected $fillable = [
                   'name',
+                  'multiplier',
                   'is_active'
               ];
 
@@ -43,14 +44,14 @@ class HeartRateUnit extends Model
     protected $dates = [
                'deleted_at'
            ];
-    
+
     /**
      * The attributes that should be cast to native types.
      *
      * @var array
      */
     protected $casts = [];
-    
+
 
 
 

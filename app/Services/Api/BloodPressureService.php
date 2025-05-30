@@ -17,14 +17,17 @@ class BloodPressureService
         $this->profileId = $id;
     }
 
-    public function latestRecord() : BloodPressureResource
+    public function latestRecord() : BloodPressureResource|null
     {
-        return new BloodPressureResource(
-            BloodPressure::with(['unit'])
-                ->where('profile_id', $this->profileId)
-                ->latest('measured_at')
-                ->first()
-        );
+        $latestRecord = BloodPressure::with(['unit'])
+            ->where('profile_id', $this->profileId)
+            ->latest('measured_at')
+            ->first();
+
+        if ($latestRecord) {
+            return new BloodPressureResource($latestRecord);
+        }
+        return null;
     }
 
     public function history() : BloodPressureCollection

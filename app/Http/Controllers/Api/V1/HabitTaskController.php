@@ -16,17 +16,17 @@ class HabitTaskController extends Controller
 {
     protected $profileId, $habitTaskService;
 
-    public function __construct(Request $request, HabitTaskService $habitTaskService)
+    public function __construct(Request $request)
     {
         $this->profileId = $request->route('profile_id');
-        $this->habitTaskService = $habitTaskService;
+        $this->habitTaskService = new HabitTaskService($this->profileId);
     }
 
 
     public function habitList($request, $id=null)
     {
         try {
-            return $this->habitTaskService->getHabitList($this->profileId, $id);
+            return $this->habitTaskService->getHabitList($id);
         }
         catch (\Exception $e) {
             Log::error('Habit List fetch failed: ' . $e->getMessage());
@@ -47,8 +47,33 @@ class HabitTaskController extends Controller
      */
     public function store(TaskStoreRequest $request)
     {
-        dd($request->json()->all());
-        return ApiResponse::response(true, 'Habit Task was successfully added.', $request->json()->all());
+//        return response()->json($request->all());
+//        return response()->json([
+//            'success'   => true,
+//            'schedule'  => $request->frequency,
+//        ]);
+
+
+//        foreach ($request->frequency as $frequency) {
+//            return response()->json([
+//                'success'   => true,
+//                'day' => $frequency['day'],
+//                'how_many_times' => $frequency['how_many_times'],
+//                'reminder_times' => $frequency['reminder_times'],
+//                'time0' => $frequency['reminder_times'][0]['time'],
+//                'time1' => $frequency['reminder_times'][1]['time'],
+//                'frequency' => $frequency,
+//            ]);
+//        }
+
+//        foreach ($request->frequency[0]['reminder_times'] as $reminder) {
+//            return response()->json([
+//                'time'     => $reminder['time'],
+//                'reminder' => $reminder,
+//            ]);
+//        }
+
+        return $this->habitTaskService->store($request);
     }
 
     /**

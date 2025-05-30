@@ -16,13 +16,16 @@ class BloodOxygenService
         $this->profileId = $id;
     }
 
-    public function latestRecord()
+    public function latestRecord() : BloodOxygenResource|null
     {
-        return new BloodOxygenResource(
-            BloodOxygen::where('profile_id', $this->profileId)
-                ->latest('measured_at')
-                ->first()
-        );
+        $latestRecord = BloodOxygen::where('profile_id', $this->profileId)
+            ->latest('measured_at')
+            ->first();
+
+        if ($latestRecord) {
+          return new BloodOxygenResource($latestRecord);
+        }
+        return null;
     }
 
     public function history() : BloodOxygenCollection

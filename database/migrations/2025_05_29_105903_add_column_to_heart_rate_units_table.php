@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('hydration_reminders', function (Blueprint $table) {
-            $table->boolean('status')->nullable()->comment('1:Hydrated, 0:Dehydrated')->after('amount');
+        Schema::table('heart_rate_units', function (Blueprint $table) {
+            $table->float('multiplier')->default(1)->after('name');
         });
     }
 
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('hydration_reminders', function (Blueprint $table) {
-            $table->dropColumn(['status']);
+        Schema::table('heart_rate_units', function (Blueprint $table) {
+            $table->dropColumn(['multiplier']);
         });
     }
 };

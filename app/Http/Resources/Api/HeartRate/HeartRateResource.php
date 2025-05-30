@@ -20,6 +20,7 @@ class HeartRateResource extends JsonResource
             'unit'        => $this->unit?->name,
             'status'      => $this->status,
             'hrv'         => $this->hrv,
+            'hrv_status'  => $this->hrv_status,
             'stress'      => $this->stress,
             'measured_at' => $this->measured_at,
         ];
