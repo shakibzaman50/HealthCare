@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Requests\Api\HabitReminder;
+namespace App\Http\Requests\Api\HabitTracker;
 
-use App\Rules\Api\DaysSchedule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Validator;
 
-class TaskStoreRequest extends FormRequest
+class StoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -73,92 +73,12 @@ class TaskStoreRequest extends FormRequest
             }
         });
     }
+
+    protected function failedValidation(\Illuminate\Contracts\Validation\Validator $validator){
+        throw new HttpResponseException(response()->json([
+            'success' => false,
+            'data'    => null,
+            'errors'  => $validator->errors(),
+        ], 422));
+    }
 }
-
-////            'name'          => ['required', 'max:50'],
-////            'icon'          => [$habitTaskId ? 'nullable' : 'required', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
-////            'habit_list_id' => ['required', 'integer', Rule::exists('habit_lists', 'id')
-////                ->where('is_active', config('basic.status.active'))
-////            ],
-////
-////            //Schedule
-////            'type' => ['required', 'boolean'],
-////            'color' => ['required', 'string', 'max:20'],
-////            'description' => ['required', 'string', 'max:255'],
-////            'duration' => ['required', 'date_format:h:i'],
-////            'end_date' => ['required', 'date_format:Y-m-d'],
-////            'is_repeat' => ['required', 'boolean'],
-////            'till_turn_off' => ['required', 'boolean'],
-////
-////            // Frequency
-////            'day' => ['required', 'array', 'max:6', new DaysSchedule()],
-////            'day.*' => ['required', 'in:EVERY,SAT,SUN,MON,TUE,WED,THU,FRI'],
-////            'how_many_times' => ['required', 'array', 'max:6'],
-////            'how_many_times.*' => ['required', 'integer', 'between:1,12'],
-////
-////            // Reminder
-//        ];
-//    }
-//}
-
-
-
-//{
-//  "habit_list_id": "1",
-//  "name": "New Task Name",
-//  "icon": "Icon",
-//  "type": "1",
-//  "color": "red",
-//  "description": "New Task Description",
-//  "duration": "10:00",
-//  "end_date": "2021-01-01",
-//  "is_repeat": "1",
-//  "till_turn_off": "1",
-//  "frequency": [
-//    {
-//      "id": 1,
-//      "day": "SAT",
-//      "how_many_times": 1,
-//      "reminder_times": [
-//        {
-//          "id": 1,
-//          "time": "08:30"
-//        }
-//      ]
-//    },
-//    {
-//      "id": 2,
-//      "day": "MON",
-//      "how_many_times": 3,
-//      "reminder_times": [
-//        {
-//          "id": 1,
-//          "time": "08:30"
-//        },
-//        {
-//          "id": 2,
-//          "time": "12:30"
-//        },
-//        {
-//          "id": 3,
-//          "time": "20:30"
-//        }
-//      ]
-//    },
-//    {
-//      "id": 3,
-//      "day": "FRI",
-//      "how_many_times": 2,
-//      "reminder_times": [
-//        {
-//          "id": 2,
-//          "time": "11:30"
-//        },
-//        {
-//          "id": 3,
-//          "time": "22:30"
-//        }
-//      ]
-//    }
-//  ]
-//}

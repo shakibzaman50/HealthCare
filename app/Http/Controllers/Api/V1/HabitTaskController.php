@@ -6,6 +6,8 @@ use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\HabitTaskRequest;
 use App\Http\Requests\Api\HabitReminder\TaskStoreRequest;
+use App\Http\Requests\Api\HabitTracker\HistoryRequest;
+use App\Http\Requests\Api\HabitTracker\StoreRequest;
 use App\Models\HabitList;
 use App\Models\HabitTask;
 use App\Services\Api\HabitTaskService;
@@ -33,7 +35,7 @@ class HabitTaskController extends Controller
         }
     }
 
-    public function store(TaskStoreRequest $request)
+    public function store(StoreRequest $request)
     {
         return $this->habitTaskService->store($request);
     }
@@ -67,7 +69,7 @@ class HabitTaskController extends Controller
         return $this->habitTaskService->delete($id);
     }
 
-    public function habitHistory(Request $request)
+    public function habitHistory(HistoryRequest $request)
     {
         try {
             $tasks = $this->habitTaskService->habitHistory($request->date);
