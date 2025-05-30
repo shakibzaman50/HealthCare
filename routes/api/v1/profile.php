@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\V1\HeartRateController;
 use App\Http\Controllers\Api\V1\HydrationReminderController;
 use App\Http\Controllers\Api\V1\ProfileAssesmentController;
 use App\Http\Controllers\Api\V1\ProfileController;
+use App\Http\Controllers\Api\V1\NotificationController;
 
 Route::group([], function () {
     // Profile Assesment Routes
@@ -17,6 +18,11 @@ Route::group([], function () {
         ->name('profile-assessment.store');
     Route::get('profile-assessment', [ProfileAssesmentController::class, 'show'])
         ->name('profile-assessment.show');
+
+    // Notification Routes
+    Route::get('notifications', [NotificationController::class, 'show'])->name('notifications.show');
+    Route::post('notifications', [NotificationController::class, 'update'])->name('notifications.update');
+
     // Heart Rate Routes
     Route::apiResource('heart-rates', HeartRateController::class)->only(['index', 'store', 'destroy']);
     Route::group(['prefix' => 'heart-rates', 'controller' => HeartRateController::class], function () {
