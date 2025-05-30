@@ -63,9 +63,9 @@ Route::group([], function () {
     Route::apiResource('hydration-reminders', HydrationReminderController::class)->only(['index','store', 'destroy']);
 
     // Habit Reminder Routes
-    Route::apiResource('habit-tasks', HabitTaskController::class)->only(['index','store', 'destroy']);
-    //    Route::group(['prefix' => 'habit-lists', 'controller' => HabitTaskController::class], function () {
-    //        Route::get('last-week-average', 'lastWeekAverage');
-    //    });
+    Route::apiResource('habit-tasks', HabitTaskController::class)->only(['store','show','update','destroy']);
+    Route::group(['prefix' => 'habit-tasks', 'controller' => HabitTaskController::class], function () {
+        Route::post('history', 'habitHistory');
+    });
     Route::get('habit-list/{id?}', [HabitTaskController::class, 'habitList']);
 });

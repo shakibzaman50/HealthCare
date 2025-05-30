@@ -4,11 +4,13 @@ namespace App\Services\Api;
 
 use App\Helpers\ApiResponse;
 use App\Helpers\Helpers;
+use App\Http\Resources\Api\HabitTracker\TaskResource;
 use App\Models\HabitFrequency;
 use App\Models\HabitList;
 use App\Models\HabitReminder;
 use App\Models\HabitSchedule;
 use App\Models\HabitTask;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -44,9 +46,10 @@ class HabitTaskService
     {
         $icon = Helpers::getFileUrl($request->icon, 'icons/');
         $newHabitTask = HabitTask::create([
-            'profile_id' => $this->profileId,
-            'name'       => $request->name,
-            'icon'       => $icon,
+            'habit_list_id' => $request->habit_list_id,
+            'profile_id'    => $this->profileId,
+            'name'          => $request->name,
+            'icon'          => $icon,
         ]);
         return $newHabitTask->id;
     }
@@ -107,6 +110,65 @@ class HabitTaskService
             DB::rollBack();
             Log::error('Habit task create error '. $e->getMessage());
             return ApiResponse::serverError($e->getMessage());
+        }
+    }
+
+    public function update($request, $id)
+    {
+
+    }
+
+    public function show($id)
+    {
+        $schedule = HabitSchedule::with([
+            'habitTask:id,name',
+            'frequencies:id,habit_schedule_id,day,how_many_times',
+            'frequencies.reminders:id,habit_frequency_id,reminder_time'
+        ])
+          ->findOrFail($id);
+
+        if ($schedule->profile_id == $this->profileId) {
+            return ApiResponse::response(true, 'Habit Show Successfully', $schedule);
+        }
+        return ApiResponse::serverError('You are not authorized to view this habit', 403);
+    }
+
+    public function habitHistory($date)
+    {
+        return TaskResource::collection(
+            HabitSchedule::with(['habitTask:id,name'])
+                ->where('profile_id', $this->profileId)
+                ->whereDate('end_date', '>=', Carbon::parse($date))
+                ->latest()
+                ->get()
+        );
+    }
+
+    public function delete($id)
+    {
+        $scheduleId = $id;
+        DB::beginTransaction();
+
+        try {
+            $schedule = HabitSchedule::findOrFail($scheduleId);
+
+            if ($schedule->profile_id != $this->profileId) {
+                return ApiResponse::serverError('You are not authorized to delete this habit', 403);
+            }
+
+            HabitReminder::whereIn('habit_frequency_id', function ($query)use ($scheduleId){
+                $query->select('id')->from('habit_frequencies')->where('habit_schedule_id', $scheduleId);
+            })->delete();
+            HabitFrequency::where('habit_schedule_id', $scheduleId)->delete();
+            $schedule->delete();
+
+            DB::commit();
+            return ApiResponse::response(true, 'Habit Deleted Successfully');
+        }
+        catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Habit task delete error '. $e->getMessage());
+            return ApiResponse::serverError();
         }
     }
 }

@@ -34,7 +34,7 @@ class TaskStoreRequest extends FormRequest
             ],
             'name'          => [$habitListId ? 'required' : 'nullable', 'max:50'],
             'icon'          => [$habitListId ? 'required' : 'nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048'],
-            'habit_task_id' => ['required', 'integer', Rule::exists('habit_tasks', 'id')
+            'habit_task_id' => [$habitListId ? 'nullable' : 'required', 'integer', Rule::exists('habit_tasks', 'id')
                 ->where('is_active', config('basic.status.active'))
             ],
             // Schedule-level

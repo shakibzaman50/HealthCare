@@ -28,6 +28,11 @@ class HabitSchedule extends Model
 
     public function habitTask()
     {
-        return $this->belongsTo(HabitList::class, 'habit_task_id')->select('id', 'name', 'habit_list_id');
+        return $this->belongsTo(HabitTask::class, 'habit_task_id')->select('id', 'name', 'habit_list_id');
+    }
+
+    public function frequencies()
+    {
+        return $this->hasMany(HabitFrequency::class,'habit_schedule_id')->select('id','habit_schedule_id','day','how_many_times');
     }
 }

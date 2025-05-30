@@ -19,4 +19,9 @@ class HabitFrequency extends Model
     {
         return $this->belongsTo(HabitList::class, 'habit_schedule_id')->select('id', 'name', 'habit_task_id');
     }
+
+    public function reminders()
+    {
+        return $this->hasMany(HabitReminder::class, 'habit_frequency_id')->select('id', 'habit_frequency_id', 'reminder_time', 'is_active');
+    }
 }

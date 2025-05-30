@@ -22,7 +22,6 @@ class HabitTaskController extends Controller
         $this->habitTaskService = new HabitTaskService($this->profileId);
     }
 
-
     public function habitList($request, $id=null)
     {
         try {
@@ -34,54 +33,22 @@ class HabitTaskController extends Controller
         }
     }
 
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(TaskStoreRequest $request)
     {
-//        return response()->json($request->all());
-//        return response()->json([
-//            'success'   => true,
-//            'schedule'  => $request->frequency,
-//        ]);
-
-
-//        foreach ($request->frequency as $frequency) {
-//            return response()->json([
-//                'success'   => true,
-//                'day' => $frequency['day'],
-//                'how_many_times' => $frequency['how_many_times'],
-//                'reminder_times' => $frequency['reminder_times'],
-//                'time0' => $frequency['reminder_times'][0]['time'],
-//                'time1' => $frequency['reminder_times'][1]['time'],
-//                'frequency' => $frequency,
-//            ]);
-//        }
-
-//        foreach ($request->frequency[0]['reminder_times'] as $reminder) {
-//            return response()->json([
-//                'time'     => $reminder['time'],
-//                'reminder' => $reminder,
-//            ]);
-//        }
-
         return $this->habitTaskService->store($request);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($profileId, string $id)
     {
-        //
+        try {
+            return $this->habitTaskService->show($id);
+        }catch (\Exception $e) {
+            Log::error('Habit Show fetch failed: ' . $e->getMessage());
+            return ApiResponse::serverError($e->getMessage());
+        }
     }
 
     /**
@@ -89,14 +56,25 @@ class HabitTaskController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        return 'Habit Update '.$id;
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($profileId, string $id)
     {
-        //
+        return $this->habitTaskService->delete($id);
+    }
+
+    public function habitHistory(Request $request)
+    {
+        try {
+            $tasks = $this->habitTaskService->habitHistory($request->date);
+            return ApiResponse::response(true, 'Habit History Fetched Successfully', $tasks);
+        }catch (\Exception $e) {
+            Log::error('Habit History fetch failed: ' . $e->getMessage());
+            return ApiResponse::serverError($e->getMessage());
+        }
     }
 }
