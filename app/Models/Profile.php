@@ -72,4 +72,14 @@ class Profile extends Model
     {
         return $this->hasMany(HydrationReminder::class, 'profile_id', 'id')->with('unit');
     }
+
+    public function notification()
+    {
+        return $this->hasOne(Notification::class);
+    }
+
+    public function reminderNotification()
+    {
+        return $this->hasOne(ReminderNotification::class);
+    }
 }
