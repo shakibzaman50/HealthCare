@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\V1\HydrationReminderController;
 use App\Http\Controllers\Api\V1\ProfileAssesmentController;
 use App\Http\Controllers\Api\V1\ProfileController;
 use App\Http\Controllers\Api\V1\NotificationController;
+use App\Http\Controllers\Api\V1\ReminderNotificationController;
 
 Route::group([], function () {
     // Profile Assesment Routes
@@ -22,6 +23,10 @@ Route::group([], function () {
     // Notification Routes
     Route::get('notifications', [NotificationController::class, 'show'])->name('notifications.show');
     Route::post('notifications', [NotificationController::class, 'update'])->name('notifications.update');
+
+    // Reminder Notification Routes
+    Route::get('reminder-notifications', [ReminderNotificationController::class, 'show'])->name('reminder-notifications.show');
+    Route::post('reminder-notifications', [ReminderNotificationController::class, 'update'])->name('reminder-notifications.update');
 
     // Heart Rate Routes
     Route::apiResource('heart-rates', HeartRateController::class)->only(['index', 'store', 'destroy']);

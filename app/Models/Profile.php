@@ -77,4 +77,9 @@ class Profile extends Model
     {
         return $this->hasOne(Notification::class);
     }
+
+    public function reminderNotification()
+    {
+        return $this->hasOne(ReminderNotification::class);
+    }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Notification\NotificationRequest;
 use App\Http\Resources\Notification\NotificationResource;
@@ -39,10 +40,11 @@ class NotificationController extends Controller
             ], 404);
         }
 
-        return response()->json([
-            'data' => new NotificationResource($notification),
-            'status' => 'success'
-        ]);
+        return ApiResponse::response(
+            true,
+            'Notification settings Retrive successfully',
+            new NotificationResource($notification)
+        );
     }
 
     public function update(int $profileId, NotificationRequest $request): JsonResponse
@@ -61,10 +63,10 @@ class NotificationController extends Controller
             $request->validated()
         );
 
-        return response()->json([
-            'data' => new NotificationResource($notification),
-            'message' => 'Notification settings updated successfully',
-            'status' => 'success'
-        ]);
+        return ApiResponse::response(
+            true,
+            'Notification settings updated successfully',
+            new NotificationResource($notification)
+        );
     }
 }
