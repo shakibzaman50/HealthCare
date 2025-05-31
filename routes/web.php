@@ -137,19 +137,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
         'habit-tasks' => HabitTaskController::class,
     ]);
   });
-
-    // Blood Pressure Routes
-    Route::resource('blood-pressures', BloodPressureController::class)->only(['index', 'destroy']);
-    Route::group(['prefix' => 'blood-pressures', 'as' => 'blood-pressures.', 'controller' => BloodPressureController::class], function () {
-      Route::post('bulk-delete', 'bulkDelete')->name('bulk-delete');
-    });
-
-    // Hydration Routes
-    Route::resource('hydration-reminders', HydrationReminderController::class)->only(['index', 'destroy']);
-    Route::group(['prefix' => 'hydration-reminders', 'as' => 'hydration-reminders.', 'controller' => HydrationReminderController::class], function () {
-      Route::post('bulk-delete', 'bulkDelete')->name('bulk-delete');
-    });
-  });
   Route::post('/admin/upload-image', [App\Http\Controllers\Admin\ImageUploadController::class, 'upload'])->name('admin.upload.image');
 });
 require __DIR__ . '/auth.php';
