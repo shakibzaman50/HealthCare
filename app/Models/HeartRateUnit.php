@@ -32,6 +32,7 @@ class HeartRateUnit extends Model
      */
     protected $fillable = [
         'name',
+        'multiplier',
         'is_active'
     ];
 

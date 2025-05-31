@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin\Config;
 
 use App\Http\Controllers\Controller;
+use App\Models\BloodPressure;
 use App\Models\BpUnit;
 use App\Http\Requests\Config\BpUnitRequest;
 use App\Services\Config\BpUnitService;
@@ -73,7 +74,7 @@ class BpUnitsController extends Controller
         try {
             $bpUnit = BpUnit::findOrFail($id);
             if (in_array($bpUnit->name, config('basic.bpUnits'))
-                // || BloodSugar::where('feeling_id', $id)->exists()
+                || BloodPressure::where('unit_id', $id)->exists()
             ) {
                 return back()->with('error_message', 'This BP Unit cannot be deleted');
             }

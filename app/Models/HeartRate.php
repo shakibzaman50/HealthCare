@@ -13,6 +13,10 @@ class HeartRate extends Model
         'profile_id',
         'unit_id',
         'heart_rate',
+        'status',
+        'hrv',
+        'hrv_status',
+        'stress',
         'measured_at'
     ];
 

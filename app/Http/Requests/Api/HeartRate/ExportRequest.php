@@ -13,7 +13,7 @@ class ExportRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,6 +24,7 @@ class ExportRequest extends FormRequest
     public function rules(): array {
         return [
             'file'      => ['required', 'string', 'in:pdf,csv'],
+            'days'      => ['required', 'string', 'max:50'],
             'from_date' => ['required', 'before:to_date', 'date_format:Y-m-d'],
             'to_date'   => ['required', 'after:from_date', 'date_format:Y-m-d']
         ];

@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Api\V1\HabitTaskController;
+use App\Http\Controllers\Api\V1\WaterIntakeController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V1\BloodOxygenController;
 use App\Http\Controllers\Api\V1\BloodPressureController;
@@ -29,8 +31,9 @@ Route::group([], function () {
     Route::post('reminder-notifications', [ReminderNotificationController::class, 'update'])->name('reminder-notifications.update');
 
     // Heart Rate Routes
-    Route::apiResource('heart-rates', HeartRateController::class)->only(['index', 'store', 'destroy']);
+    Route::apiResource('heart-rates', HeartRateController::class)->only(['index','store', 'destroy']);
     Route::group(['prefix' => 'heart-rates', 'controller' => HeartRateController::class], function () {
+        Route::get('latest-record', 'latestRecord');
         Route::get('last-week-average', 'lastWeekAverage');
         Route::post('chart-data', 'chartData');
         Route::post('filter', 'filter');
@@ -38,8 +41,9 @@ Route::group([], function () {
     });
 
     // Blood Pressure Routes
-    Route::apiResource('blood-pressures', BloodPressureController::class)->only(['index', 'store', 'destroy']);
+    Route::apiResource('blood-pressures', BloodPressureController::class)->only(['index','store', 'destroy']);
     Route::group(['prefix' => 'blood-pressures', 'controller' => BloodPressureController::class], function () {
+        Route::get('latest-record', 'latestRecord');
         Route::get('last-week-average', 'lastWeekAverage');
         Route::post('chart-data', 'chartData');
         Route::post('filter', 'filter');
@@ -47,20 +51,31 @@ Route::group([], function () {
     });
 
     // Blood Oxygen Routes
-    Route::apiResource('blood-oxygens', BloodOxygenController::class)->only(['index', 'store', 'destroy']);
+    Route::apiResource('blood-oxygens', BloodOxygenController::class)->only(['index','store', 'destroy']);
     Route::group(['prefix' => 'blood-oxygens', 'controller' => BloodOxygenController::class], function () {
+        Route::get('latest-record', 'latestRecord');
         Route::get('last-week-average', 'lastWeekAverage');
         Route::post('chart-data', 'chartData');
         Route::post('filter', 'filter');
         Route::post('export', 'export');
     });
 
-    // Hydration Reminder Routes
-    Route::apiResource('hydration-reminders', HydrationReminderController::class)->only(['index', 'store', 'destroy']);
-    Route::group(['prefix' => 'hydration-reminders', 'controller' => HydrationReminderController::class], function () {
-        Route::get('last-week-average', 'lastWeekAverage');
+    // Water Intake Routes
+    Route::apiResource('water-intakes', WaterIntakeController::class)->only(['index','store', 'destroy']);
+    Route::group(['prefix' => 'water-intakes', 'controller' => WaterIntakeController::class], function () {
+        Route::get('latest-record', 'latestRecord');
         Route::post('chart-data', 'chartData');
         Route::post('filter', 'filter');
         Route::post('export', 'export');
     });
+
+    // Hydration Reminder Routes
+    Route::apiResource('hydration-reminders', HydrationReminderController::class)->only(['index','store', 'destroy']);
+
+    // Habit Reminder Routes
+    Route::apiResource('habit-tasks', HabitTaskController::class)->only(['store','show','update','destroy']);
+    Route::group(['prefix' => 'habit-tasks', 'controller' => HabitTaskController::class], function () {
+        Route::post('history', 'habitHistory');
+    });
+    Route::get('habit-list/{id?}', [HabitTaskController::class, 'habitList']);
 });

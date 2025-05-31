@@ -6,6 +6,40 @@ return [
         'inactive' => 0,
     ],
 
+    'habitTasks' => [
+        'Popular' =>[
+            'Walk',
+            'Run',
+            'Active Calories',
+        ],
+        'Health' =>[
+            'Exercise',
+            'Workout',
+            'Walk',
+        ],
+        'Sports' =>[
+            'Stand',
+            'Cycling',
+            'Burn Calories',
+        ],
+        'Lifestyle' =>[
+            'Read a book',
+            'Learning',
+            'Review Today',
+            'Drink Water',
+        ],
+        'Time' =>[
+            'Yoga',
+            'Swimming',
+            'Meditation',
+            'Breathe',
+        ],
+        'Quit' =>[
+            'Less Carbohydrate',
+            'Eat Less Sugar',
+            'Smoke less',
+        ]
+    ],
 
     'bpUnits' => [
         'mmHg',
@@ -52,12 +86,6 @@ return [
         'Foam',
     ],
 
-    'medicineSchedules' => [
-        'As needed',
-        'Everyday',
-        'On a Cycle',
-    ],
-
     'activityLevels' => [
         'Light Active',
         'Moderately Active',
@@ -66,7 +94,7 @@ return [
     ],
 
     'sugarSchedules' => [
-        'Fating',
+        'Fasting',
         'After Eating',
         '2-3hr',
     ],
@@ -77,10 +105,10 @@ return [
     ],
 
     'waterUnits' => [
-        'pt',
-        'Oz',
-        'ml',
-        'L',
+        'L'  => 1,
+        'ml' => 1000,
+        'pt' => 1.75975,
+        'Oz' => 35.1951,
     ],
 
     'feelingLists' => [

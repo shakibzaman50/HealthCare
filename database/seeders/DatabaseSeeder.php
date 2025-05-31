@@ -25,10 +25,10 @@ class DatabaseSeeder extends Seeder
             MedicineTypeSeeder::class,
             SugarScheduleSeeder::class,
             ActivityLevelSeeder::class,
-            MedicineScheduleSeeder::class,
             HeartRateUnitSeeder::class,
             BPUnitSeeder::class,
             PhysicalConditionSeeder::class,
+            HabitTaskSeeder::class
         ]);
     }
 }
