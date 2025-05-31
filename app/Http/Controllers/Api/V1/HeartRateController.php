@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\HeartRate\ChartRequest;
+use App\Http\Requests\Api\HeartRate\ExportRequest;
 use App\Http\Requests\Api\HeartRate\FilterRequest;
 use App\Http\Requests\Api\HeartRate\StoreRequest;
 use App\Models\HeartRate;
@@ -107,11 +108,10 @@ class HeartRateController extends Controller
         }
     }
 
-    public function export(Request $request)
+    public function export(ExportRequest $request)
     {
         try {
-            $records = $this->heartRateService->export($request);
-            return ApiResponse::response(true, 'Heart Rate successfully exported.',$records);
+            return $this->heartRateService->export($request);
         }catch (\Exception $e) {
             Log::error('Heart Rate export failed: ' . $e->getMessage());
             return  ApiResponse::serverError($e->getMessage());

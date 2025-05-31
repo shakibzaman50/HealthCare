@@ -2,6 +2,7 @@
 
 namespace App\Services\Api;
 
+use App\Helpers\ApiResponse;
 use App\Http\Controllers\Admin\BloodPressureController;
 use App\Http\Resources\Api\BloodPressure\BloodPressureCollection;
 use App\Http\Resources\Api\BloodPressure\BloodPressureResource;
@@ -10,11 +11,12 @@ use Carbon\Carbon;
 
 class BloodPressureService
 {
-    protected $profileId;
+    protected $profileId, $reportService;
 
     public function __construct($id)
     {
         $this->profileId = $id;
+        $this->reportService = new ReportService($id);
     }
 
     public function latestRecord() : BloodPressureResource|null
@@ -107,9 +109,28 @@ class BloodPressureService
 
     public function export($request)
     {
-        return BloodPressureResource::collection(
-            $this->fetchRangedData($request->from_date, $request->to_date)
-        );
+
+        $bloodPressures = $this->fetchRangedData($request->from_date, $request->to_date);
+
+        if ($bloodPressures->isEmpty()) return ApiResponse::response('false', 'No data found', 404);
+
+        $bloodPressures = $bloodPressures->groupBy(fn($r) => Carbon::parse($r->measured_at)->format('Y-m-d'))
+            ->map(function ($readings) {
+                return [
+                    'entries'    => $readings->map(fn ($entry) => [
+                        'time'      => Carbon::parse($entry->measured_at)->format('h:i A'),
+                        'systolic'  => $entry->systolic,
+                        'diastolic' => $entry->diastolic,
+                        'unit'      => $entry->unit?->name,
+                        'status'    => $entry->status,
+                    ]),
+                ];
+            });
+
+        $path = $this->reportService->makeReport($request,[], $bloodPressures, [], [], []);
+        return ApiResponse::response(true, 'Blood Pressures successfully exported.',[
+            'url' => $path,
+        ]);
     }
 
     public function store($request) : BloodPressureResource

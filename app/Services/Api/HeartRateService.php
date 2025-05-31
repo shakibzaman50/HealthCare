@@ -2,6 +2,7 @@
 
 namespace App\Services\Api;
 
+use App\Helpers\ApiResponse;
 use App\Http\Resources\Api\HeartRate\HeartRateCollection;
 use App\Http\Resources\Api\HeartRate\HeartRateResource;
 use App\Models\HeartRate;
@@ -9,11 +10,12 @@ use Carbon\Carbon;
 
 class HeartRateService
 {
-    protected $profileId;
+    protected $profileId, $reportService;
 
     public function __construct($id)
     {
         $this->profileId = $id;
+        $this->reportService = new ReportService($id);
     }
 
     public function latestRecord() : HeartRateResource|null
@@ -134,9 +136,28 @@ class HeartRateService
 
     public function export($request)
     {
-        return HeartRateResource::collection(
-            $this->fetchRangedData($request->from_date, $request->to_date)
-        );
+        $heartRates = $this->fetchRangedData($request->from_date, $request->to_date);
+
+        if ($heartRates->isEmpty()) return ApiResponse::response('false', 'No data found', 404);
+
+        $heartRates = $heartRates->groupBy(fn($r) => Carbon::parse($r->measured_at)->format('Y-m-d'))
+            ->map(function ($readings) {
+                return [
+                    'entries'    => $readings->map(fn ($entry) => [
+                    'time'       => Carbon::parse($entry->measured_at)->format('h:i A'),
+                    'heart_rate' => $entry->heart_rate.' '.$entry->unit?->name,
+                    'status'     => $entry->status,
+                    'hrv'        => $entry->hrv,
+                    'hrv_status' => $entry->hrv_status,
+                    'stress'     => $entry->stress.'%',
+                  ]),
+                ];
+            });
+
+        $path = $this->reportService->makeReport($request, $heartRates, [], [], [], []);
+        return ApiResponse::response(true, 'Heart Rate successfully exported.',[
+            'url' => $path,
+        ]);
     }
 
     public function store($request) : HeartRateResource

@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Helpers\ApiResponse;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\BloodPressure\ExportRequest;
+use App\Http\Requests\Api\BloodPressure\FilterRequest;
 use App\Http\Requests\Api\BloodPressure\StoreRequest;
 use App\Models\BloodPressure;
 use App\Services\Api\BloodPressureService;
@@ -96,7 +98,7 @@ class BloodPressureController extends Controller
         }
     }
 
-    public function filter(Request $request)
+    public function filter(FilterRequest $request)
     {
         try {
             $records = $this->bloodPressureService->filter($request);
@@ -107,11 +109,10 @@ class BloodPressureController extends Controller
         }
     }
 
-    public function export(Request $request)
+    public function export(ExportRequest $request)
     {
         try {
-            $records = $this->bloodPressureService->export($request);
-            return ApiResponse::response(true, 'Blood Pressure successfully exported.',$records);
+            return $this->bloodPressureService->export($request);
         }catch (\Exception $e) {
             Log::error('Blood Pressure export failed: ' . $e->getMessage());
             return  ApiResponse::serverError();

@@ -110,8 +110,7 @@ class BloodOxygenController extends Controller
     public function export(ExportRequest $request)
     {
         try {
-            $records = $this->bloodOxygenService->export($request);
-            return ApiResponse::response(true, 'Blood Oxygen successfully exported.',$records);
+            return $this->bloodOxygenService->export($request);
         } catch (\Exception $e) {
             Log::error('Blood Oxygen export failed: ' . $e->getMessage());
             return  ApiResponse::serverError();

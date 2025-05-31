@@ -2,6 +2,7 @@
 
 namespace App\Services\Api;
 
+use App\Helpers\ApiResponse;
 use App\Http\Resources\Api\WaterIntake\WaterIntakeCollection;
 use App\Http\Resources\Api\WaterIntake\WaterIntakeResource;
 use App\Models\WaterIntake;
@@ -10,11 +11,12 @@ use Carbon\Carbon;
 
 class WaterIntakeService
 {
-    protected $profileId;
+    protected $profileId, $reportService;
 
     public function __construct($id)
     {
         $this->profileId = $id;
+        $this->reportService = new ReportService($id);
     }
 
     public function latestRecord() : WaterIntakeResource|null
@@ -100,9 +102,27 @@ class WaterIntakeService
 
     public function export($request)
     {
-        return WaterIntakeResource::collection(
-            $this->fetchRangedData($request->from_date, $request->to_date)
-        );
+        $waterIntakes = $this->fetchRangedData($request->from_date, $request->to_date);
+
+        if ($waterIntakes->isEmpty()) return ApiResponse::response('false', 'No data found', 404);
+
+        $waterIntakes = $waterIntakes->groupBy(fn($r) => Carbon::parse($r->drink_at)->format('Y-m-d'))
+            ->map(function ($readings) {
+                return [
+                    'entries'    => $readings->map(fn ($entry) => [
+                        'time'   => Carbon::parse($entry->drink_at)->format('h:i A'),
+                        'amount' => $entry->amount.' '.$entry->unit?->name,
+                        'status' => $entry->status==1 ? 'Hydrated' : 'Dehydrated',
+                        'done'   => $entry->done.'%',
+                    ]),
+                ];
+            });
+
+        $path = $this->reportService->makeReport($request, [], [], [], [], $waterIntakes);
+
+        return ApiResponse::response(true, 'Heart Rate successfully exported.',[
+            'url' => $path,
+        ]);
     }
 
     public function store($request) : WaterIntakeResource

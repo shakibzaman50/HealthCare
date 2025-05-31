@@ -2,6 +2,7 @@
 
 namespace App\Services\Api;
 
+use App\Helpers\ApiResponse;
 use App\Http\Resources\Api\BloodOxygen\BloodOxygenCollection;
 use App\Http\Resources\Api\BloodOxygen\BloodOxygenResource;
 use App\Models\BloodOxygen;
@@ -9,11 +10,12 @@ use Carbon\Carbon;
 
 class BloodOxygenService
 {
-    protected $profileId;
+    protected $profileId, $reportService;
 
     public function __construct($id)
     {
         $this->profileId = $id;
+        $this->reportService = new ReportService($id);
     }
 
     public function latestRecord() : BloodOxygenResource|null
@@ -82,9 +84,25 @@ class BloodOxygenService
 
     public function export($request)
     {
-        return BloodOxygenResource::collection(
-            $this->fetchRangedData($request->from_date, $request->to_date)
-        );
+        $bloodOxygens = $this->fetchRangedData($request->from_date, $request->to_date);
+
+        if ($bloodOxygens->isEmpty()) return ApiResponse::response('false', 'No data found', 404);
+
+        $bloodOxygens = $bloodOxygens->groupBy(fn($r) => Carbon::parse($r->measured_at)->format('Y-m-d'))
+            ->map(function ($readings) {
+                return [
+                    'entries'    => $readings->map(fn ($entry) => [
+                        'time'         => Carbon::parse($entry->measured_at)->format('h:i A'),
+                        'oxygen_level' => $entry->oxygen_level,
+                        'status'       => $entry->status==1 ? 'Saturated' : 'Desaturated',
+                    ]),
+                ];
+            });
+
+        $path = $this->reportService->makeReport($request, [], [], [], $bloodOxygens, []);
+        return ApiResponse::response(true, 'Blood Oxygen successfully exported.',[
+            'url' => $path,
+        ]);
     }
 
     public function store($request) : BloodOxygenResource

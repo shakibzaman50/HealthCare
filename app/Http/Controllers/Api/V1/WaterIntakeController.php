@@ -104,11 +104,10 @@ class WaterIntakeController extends Controller
     public function export(ExportRequest $request)
     {
         try {
-            $records = $this->waterIntakeService->export($request);
-            return ApiResponse::response(true, 'Water Intake successfully exported.', $records);
+            return $this->waterIntakeService->export($request);
         } catch (\Exception $e) {
             Log::error('Water Intake export failed: ' . $e->getMessage());
-            return ApiResponse::serverError();
+            return ApiResponse::serverError($e->getMessage());
         }
     }
 }
