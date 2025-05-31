@@ -59,7 +59,8 @@ return [
         'active'   => 1
     ],
     'user_role'                => [
-        'super_admin' => 1
+        'super_admin' => 1,
+        'user' => 3,
     ],
     'user_type'                => [
         'super_admin' => 1,

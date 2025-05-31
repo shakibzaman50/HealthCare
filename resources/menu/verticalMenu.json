@@ -1,6 +1,18 @@
 {
   "menu": [
     {
+      "name": "User Profile",
+      "icon": "menu-icon fas fa-fw fa-user",
+      "slug": "layouts",
+      "submenu": [
+        {
+          "url": "user-profiles",
+          "name": "User Profile",
+          "slug": "blood-pressure"
+        }
+      ]
+    },
+    {
       "name": "Site Settings",
       "icon": "menu-icon fas fa-fw fa-cog",
       "slug": "site_settings",

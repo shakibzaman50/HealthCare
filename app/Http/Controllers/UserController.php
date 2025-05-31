@@ -31,6 +31,7 @@ class UserController extends Controller
         if (!Auth::user()->hasRole(config('app.user_role.super_admin'))) {
             $query->where('type', '!=', config('app.user_type.super_admin'));
         }
+        $query->where('type', '!=', config('app.user_type.user'));
         $data = $query->paginate(20);
         return view('users.index', compact('data'))->with('i', ($request->input('page', 1) - 1) * 20);
     }

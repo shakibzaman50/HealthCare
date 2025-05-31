@@ -35,6 +35,7 @@ use App\Http\Controllers\Admin\Config\HeartRateUnitsController;
 use App\Http\Controllers\Admin\Config\BpUnitsController;
 use App\Http\Controllers\Admin\HeartRateController;
 use App\Http\Controllers\Admin\LoginInfoController;
+use App\Http\Controllers\Admin\UserProfileController;
 
 // Public Routes
 Route::get('/', [HomePage::class, 'index'])->name('pages-home');
@@ -57,6 +58,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
   Route::get('profile', [ProfileController::class, 'edit'])->name('profile.edit');
   Route::get('password/reset', [PasswordController::class, 'edit'])->name('password.edit');
   Route::post('update/password', [PasswordController::class, 'updatePassword'])->name('update.password');
+
+  // User Profiles Management Routes
+  Route::prefix('user-profiles')->group(function () {
+    Route::get('/', [UserProfileController::class, 'index'])->name('user-profiles.index');
+    Route::get('/search', [UserProfileController::class, 'search'])->name('user-profiles.search');
+    Route::get('/{user}/profiles', [UserProfileController::class, 'showProfiles'])->name('user-profiles.show');
+    Route::get('/{user}/profiles/{profile}', [UserProfileController::class, 'showProfileDetails'])->name('user-profiles.details');
+  });
 
   // Admin Login Info
   Route::prefix('admin/logininfo')->group(function () {
@@ -97,37 +106,50 @@ Route::middleware(['auth', 'verified'])->group(function () {
   ]);
 
 
-    Route::prefix('admin')->name('admin.')->group(function () {
-        // Heart Rate Routes
-        Route::get('heart-rates', [HeartRateController::class, 'index'])->name('heart-rates.index');
-        Route::delete('heart-rates/{id}', [HeartRateController::class, 'destroy'])->name('heart-rates.destroy');
-        Route::post('heart-rates/bulk-delete', [HeartRateController::class, 'bulkDelete'])->name('heart-rates.bulk-delete');
+  Route::prefix('admin')->name('admin.')->group(function () {
+    // Heart Rate Routes
+    Route::get('heart-rates', [HeartRateController::class, 'index'])->name('heart-rates.index');
+    Route::delete('heart-rates/{id}', [HeartRateController::class, 'destroy'])->name('heart-rates.destroy');
+    Route::post('heart-rates/bulk-delete', [HeartRateController::class, 'bulkDelete'])->name('heart-rates.bulk-delete');
 
-        // Blood Oxygen Routes
-        Route::resource('blood-oxygens', BloodOxygenController::class)->only(['index', 'destroy']);
-        Route::group(['prefix' => 'blood-oxygens', 'as' => 'blood-oxygens.', 'controller' => BloodOxygenController::class], function () {
-            Route::post('bulk-delete', 'bulkDelete')->name('bulk-delete');
-        });
 
-        // Blood Pressure Routes
-        Route::resource('blood-pressures', BloodPressureController::class)->only(['index', 'destroy']);
-        Route::group(['prefix' => 'blood-pressures', 'as' => 'blood-pressures.', 'controller' => BloodPressureController::class], function () {
-            Route::post('bulk-delete', 'bulkDelete')->name('bulk-delete');
-        });
-
-        // Hydration Routes
-        Route::resource('hydration-reminders', HydrationReminderController::class)->only(['index', 'destroy']);
-        Route::group(['prefix' => 'hydration-reminders', 'as' => 'hydration-reminders.', 'controller' => HydrationReminderController::class], function () {
-            Route::post('bulk-delete', 'bulkDelete')->name('bulk-delete');
-        });
-
-        // Resource Routes
-        Route::resources([
-            'habit-lists' => HabitListController::class,
-            'habit-tasks' => HabitTaskController::class,
-        ]);
+    // Blood Oxygen Routes
+    Route::resource('blood-oxygens', BloodOxygenController::class)->only(['index', 'destroy']);
+    Route::group(['prefix' => 'blood-oxygens', 'as' => 'blood-oxygens.', 'controller' => BloodOxygenController::class], function () {
+        Route::post('bulk-delete', 'bulkDelete')->name('bulk-delete');
     });
-  Route::post('/admin/upload-image', [App\Http\Controllers\Admin\ImageUploadController::class, 'upload'])->name('admin.upload.image');
 
+    // Blood Pressure Routes
+    Route::resource('blood-pressures', BloodPressureController::class)->only(['index', 'destroy']);
+    Route::group(['prefix' => 'blood-pressures', 'as' => 'blood-pressures.', 'controller' => BloodPressureController::class], function () {
+        Route::post('bulk-delete', 'bulkDelete')->name('bulk-delete');
+    });
+
+    // Hydration Routes
+    Route::resource('hydration-reminders', HydrationReminderController::class)->only(['index', 'destroy']);
+    Route::group(['prefix' => 'hydration-reminders', 'as' => 'hydration-reminders.', 'controller' => HydrationReminderController::class], function () {
+        Route::post('bulk-delete', 'bulkDelete')->name('bulk-delete');
+    });
+
+    // Resource Routes
+    Route::resources([
+        'habit-lists' => HabitListController::class,
+        'habit-tasks' => HabitTaskController::class,
+    ]);
+  });
+
+    // Blood Pressure Routes
+    Route::resource('blood-pressures', BloodPressureController::class)->only(['index', 'destroy']);
+    Route::group(['prefix' => 'blood-pressures', 'as' => 'blood-pressures.', 'controller' => BloodPressureController::class], function () {
+      Route::post('bulk-delete', 'bulkDelete')->name('bulk-delete');
+    });
+
+    // Hydration Routes
+    Route::resource('hydration-reminders', HydrationReminderController::class)->only(['index', 'destroy']);
+    Route::group(['prefix' => 'hydration-reminders', 'as' => 'hydration-reminders.', 'controller' => HydrationReminderController::class], function () {
+      Route::post('bulk-delete', 'bulkDelete')->name('bulk-delete');
+    });
+  });
+  Route::post('/admin/upload-image', [App\Http\Controllers\Admin\ImageUploadController::class, 'upload'])->name('admin.upload.image');
 });
 require __DIR__ . '/auth.php';
